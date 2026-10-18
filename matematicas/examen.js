@@ -73,40 +73,43 @@ function reponer(r){
 }
 
 // ---------- corrección ----------
+// Cada pregunta vale 1 punto repartido entre sus huecos. Devuelve {puntos, huecosBien, huecosTotal}.
 function corregir(){
-  let aciertos=0;
+  let puntos=0,huecosBien=0,huecosTotal=0;
   preguntas.forEach(q=>{
-    let bien=true;
+    let bien=0,total=0;
     q.querySelectorAll('input[data-r]').forEach(i=>{
-      i.classList.remove('ok','mal');const b=correcta(i.value,i.dataset.r);i.classList.add(b?'ok':'mal');if(!b)bien=false;
+      i.classList.remove('ok','mal');const b=correcta(i.value,i.dataset.r);i.classList.add(b?'ok':'mal');total++;if(b)bien++;
     });
     q.querySelectorAll('.grupo').forEach(g=>{
       const sel=g.querySelector('.opcion.sel');g.querySelectorAll('.opcion').forEach(o=>o.classList.remove('ok','mal'));
-      const b=!!sel&&norm(sel.textContent)===norm(g.dataset.r);if(sel)sel.classList.add(b?'ok':'mal');if(!b)bien=false;
+      const b=!!sel&&norm(sel.textContent)===norm(g.dataset.r);if(sel)sel.classList.add(b?'ok':'mal');
+      g.classList.toggle('fallado',!b);total++;if(b)bien++;
     });
     if(grid&&q.contains(grid)){
       grid.querySelectorAll('.celda').forEach(c=>c.classList.remove('ok','mal'));
       grid.querySelector(`.celda[data-r="${DEST.r}"][data-c="${DEST.c}"]`).classList.add('ok');
       const b=!!marcada&&marcada.r===DEST.r&&marcada.c===DEST.c;
-      if(!b){bien=false;if(marcada)grid.querySelector(`.celda[data-r="${marcada.r}"][data-c="${marcada.c}"]`).classList.add('mal');}
+      if(!b&&marcada)grid.querySelector(`.celda[data-r="${marcada.r}"][data-c="${marcada.c}"]`).classList.add('mal');
+      grid.classList.toggle('fallado',!b);total++;if(b)bien++;
     }
-    q.classList.remove('ok','mal');q.classList.add(bien?'ok':'mal');
-    if(bien)aciertos++;
+    q.classList.remove('ok','mal','medias');q.classList.add(bien===total?'ok':bien===0?'mal':'medias');
+    if(total)puntos+=bien/total;huecosBien+=bien;huecosTotal+=total;
   });
-  return aciertos;
+  return {puntos,huecosBien,huecosTotal};
 }
-function limpiarMarcas(){
-  document.querySelectorAll('.ok,.mal').forEach(e=>e.classList.remove('ok','mal'));
-}
+// Nota sobre 10 redondeada al cuarto de punto (los empates suben)
+const redondear=p=>Math.round(p/preguntas.length*10*4+1e-9)/4;
+const notaTexto=n=>n.toFixed(2).replace('.',',');
 
-// Bloquear / desbloquear
-function bloquear(q,si){
-  q.classList.toggle('bloqueada',si);
-  q.querySelectorAll('input[data-r]').forEach(i=>i.disabled=si);
-  q.querySelectorAll('.grupo').forEach(g=>g.classList.toggle('bloqueado',si));
-  if(grid&&q.contains(grid))grid.classList.toggle('bloqueado',si);
+// Bloquear / desbloquear. soloFallados=true deja editables únicamente los huecos fallados.
+function bloquear(q,si,soloFallados){
+  q.querySelectorAll('input[data-r]').forEach(i=>i.disabled=si&&!(soloFallados&&i.classList.contains('mal')));
+  q.querySelectorAll('.grupo').forEach(g=>g.classList.toggle('bloqueado',si&&!(soloFallados&&g.classList.contains('fallado'))));
+  if(grid&&q.contains(grid))grid.classList.toggle('bloqueado',si&&!(soloFallados&&grid.classList.contains('fallado')));
+  q.classList.toggle('bloqueada',si&&!(soloFallados&&q.querySelector('input.mal,.grupo.fallado,.grid.fallado')));
 }
-function bloquearTodo(si){preguntas.forEach(q=>bloquear(q,si));}
+function bloquearTodo(si){preguntas.forEach(q=>bloquear(q,si,false));}
 
 // ---------- pantalla de resultado ----------
 const velo=document.createElement('div');velo.id='velo';
@@ -127,17 +130,16 @@ const $=id=>document.getElementById(id);
 function mensaje(p){return p===1?'¡Perfecto! 🌟':p>=.7?'¡Muy bien! Repasa las preguntas en rojo.':'Sigue practicando, ¡tú puedes! 💪';}
 
 function mostrarResultado(res){
-  const total=preguntas.length;
   const corregido=res.notaCorr!=null;
+  const nota=corregido?res.notaCorr:res.nota1;
   $('r-titulo').textContent=corregido?'Resultado tras corregir':'Resultado';
   $('r-fecha').textContent=fechaTexto(res.fecha);
-  $('r-nota').textContent=(corregido?res.notaCorr:res.nota1)+' / '+total;
-  $('r-sub').textContent=corregido?'Primer intento: '+res.nota1+' / '+total:'';
-  $('r-mensaje').textContent=mensaje((corregido?res.notaCorr:res.nota1)/total);
-  const perfecto=(corregido?res.notaCorr:res.nota1)===total;
-  $('b-corregir').hidden=corregido||perfecto;
+  $('r-nota').textContent=notaTexto(nota)+' / 10';
+  $('r-sub').textContent=(res.huecosBien!=null?res.huecosBien+' de '+res.huecosTotal+' huecos bien':'')+(corregido?' · Primer intento: '+notaTexto(res.nota1):'');
+  $('r-mensaje').textContent=mensaje(nota/10);
+  $('b-corregir').hidden=corregido||nota===10;
   const hist=leer(CLAVE_HIST)||[];
-  $('r-historial').textContent=hist.length>1?'Intentos anteriores: '+hist.slice(0,-1).slice(-5).map(h=>h.nota1+(h.notaCorr!=null?'→'+h.notaCorr:'')).join(', ')+' (de '+total+')':'';
+  $('r-historial').textContent=hist.length>1?'Intentos anteriores: '+hist.slice(0,-1).slice(-5).map(h=>notaTexto(h.nota1)+(h.notaCorr!=null?'→'+notaTexto(h.notaCorr):'')).join(' · '):'';
   velo.classList.add('visible');volver.classList.remove('visible');
 }
 
@@ -145,15 +147,15 @@ function mostrarResultado(res){
 const botonEntregar=document.getElementById('corregir');
 botonEntregar.textContent='¡Entregar examen!';
 botonEntregar.addEventListener('click',()=>{
-  const aciertos=corregir();
+  const r=corregir();const nota=redondear(r.puntos);
   let res=leer(CLAVE);
   const hist=leer(CLAVE_HIST)||[];
   if(modo==='correccion'&&res){
-    res.notaCorr=aciertos;res.fecha=new Date().toISOString();res.respuestas=recoger();
-    if(hist.length)hist[hist.length-1].notaCorr=aciertos;
+    res.notaCorr=nota;res.fecha=new Date().toISOString();res.respuestas=recoger();res.huecosBien=r.huecosBien;res.huecosTotal=r.huecosTotal;
+    if(hist.length)hist[hist.length-1].notaCorr=nota;
   }else{
-    res={fecha:new Date().toISOString(),nota1:aciertos,notaCorr:null,total:preguntas.length,respuestas:recoger()};
-    hist.push({fecha:res.fecha,nota1:aciertos,notaCorr:null});
+    res={fecha:new Date().toISOString(),nota1:nota,notaCorr:null,huecosBien:r.huecosBien,huecosTotal:r.huecosTotal,respuestas:recoger()};
+    hist.push({fecha:res.fecha,nota1:nota,notaCorr:null});
   }
   escribir(CLAVE,res);escribir(CLAVE_HIST,hist.slice(-20));
   bloquearTodo(true);botonEntregar.style.display='none';modo='repaso';
@@ -163,10 +165,10 @@ botonEntregar.addEventListener('click',()=>{
 // ---------- botones de la caja ----------
 $('b-corregir').addEventListener('click',()=>{
   velo.classList.remove('visible');modo='correccion';
-  // solo se pueden tocar las preguntas falladas; las acertadas quedan en verde y bloqueadas
-  preguntas.forEach(q=>bloquear(q,q.classList.contains('ok')));
+  // solo se pueden tocar los huecos fallados; los acertados quedan en verde y bloqueados
+  preguntas.forEach(q=>bloquear(q,true,true));
   botonEntregar.textContent='¡Entregar corrección!';botonEntregar.style.display='block';
-  const primera=document.querySelector('.pregunta.mal');if(primera)primera.scrollIntoView({behavior:'smooth',block:'center'});
+  const primera=document.querySelector('.pregunta.mal,.pregunta.medias');if(primera)primera.scrollIntoView({behavior:'smooth',block:'center'});
 });
 $('b-repasar').addEventListener('click',()=>{
   velo.classList.remove('visible');modo='repaso';bloquearTodo(true);botonEntregar.style.display='none';volver.classList.add('visible');

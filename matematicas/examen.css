@@ -15,6 +15,7 @@ main{max-width:720px;margin:0 auto;padding:16px}
 .pregunta h2{margin:0 0 10px;font-size:1.05rem}
 .pregunta.ok{border-left-color:var(--verde)}
 .pregunta.mal{border-left-color:var(--rojo)}
+.pregunta.medias{border-left-color:var(--naranja)}
 .pregunta.bloqueada{opacity:.75}
 .num{display:inline-block;background:var(--rojo);color:#fff;border-radius:50%;width:28px;height:28px;line-height:28px;text-align:center;margin-right:8px;font-weight:bold}
 label{display:block;margin:8px 0}
