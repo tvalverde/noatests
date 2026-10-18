@@ -11,12 +11,13 @@
   header{background:var(--naranja);color:#fff;padding:20px 16px;text-align:center}
   header h1{margin:0;font-size:1.6rem}
   header p{margin:6px 0 0;opacity:.9}
+  header p.formato{font-size:.9rem;background:rgba(255,255,255,.2);display:inline-block;padding:4px 10px;border-radius:12px;margin-top:8px}
   main{max-width:720px;margin:0 auto;padding:16px}
   .pregunta{background:#fff;border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:8px solid var(--azul)}
   .pregunta h2{margin:0 0 10px;font-size:1.05rem}
   .num{display:inline-block;background:var(--rojo);color:#fff;border-radius:50%;width:28px;height:28px;line-height:28px;text-align:center;margin-right:8px;font-weight:bold}
   label{display:block;margin:8px 0}
-  input[type=text],input[type=number]{font-size:1.1rem;padding:6px 8px;border:2px solid #ccc;border-radius:8px;width:110px;margin:0 4px}
+  input[type=text]{font-size:1.1rem;padding:6px 8px;border:2px solid #ccc;border-radius:8px;width:110px;margin:0 4px}
   input.largo{width:100%;max-width:340px}
   input.ok{border-color:var(--verde);background:#eaf8ea}
   input.mal{border-color:var(--rojo);background:#fdecea}
@@ -25,6 +26,8 @@
   .opcion.ok{border-color:var(--verde);background:#eaf8ea}
   .opcion.mal{border-color:var(--rojo);background:#fdecea}
   .fila{margin:8px 0}
+  .pregunta.ok{border-left-color:var(--verde)}
+  .pregunta.mal{border-left-color:var(--rojo)}
   .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;max-width:300px;margin:10px 0}
   .celda{aspect-ratio:1;border:2px solid #2bb3d9;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1.2rem;cursor:pointer;border-radius:4px}
   .celda.m{background:#fbe7b3;color:var(--rojo)}
@@ -42,38 +45,39 @@
 <header>
   <h1>Examen de Matemáticas</h1>
   <p>Números y planos · 10 preguntas</p>
+  <p class="formato">Escribe los números con punto de millar, por ejemplo: 1.234</p>
 </header>
 <main>
 
 <div class="pregunta">
   <h2><span class="num">1</span>Escribe con letras cómo se leen estos números.</h2>
   <label>348: <input type="text" class="largo" data-r="trescientos cuarenta y ocho"></label>
-  <label>2 605: <input type="text" class="largo" data-r="dos mil seiscientos cinco"></label>
+  <label>2.605: <input type="text" class="largo" data-r="dos mil seiscientos cinco"></label>
 </div>
 
 <div class="pregunta">
-  <h2><span class="num">2</span>Descompón el número 3 472.</h2>
-  <div class="fila">Según el valor: <input type="number" data-r="3000"> + <input type="number" data-r="400"> + <input type="number" data-r="70"> + <input type="number" data-r="2"></div>
-  <div class="fila">Según la posición: <input type="number" data-r="3"> UM + <input type="number" data-r="4"> C + <input type="number" data-r="7"> D + <input type="number" data-r="2"> U</div>
+  <h2><span class="num">2</span>Descompón el número 3.472.</h2>
+  <div class="fila">Según el valor: <input type="text" inputmode="decimal" class="num-in" data-r="3.000"> + <input type="text" inputmode="decimal" class="num-in" data-r="400"> + <input type="text" inputmode="decimal" class="num-in" data-r="70"> + <input type="text" inputmode="decimal" class="num-in" data-r="2"></div>
+  <div class="fila">Según la posición: <input type="text" inputmode="decimal" class="num-in" data-r="3"> UM + <input type="text" inputmode="decimal" class="num-in" data-r="4"> C + <input type="text" inputmode="decimal" class="num-in" data-r="7"> D + <input type="text" inputmode="decimal" class="num-in" data-r="2"> U</div>
 </div>
 
 <div class="pregunta">
   <h2><span class="num">3</span>¿Qué número es?</h2>
-  <label>2 C + 5 D + 7 U = <input type="number" data-r="257"></label>
-  <label>4 UM + 3 C + 9 U = <input type="number" data-r="4309"></label>
+  <label>2 C + 5 D + 7 U = <input type="text" inputmode="decimal" class="num-in" data-r="257"></label>
+  <label>4 UM + 3 C + 9 U = <input type="text" inputmode="decimal" class="num-in" data-r="4.309"></label>
 </div>
 
 <div class="pregunta">
   <h2><span class="num">4</span>Fíjate en la cifra 6 y elige su valor.</h2>
   <div class="fila">En <b>169</b> el 6 vale:
     <span class="grupo" data-r="60"><span class="opcion">6</span><span class="opcion">60</span><span class="opcion">600</span></span></div>
-  <div class="fila">En <b>6 041</b> el 6 vale:
-    <span class="grupo" data-r="6000"><span class="opcion">6</span><span class="opcion">600</span><span class="opcion">6000</span></span></div>
+  <div class="fila">En <b>6.041</b> el 6 vale:
+    <span class="grupo" data-r="6.000"><span class="opcion">6</span><span class="opcion">600</span><span class="opcion">6.000</span></span></div>
 </div>
 
 <div class="pregunta">
-  <h2><span class="num">5</span>En el pueblo de Juanita hay 1 299 habitantes. Hoy nace un bebé. ¿Cuántos habitantes hay ahora?</h2>
-  <label><input type="number" data-r="1300"> habitantes</label>
+  <h2><span class="num">5</span>En el pueblo de Juanita hay 1.299 habitantes. Hoy nace un bebé. ¿Cuántos habitantes hay ahora?</h2>
+  <label><input type="text" inputmode="decimal" class="num-in" data-r="1.300"> habitantes</label>
   <div class="fila">¿Cuántas cifras han cambiado?
     <span class="grupo" data-r="3"><span class="opcion">1</span><span class="opcion">2</span><span class="opcion">3</span><span class="opcion">4</span></span></div>
 </div>
@@ -81,32 +85,32 @@
 <div class="pregunta">
   <h2><span class="num">6</span>Compara con &gt; o &lt;.</h2>
   <div class="fila">527 <span class="grupo" data-r="<"><span class="opcion">&gt;</span><span class="opcion">&lt;</span></span> 572</div>
-  <div class="fila">1 840 <span class="grupo" data-r=">"><span class="opcion">&gt;</span><span class="opcion">&lt;</span></span> 1 480</div>
+  <div class="fila">1.840 <span class="grupo" data-r=">"><span class="opcion">&gt;</span><span class="opcion">&lt;</span></span> 1.480</div>
   <div class="fila">936 <span class="grupo" data-r="<"><span class="opcion">&gt;</span><span class="opcion">&lt;</span></span> 963</div>
 </div>
 
 <div class="pregunta">
   <h2><span class="num">7</span>Ordena de mayor a menor: 745, 457, 754, 475.</h2>
-  <div class="fila"><input type="number" data-r="754"> &gt; <input type="number" data-r="745"> &gt; <input type="number" data-r="475"> &gt; <input type="number" data-r="457"></div>
+  <div class="fila"><input type="text" inputmode="decimal" class="num-in" data-r="754"> &gt; <input type="text" inputmode="decimal" class="num-in" data-r="745"> &gt; <input type="text" inputmode="decimal" class="num-in" data-r="475"> &gt; <input type="text" inputmode="decimal" class="num-in" data-r="457"></div>
 </div>
 
 <div class="pregunta">
   <h2><span class="num">8</span>Redondea.</h2>
-  <label>683 a la decena: <input type="number" data-r="680"></label>
-  <label>683 a la centena: <input type="number" data-r="700"></label>
-  <label>2 350 a la centena: <input type="number" data-r="2400"></label>
+  <label>683 a la decena: <input type="text" inputmode="decimal" class="num-in" data-r="680"></label>
+  <label>683 a la centena: <input type="text" inputmode="decimal" class="num-in" data-r="700"></label>
+  <label>2.350 a la centena: <input type="text" inputmode="decimal" class="num-in" data-r="2.400"></label>
 </div>
 
 <div class="pregunta">
   <h2><span class="num">9</span>Calcula por estimación (redondea a la decena).</h2>
-  <div class="fila">58 + 23 → <input type="number" data-r="60"> + <input type="number" data-r="20"> = <input type="number" data-r="80"></div>
-  <div class="fila">91 − 47 → <input type="number" data-r="90"> − <input type="number" data-r="50"> = <input type="number" data-r="40"></div>
+  <div class="fila">58 + 23 → <input type="text" inputmode="decimal" class="num-in" data-r="60"> + <input type="text" inputmode="decimal" class="num-in" data-r="20"> = <input type="text" inputmode="decimal" class="num-in" data-r="80"></div>
+  <div class="fila">91 − 47 → <input type="text" inputmode="decimal" class="num-in" data-r="90"> − <input type="text" inputmode="decimal" class="num-in" data-r="50"> = <input type="text" inputmode="decimal" class="num-in" data-r="40"></div>
 </div>
 
 <div class="pregunta">
   <h2><span class="num">10</span>Mei está en la casilla <b>M</b>. Se mueve 3 casillas a la derecha, 2 hacia arriba y 1 a la izquierda. Toca la casilla donde llega.</h2>
   <div class="grid" id="grid"></div>
-  <label>¿Cuántas casillas se ha movido en total? <input type="number" data-r="6"></label>
+  <label>¿Cuántas casillas se ha movido en total? <input type="text" inputmode="decimal" class="num-in" data-r="6"></label>
   <div class="fila">Moverse sin girar ni cambiar de tamaño se llama:
     <span class="grupo" data-r="traslación"><span class="opcion">rotación</span><span class="opcion">traslación</span><span class="opcion">simetría</span></span></div>
 </div>
@@ -114,7 +118,7 @@
 <button class="principal" id="corregir">¡Corregir examen!</button>
 
 <div id="resultado">
-  <div>Has acertado</div>
+  <div>Preguntas acertadas</div>
   <div class="nota"><span id="aciertos">0</span> / <span id="total">0</span></div>
   <div id="mensaje"></div>
   <button class="principal" id="reiniciar" style="background:var(--naranja)">Volver a empezar</button>
@@ -139,29 +143,48 @@ document.querySelectorAll('.grupo').forEach(g=>{
   }));
 });
 
+// Normaliza: texto en minúsculas sin tildes; números deben llevar el punto de millar (1.234)
 const norm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim();
+const esNumero=s=>/^[0-9.,]+$/.test(s.trim());
+const formatoES=s=>/^\d{1,3}(\.\d{3})*(,\d+)?$/.test(s.trim());
+function correcta(valor,esperado){
+  valor=valor.trim();
+  if(esNumero(esperado)){ return formatoES(valor)&&valor===esperado; }
+  return norm(valor)===norm(esperado);
+}
 
 document.getElementById('corregir').addEventListener('click',()=>{
-  let ok=0,total=0;
-  document.querySelectorAll('input[data-r]').forEach(i=>{
-    total++;i.classList.remove('ok','mal');
-    const bien=norm(i.value)===norm(i.dataset.r);
-    i.classList.add(bien?'ok':'mal');if(bien)ok++;
+  const preguntas=document.querySelectorAll('.pregunta');
+  let aciertos=0;
+  preguntas.forEach(q=>{
+    let bienTodo=true;
+    q.querySelectorAll('input[data-r]').forEach(i=>{
+      i.classList.remove('ok','mal');
+      const b=correcta(i.value,i.dataset.r);
+      i.classList.add(b?'ok':'mal');if(!b)bienTodo=false;
+    });
+    q.querySelectorAll('.grupo').forEach(g=>{
+      const sel=g.querySelector('.opcion.sel');
+      g.querySelectorAll('.opcion').forEach(o=>o.classList.remove('ok','mal'));
+      const b=!!sel&&norm(sel.textContent)===norm(g.dataset.r);
+      if(sel)sel.classList.add(b?'ok':'mal');
+      if(!b)bienTodo=false;
+    });
+    if(q.querySelector('#grid')){
+      document.querySelectorAll('.celda').forEach(c=>c.classList.remove('ok','mal'));
+      const dest=document.querySelector(`.celda[data-r="${DEST.r}"][data-c="${DEST.c}"]`);
+      dest.classList.add('ok');
+      const b=!!marcada&&marcada.r===DEST.r&&marcada.c===DEST.c;
+      if(!b){bienTodo=false;if(marcada)document.querySelector(`.celda[data-r="${marcada.r}"][data-c="${marcada.c}"]`).classList.add('mal');}
+    }
+    q.classList.remove('ok','mal');q.classList.add(bienTodo?'ok':'mal');
+    if(bienTodo)aciertos++;
   });
-  document.querySelectorAll('.grupo').forEach(g=>{
-    total++;const sel=g.querySelector('.opcion.sel');
-    g.querySelectorAll('.opcion').forEach(o=>o.classList.remove('ok','mal'));
-    if(sel){const bien=norm(sel.textContent)===norm(g.dataset.r);sel.classList.add(bien?'ok':'mal');if(bien)ok++;}
-  });
-  total++;
-  document.querySelectorAll('.celda').forEach(c=>c.classList.remove('ok','mal'));
-  const dest=document.querySelector(`.celda[data-r="${DEST.r}"][data-c="${DEST.c}"]`);
-  if(marcada&&marcada.r===DEST.r&&marcada.c===DEST.c){dest.classList.add('ok');ok++;}
-  else{dest.classList.add('ok');if(marcada)document.querySelector(`.celda[data-r="${marcada.r}"][data-c="${marcada.c}"]`).classList.add('mal');}
-  document.getElementById('aciertos').textContent=ok;
+  const total=preguntas.length;
+  document.getElementById('aciertos').textContent=aciertos;
   document.getElementById('total').textContent=total;
-  const p=ok/total;
-  document.getElementById('mensaje').textContent=p===1?'¡Perfecto! 🌟':p>=.7?'¡Muy bien! Repasa las de color rojo.':'Sigue practicando, ¡tú puedes! 💪';
+  const p=aciertos/total;
+  document.getElementById('mensaje').textContent=p===1?'¡Perfecto! 🌟':p>=.7?'¡Muy bien! Repasa las preguntas en rojo.':'Sigue practicando, ¡tú puedes! 💪';
   const res=document.getElementById('resultado');res.style.display='block';res.scrollIntoView({behavior:'smooth'});
 });
 
