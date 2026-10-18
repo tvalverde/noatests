@@ -123,11 +123,11 @@ function dibujarPlano(div){
   // marca X
   if(div.dataset.marca){const [r,c]=div.dataset.marca.split(',').map(Number);const x=cx(c)+B-18,y=cy(r)+18;el('line',{x1:x-9,y1:y-9,x2:x+9,y2:y+9,stroke:'#e4452c','stroke-width':5,'stroke-linecap':'round'},s);el('line',{x1:x+9,y1:y-9,x2:x-9,y2:y+9,stroke:'#e4452c','stroke-width':5,'stroke-linecap':'round'},s);}
   // persona "r,c,dir"
-  if(div.dataset.persona){const [r,c,dir]=div.dataset.persona.split(',');const x=cx(+c)+B/2,y=cy(+r)+B-22;
+  if(div.dataset.persona){const [r,c,dir]=div.dataset.persona.split(',');const esV=dir==='arriba'||dir==='abajo';const x=cx(+c)+(esV?B-22:B/2),y=cy(+r)+(dir==='arriba'?B-22:dir==='abajo'?B-36:B-22);
     el('circle',{cx:x,cy:y,r:13,fill:'#f7a823',stroke:'#333','stroke-width':2},s);
     const fl={arriba:[0,-1],abajo:[0,1],izquierda:[-1,0],derecha:[1,0]}[dir]||[0,-1];
-    el('line',{x1:x+fl[0]*14,y1:y+fl[1]*14,x2:x+fl[0]*40,y2:y+fl[1]*40,stroke:'#e4452c','stroke-width':4,'stroke-linecap':'round'},s);
-    el('polygon',{points:`${x+fl[0]*48},${y+fl[1]*48} ${x+fl[0]*36+fl[1]*7},${y+fl[1]*36+fl[0]*7} ${x+fl[0]*36-fl[1]*7},${y+fl[1]*36-fl[0]*7}`,fill:'#e4452c'},s);
+    const L=esV?30:40;el('line',{x1:x+fl[0]*14,y1:y+fl[1]*14,x2:x+fl[0]*L,y2:y+fl[1]*L,stroke:'#e4452c','stroke-width':4,'stroke-linecap':'round'},s);
+    el('polygon',{points:`${x+fl[0]*(L+8)},${y+fl[1]*(L+8)} ${x+fl[0]*(L-4)+fl[1]*7},${y+fl[1]*(L-4)+fl[0]*7} ${x+fl[0]*(L-4)-fl[1]*7},${y+fl[1]*(L-4)-fl[0]*7}`,fill:'#e4452c'},s);
     texto(s,x,y+5,'L',{'font-size':14,'font-weight':'bold'});}
   texto(s,W/2,24,div.dataset.titulo||'Plano',{'font-size':15,'font-weight':'bold',fill:'#2a6'});
   div.appendChild(s);
