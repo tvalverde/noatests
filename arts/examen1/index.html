@@ -112,14 +112,21 @@ const COLORES=[
   ['#2b6cd9','azul'],['#8a4fc9','violeta'],['#ff8ac4','rosa'],['#f6c9a0','carne'],
   ['#9e9e9e','gris'],['#222222','negro']
 ];
-let color='#222222', tool='lapiz', grosor=7, pendiente=null; // pendiente = {canvas,x,y} zona marcada esperando color
+let color='#222222', tool='lapiz', grosor=7, pendiente=null;
+let sinGuardar=false;
+const CLAVE='noatests-arts-examen1';
+function marcarCambio(){sinGuardar=true;autoguardar();}
+let tAuto=null;
+function autoguardar(){clearTimeout(tAuto);tAuto=setTimeout(()=>{try{
+  const datos=[...document.querySelectorAll('.punto')].map(p=>({img:p.querySelector('.lienzo').toDataURL('image/png'),nombre:p.querySelector('input').value}));
+  localStorage.setItem(CLAVE,JSON.stringify(datos));}catch(e){}},800);} // pendiente = {canvas,x,y} zona marcada esperando color
 
 const cont=document.getElementById('colores');
 COLORES.forEach(([hex,nombre])=>{
   const d=document.createElement('div');d.className='color'+(hex===color?' sel':'');d.style.background=hex;d.title=nombre;d.dataset.hex=hex;
   d.addEventListener('click',()=>{
     document.querySelectorAll('.color').forEach(c=>c.classList.remove('sel'));d.classList.add('sel');color=hex;
-    if(pendiente){ rellenar(pendiente.canvas,pendiente.x,pendiente.y,color); pendiente=null; }
+    if(pendiente){ guardarEstado(pendiente.canvas); rellenar(pendiente.canvas,pendiente.x,pendiente.y,color); pendiente=null; marcarCambio(); }
   });
   cont.appendChild(d);
 });
@@ -147,7 +154,7 @@ document.querySelectorAll('.lienzo').forEach(c=>{
     ev.preventDefault();c.setPointerCapture(ev.pointerId);
     const p=pos(c,ev);inicio=p;movio=false;
     if(tool==='cubo'){return;}
-    guardarEstado(c);dibujando=true;ultimo=p;
+    guardarEstado(c);dibujando=true;ultimo=p;marcarCambio();
     trazo(ctx,p,p);
   });
   c.addEventListener('pointermove',ev=>{
@@ -157,7 +164,7 @@ document.querySelectorAll('.lienzo').forEach(c=>{
   const fin=ev=>{
     if(tool==='cubo'&&inicio){
       // Toca una zona: si ya hay color elegido, se pinta al momento; además queda marcada por si cambia de color
-      guardarEstado(c);rellenar(c,inicio.x,inicio.y,color);pendiente={canvas:c,x:inicio.x,y:inicio.y};
+      guardarEstado(c);rellenar(c,inicio.x,inicio.y,color);pendiente={canvas:c,x:inicio.x,y:inicio.y};marcarCambio();
     }
     dibujando=false;inicio=null;
   };
@@ -172,12 +179,13 @@ document.querySelectorAll('.lienzo').forEach(c=>{
 
   const punto=c.closest('.punto');
   punto.querySelector('.deshacer').addEventListener('click',()=>{
-    const e=estados.get(c);const img=e.historial.pop();if(img)e.ctx.putImageData(img,0,0);pendiente=null;
+    const e=estados.get(c);const img=e.historial.pop();if(img){e.ctx.putImageData(img,0,0);marcarCambio();}pendiente=null;
   });
   punto.querySelector('.borrar').addEventListener('click',()=>{
-    if(confirm('¿Borrar todo este dibujo?')){guardarEstado(c);fondoBlanco(ctx,c);pendiente=null;}
+    if(confirm('¿Borrar todo este dibujo?')){guardarEstado(c);fondoBlanco(ctx,c);pendiente=null;marcarCambio();}
   });
   punto.querySelector('.guardar').addEventListener('click',()=>descargar(punto));
+  punto.querySelector('input').addEventListener('input',marcarCambio);
 });
 
 // ---------- Cubo de pintura (relleno de zona) ----------
@@ -214,7 +222,30 @@ function descargar(punto){
 document.getElementById('guardarTodos').addEventListener('click',()=>{
   const puntos=[...document.querySelectorAll('.punto')];
   puntos.forEach((p,i)=>setTimeout(()=>descargar(p),i*600));
+  sinGuardar=false;
 });
+
+// Aviso si intenta salir con dibujos sin guardar
+window.addEventListener('beforeunload',ev=>{ if(sinGuardar){ev.preventDefault();ev.returnValue='';} });
+
+// Restaurar los dibujos de la última vez (guardados en este navegador)
+(function restaurar(){
+  let datos=null;try{datos=JSON.parse(localStorage.getItem(CLAVE));}catch(e){}
+  if(!datos)return;
+  const puntos=[...document.querySelectorAll('.punto')];
+  let hayAlgo=false;
+  datos.forEach((d,i)=>{
+    const p=puntos[i];if(!p||!d)return;
+    if(d.nombre)p.querySelector('input').value=d.nombre;
+    if(d.img){const c=p.querySelector('.lienzo');const im=new Image();im.onload=()=>estados.get(c).ctx.drawImage(im,0,0);im.src=d.img;hayAlgo=true;}
+  });
+  if(hayAlgo){
+    const aviso=document.createElement('div');aviso.className='aviso';aviso.style.cssText='background:#fff3cd;border-radius:10px;padding:10px;margin:0 0 12px';
+    aviso.innerHTML='Se han recuperado tus dibujos de la última vez. <button id="empezarDeCero" style="border:none;background:#a86bd6;color:#fff;border-radius:8px;padding:6px 10px;margin-left:6px">Empezar de cero</button>';
+    document.querySelector('main').insertBefore(aviso,document.querySelector('.punto'));
+    document.getElementById('empezarDeCero').addEventListener('click',()=>{if(confirm('¿Borrar los 5 dibujos y empezar de cero?')){localStorage.removeItem(CLAVE);sinGuardar=false;location.reload();}});
+  }
+})();
 </script>
 </body>
 </html>
