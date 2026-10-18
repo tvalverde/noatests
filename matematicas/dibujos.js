@@ -7,7 +7,7 @@
    <div class="figuras" data-figura="gota" data-opciones="traslada;gira;agranda" data-etiquetas="a;b;c"></div> → figura original + opciones
    <div class="tabla-posiciones" data-cifras="2,1,7,4"></div>                    → tabla UM C D U
    <div class="venn" data-a="Plano 1" data-b="Plano 2" data-solo-a="…" data-comun="…" data-solo-b="…"></div>
-   <div class="barras" data-valores="Juanita=788;Berta=783" data-unidad="m"></div> → comparar alturas
+   <div class="barras" data-valores="Juanita=788;Berta=783" data-unidad="m"></div> → comparar alturas (montañas); data-tipo="distancia" → distancias al bosque; data-tipo="cantidad" → barras horizontales simples
 */
 (function(){
 'use strict';
@@ -190,8 +190,18 @@ function dibujarDistancias(div){
   texto(s,W-40,H-6,'= bosque',{'font-size':12,fill:'#666'});el('polygon',{points:`${W-74},${H-2} ${W-66},${H-18} ${W-58},${H-2}`,fill:'#4caf50'},s);
   div.appendChild(s);
 }
+function dibujarCantidades(div){
+  const pares=div.dataset.valores.split(';').map(p=>{const [n,v]=p.split('=');return [n,num(v)];});const uni=div.dataset.unidad||'';
+  const W=700,H=pares.length*46+16;const s=svg(W,H);const max=Math.max(...pares.map(p=>p[1]));
+  pares.forEach(([n,v],i)=>{const y=14+i*46;const L=Math.max(30,470*v/max);
+    texto(s,70,y+22,n,{'font-size':14,'font-weight':'bold','text-anchor':'middle'});
+    el('rect',{x:140,y,width:L,height:30,rx:8,fill:['#8bc34a','#2bb3d9','#f7a823','#b39ddb','#f48fb1'][i%5],stroke:'#333','stroke-width':1},s);
+    texto(s,140+L+10,y+21,fmt(v)+(uni?' '+uni:''),{'font-size':14,'text-anchor':'start','font-weight':'bold'});});
+  div.appendChild(s);
+}
 function dibujarBarras(div){
   if(div.dataset.tipo==='distancia')return dibujarDistancias(div);
+  if(div.dataset.tipo==='cantidad')return dibujarCantidades(div);
   const pares=div.dataset.valores.split(';').map(p=>{const [n,v]=p.split('=');return [n,num(v)];});const uni=div.dataset.unidad||'';
   const W=Math.min(700,pares.length*140+40),H=200;const s=svg(W,H);const max=Math.max(...pares.map(p=>p[1]));
   pares.forEach(([n,v],i)=>{const x=40+i*140;const h=120*v/max;

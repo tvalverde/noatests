@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Examen 6 · Matemáticas · Exámenes de Noa</title>
+<link rel="manifest" href="../../../manifest.json">
+<meta name="theme-color" content="#f7a823">
+<link rel="stylesheet" href="../../examen.css?v=9">
+</head>
+<body>
+<header>
+  <nav class="migas"><a href="../../../">Inicio</a> › <a href="../../">Matemáticas</a> › <a href="../">Temas 1 y 2</a> › <span>Examen 6</span></nav>
+  <h1>Examen 6</h1>
+  <p>Temas 1 y 2 · Números y planos</p>
+  <p class="formato">Escribe los números con punto de millar, por ejemplo: 1.234</p>
+</header>
+<main>
+
+<div class="pregunta" data-tipo="leer-escribir">
+  <h2><span class="num">1</span>Observa la tabla de posiciones.</h2>
+  <div class="tabla-posiciones" data-cifras="4,0,5,2"></div>
+  <label>¿Qué número es? <input type="text" inputmode="decimal" data-r="4.052"></label>
+  <label>Escríbelo con letras: <input type="text" class="largo" data-r="cuatro mil cincuenta y dos"></label>
+</div>
+
+<div class="pregunta" data-tipo="descomponer">
+  <h2><span class="num">2</span>Estas son las tarjetas de composición de un número.</h2>
+  <div class="tarjetas" data-valores="2.000,500,0,7"></div>
+  <label>El número es <input type="text" inputmode="decimal" data-r="2.507"></label>
+  <div class="fila">Según la posición: <input type="text" inputmode="decimal" data-r="2"> UM + <input type="text" inputmode="decimal" data-r="5"> C + <input type="text" inputmode="decimal" data-r="0"> D + <input type="text" inputmode="decimal" data-r="7"> U</div>
+</div>
+
+<div class="pregunta" data-tipo="valor-posicion">
+  <h2><span class="num">3</span>Adivina el número con las pistas.</h2>
+  <div class="fila">Tiene 4 cifras. La de las unidades de millar es 1. La de las centenas es 8. La de las decenas es tres menos que la de las centenas. No tiene unidades.</div>
+  <label>El número es <input type="text" inputmode="decimal" data-r="1.850"></label>
+  <label>¿Qué valor tiene el 8 en ese número? <input type="text" inputmode="decimal" data-r="800"></label>
+</div>
+
+<div class="pregunta" data-tipo="recta">
+  <h2><span class="num">4</span>La recta va de 100 en 100. Escribe el número de cada letra y fíjate en el punto naranja.</h2>
+  <div class="recta" data-min="2.000" data-max="3.000" data-paso="100" data-letras="A=2.300;B=2.700" data-puntos="2.450"></div>
+  <div class="fila">A = <input type="text" inputmode="decimal" data-r="2.300">   B = <input type="text" inputmode="decimal" data-r="2.700"></div>
+  <div class="fila">El punto naranja está entre <input type="text" inputmode="decimal" data-r="2.400"> y <input type="text" inputmode="decimal" data-r="2.500">.</div>
+</div>
+
+<div class="pregunta" data-tipo="comparar">
+  <h2><span class="num">5</span>Observa los dos grupos de bloques, el de Juanita y el de Berta.</h2>
+  <div class="fila"><b>Juanita:</b></div>
+  <div class="bloques" data-um="1" data-c="3" data-d="2" data-u="4"></div>
+  <div class="fila"><b>Berta:</b></div>
+  <div class="bloques" data-um="1" data-c="2" data-d="9" data-u="9"></div>
+  <div class="fila">Juanita tiene <input type="text" inputmode="decimal" data-r="1.324"> y Berta tiene <input type="text" inputmode="decimal" data-r="1.299"></div>
+  <div class="fila">Juanita <span class="grupo" data-r=">"><span class="opcion">&gt;</span><span class="opcion">&lt;</span></span> Berta</div>
+  <div class="fila">Berta tiene más barras y más cubitos que Juanita. ¿Por qué entonces tiene menos?
+    <span class="grupo" data-r="porque juanita tiene más placas de 100"><span class="opcion">porque Juanita tiene más placas de 100</span><span class="opcion">porque las barras no valen nada</span></span></div>
+</div>
+
+<div class="pregunta" data-tipo="ordenar">
+  <h2><span class="num">6</span>Árboles del bosque Milpinos, por especie.</h2>
+  <div class="barras" data-tipo="cantidad" data-valores="Robles=509;Pinos=775;Olivos=256;Encinas=620"></div>
+  <div class="fila">De mayor a menor: <input type="text" inputmode="decimal" data-r="775"> &gt; <input type="text" inputmode="decimal" data-r="620"> &gt; <input type="text" inputmode="decimal" data-r="509"> &gt; <input type="text" inputmode="decimal" data-r="256"></div>
+  <div class="fila">¿De qué especie hay menos?
+    <span class="grupo" data-r="olivos"><span class="opcion">Robles</span><span class="opcion">Pinos</span><span class="opcion">Olivos</span><span class="opcion">Encinas</span></span></div>
+</div>
+
+<div class="pregunta" data-tipo="redondear">
+  <h2><span class="num">7</span>Redondea las cantidades de árboles de la pregunta anterior.</h2>
+  <div class="fila">Robles 509 → decena <input type="text" inputmode="decimal" data-r="510"> · centena <input type="text" inputmode="decimal" data-r="500"></div>
+  <div class="fila">Olivos 256 → decena <input type="text" inputmode="decimal" data-r="260"> · centena <input type="text" inputmode="decimal" data-r="300"></div>
+  <div class="fila">Pinos 775 → decena <input type="text" inputmode="decimal" data-r="780"> · centena <input type="text" inputmode="decimal" data-r="800"></div>
+</div>
+
+<div class="pregunta" data-tipo="estimar">
+  <h2><span class="num">8</span>En un aparcamiento hay 47 coches en la primera planta y 34 en la segunda. Los dos números están marcados en la recta. Calcula por estimación cuántos coches hay.</h2>
+  <div class="recta" data-min="0" data-max="100" data-paso="10" data-puntos="47,34"></div>
+  <div class="fila">47 se aproxima a <input type="text" inputmode="decimal" data-r="50"> y 34 se aproxima a <input type="text" inputmode="decimal" data-r="30"></div>
+  <div class="fila">Hay unos <input type="text" inputmode="decimal" data-r="80"> coches.</div>
+</div>
+
+<div class="pregunta" data-tipo="plano">
+  <h2><span class="num">9</span>Lucía (L) está en la Sala Mares mirando hacia la Sala Ríos, como indica la flecha. Observa el plano.</h2>
+  <div class="plano" data-titulo="EXPO-TIERRA" data-cols="3" data-rows="3"
+       data-salas="0,0,Sala Mares,lila;0,1,Sala Ríos,lila;0,2,Selvas,verdeoscuro;1,0,Cimas,naranja;1,1,Parque Central,rosa;1,2,Sala Conferencias,lila;2,0,Aula Roca,lila;2,1,Dunas,amarillo;2,2,Aula Tierra,lila"
+       data-calles-h="Calle Granizo|Calle Rayo|Calle Trueno|Calle Niebla" data-calles-v="Calle Hielo|Calle Huracán|Calle Brisa|Calle Viento"
+       data-persona="0,0,derecha"></div>
+  <div class="fila">¿Qué calle tiene que cruzar para llegar a la Sala Ríos?
+    <span class="grupo" data-r="calle huracán"><span class="opcion">Calle Hielo</span><span class="opcion">Calle Huracán</span><span class="opcion">Calle Granizo</span></span></div>
+  <div class="fila">¿Qué sala tiene a su derecha?
+    <span class="grupo" data-r="cimas"><span class="opcion">Sala Ríos</span><span class="opcion">Cimas</span><span class="opcion">Parque Central</span></span></div>
+  <div class="fila">¿Y a su espalda?
+    <span class="grupo" data-r="calle hielo"><span class="opcion">Calle Hielo</span><span class="opcion">Calle Granizo</span><span class="opcion">Cimas</span></span></div>
+</div>
+
+<div class="pregunta" data-tipo="traslacion">
+  <h2><span class="num">10</span>Traslada el coche 🚗 2 casillas hacia abajo y 4 a la derecha. Toca la casilla donde queda.</h2>
+  <div class="grid" data-start="0,0" data-dest="2,4" data-label="🚗"></div>
+  <div class="fila">Observa la flecha original y las copias. ¿Cuál es una traslación?</div>
+  <div class="figuras" data-figura="flecha" data-opciones="traslada;gira;encoge" data-etiquetas="a;b;c"></div>
+  <div class="fila">La <span class="grupo" data-r="a"><span class="opcion">a</span><span class="opcion">b</span><span class="opcion">c</span></span></div>
+</div>
+
+<button class="principal" id="corregir">¡Entregar examen!</button>
+
+</main>
+<script src="../../dibujos.js?v=9"></script>
+<script src="../../examen.js?v=9"></script>
+<script src="../../../sw-registro.js"></script>
+</body>
+</html>
