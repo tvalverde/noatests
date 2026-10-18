@@ -39,16 +39,16 @@ function dibujarBloques(div){
   const T=60,gap=14,sep=26;let x=10;const y=10,yBase=y+T*0.35,yLey=yBase+T+22;
   const ancho=10+um*(T*1.35+gap)+c*(T+gap)+d*(T/6+8)+Math.ceil(u/5)*(T/6+6)+3*sep+30;
   const s=svg(Math.max(ancho,200),yLey+16);
-  const leyenda=(x0,x1,t)=>{if(x1-x0<56){const m=(x0+x1)/2;x0=m-28;x1=m+28;}texto(s,(x0+x1)/2,yLey,t,{'font-size':14,fill:'#555','font-weight':'bold'});el('line',{x1:x0,y1:yLey-13,x2:x1,y2:yLey-13,stroke:'#bbb','stroke-width':1},s);return x1;};
+  const leyenda=(x0,x1,t)=>{if(x1-x0<76){const m=(x0+x1)/2;x0=m-38;x1=m+38;}texto(s,(x0+x1)/2,yLey,t,{'font-size':14,fill:'#555','font-weight':'bold'});el('line',{x1:x0,y1:yLey-13,x2:x1,y2:yLey-13,stroke:'#bbb','stroke-width':1},s);return x1;};
   let x0=x;for(let i=0;i<um;i++){cubo(s,x,y,T);x+=T*1.35+gap;}
-  if(um){x=Math.max(x,leyenda(x0,x-gap,'1.000')+gap);x+=sep;}
+  if(um){x=Math.max(x,leyenda(x0,x-gap,um+' de 1.000')+gap);x+=sep;}
   x0=x;for(let i=0;i<c;i++){placa(s,x,yBase,T);x+=T+gap;}
-  if(c){x=Math.max(x,leyenda(x0,x-gap,'100')+gap);x+=sep;}
+  if(c){x=Math.max(x,leyenda(x0,x-gap,c+' de 100')+gap);x+=sep;}
   x0=x;for(let i=0;i<d;i++){const w=barra(s,x,yBase,T);x+=w+8;}
-  if(d){x=Math.max(x,leyenda(x0,x-8,'10')+8);x+=sep;}
+  if(d){x=Math.max(x,leyenda(x0,x-8,d+' de 10')+8);x+=sep;}
   x0=x;const w=T/6;
   for(let i=0;i<u;i++){const col=Math.floor(i/5),fila=i%5;unidad(s,x+col*(w+6),yBase+fila*(w+2),T);}
-  if(u){const cols=Math.ceil(u/5);x+=cols*(w+6)-6;x=leyenda(x0,x,'1');}
+  if(u){const cols=Math.ceil(u/5);x+=cols*(w+6)-6;x=leyenda(x0,x,u+' de 1');}
   s.setAttribute('viewBox',`0 0 ${Math.max(x+10,200)} ${yLey+16}`);s.style.maxWidth=Math.max(x+10,200)+'px';
   div.appendChild(s);
 }
