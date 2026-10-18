@@ -10,6 +10,7 @@
 
 const CLAVE='noatests-mates:'+location.pathname.replace(/\/index\.html$/,'/');
 const CLAVE_HIST=CLAVE+':historial';
+const CLAVE_BORRADOR=CLAVE+':borrador';
 
 // ---------- utilidades ----------
 const norm=s=>String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,' ').trim();
@@ -56,6 +57,13 @@ grupos.forEach(g=>g.querySelectorAll('.opcion').forEach(o=>o.addEventListener('c
   if(g.classList.contains('bloqueado'))return;
   g.querySelectorAll('.opcion').forEach(x=>x.classList.remove('sel'));o.classList.add('sel');
 })));
+
+// ---------- borrador: se guarda cada respuesta al momento ----------
+let tBorrador=null;
+function guardarBorrador(){clearTimeout(tBorrador);tBorrador=setTimeout(()=>escribir(CLAVE_BORRADOR,{modo,respuestas:recoger()}),150);}
+inputs.forEach(i=>i.addEventListener('input',guardarBorrador));
+grupos.forEach(g=>g.addEventListener('click',guardarBorrador));
+if(grid)grid.addEventListener('click',guardarBorrador);
 
 // ---------- recoger y reponer respuestas ----------
 function recoger(){
@@ -157,14 +165,14 @@ botonEntregar.addEventListener('click',()=>{
     res={fecha:new Date().toISOString(),nota1:nota,notaCorr:null,huecosBien:r.huecosBien,huecosTotal:r.huecosTotal,respuestas:recoger()};
     hist.push({fecha:res.fecha,nota1:nota,notaCorr:null});
   }
-  escribir(CLAVE,res);escribir(CLAVE_HIST,hist.slice(-20));
+  escribir(CLAVE,res);escribir(CLAVE_HIST,hist.slice(-20));localStorage.removeItem(CLAVE_BORRADOR);
   bloquearTodo(true);botonEntregar.style.display='none';modo='repaso';
   mostrarResultado(res);
 });
 
 // ---------- botones de la caja ----------
 $('b-corregir').addEventListener('click',()=>{
-  velo.classList.remove('visible');modo='correccion';
+  velo.classList.remove('visible');modo='correccion';guardarBorrador();
   // solo se pueden tocar los huecos fallados; los acertados quedan en verde y bloqueados
   preguntas.forEach(q=>bloquear(q,true,true));
   botonEntregar.textContent='¡Entregar corrección!';botonEntregar.style.display='block';
@@ -175,14 +183,23 @@ $('b-repasar').addEventListener('click',()=>{
   window.scrollTo({top:0,behavior:'smooth'});
 });
 $('b-reintentar').addEventListener('click',()=>{
-  localStorage.removeItem(CLAVE);location.reload();
+  localStorage.removeItem(CLAVE);localStorage.removeItem(CLAVE_BORRADOR);location.reload();
 });
 volver.addEventListener('click',()=>{const res=leer(CLAVE);if(res)mostrarResultado(res);});
 
-// ---------- al abrir: ¿hay un intento guardado? ----------
+// ---------- al abrir: ¿hay un intento guardado o un borrador? ----------
 const guardado=leer(CLAVE);
+const borrador=leer(CLAVE_BORRADOR);
 if(guardado&&guardado.respuestas){
   reponer(guardado.respuestas);corregir();bloquearTodo(true);botonEntregar.style.display='none';modo='repaso';
-  mostrarResultado(guardado);
+  if(borrador&&borrador.modo==='correccion'&&guardado.notaCorr==null){
+    // estaba a mitad de corregir: volver a ese punto con lo que llevaba
+    preguntas.forEach(q=>bloquear(q,true,true));reponer(borrador.respuestas);modo='correccion';
+    botonEntregar.textContent='¡Entregar corrección!';botonEntregar.style.display='block';
+  }else{
+    mostrarResultado(guardado);
+  }
+}else if(borrador&&borrador.respuestas){
+  reponer(borrador.respuestas);
 }
 })();
