@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Examen 4 · Matemáticas · Exámenes de Noa</title>
+<link rel="stylesheet" href="../../examen.css">
+</head>
+<body>
+<header>
+  <nav class="migas"><a href="../../../">Inicio</a> › <a href="../../">Matemáticas</a> › <a href="../">Temas 1 y 2</a> › <span>Examen 4</span></nav>
+  <h1>Examen 4</h1>
+  <p>Temas 1 y 2 · Números y planos</p>
+  <p class="formato">Escribe los números con punto de millar, por ejemplo: 1.234</p>
+</header>
+<main>
+
+<div class="pregunta">
+  <h2><span class="num">1</span>Observa los bloques y escribe el número que representan.</h2>
+  <div class="bloques" data-um="1" data-c="2" data-d="5" data-u="3"></div>
+  <label>El número es <input type="text" inputmode="decimal" data-r="1.253"></label>
+  <div class="fila">Se descompone: <input type="text" inputmode="decimal" data-r="1"> UM + <input type="text" inputmode="decimal" data-r="2"> C + <input type="text" inputmode="decimal" data-r="5"> D + <input type="text" inputmode="decimal" data-r="3"> U</div>
+</div>
+
+<div class="pregunta">
+  <h2><span class="num">2</span>Estas son las tarjetas de composición de un número.</h2>
+  <div class="tarjetas" data-valores="3.000,600,20,9"></div>
+  <label>¿Qué número forman? <input type="text" inputmode="decimal" data-r="3.629"></label>
+  <label>Escríbelo con letras: <input type="text" class="largo" data-r="tres mil seiscientos veintinueve"></label>
+</div>
+
+<div class="pregunta">
+  <h2><span class="num">3</span>En esta recta cada marca vale 100. ¿Qué número hay en cada letra?</h2>
+  <div class="recta" data-min="0" data-max="1000" data-paso="100" data-letras="A=400;B=900"></div>
+  <div class="fila">A = <input type="text" inputmode="decimal" data-r="400">   B = <input type="text" inputmode="decimal" data-r="900"></div>
+  <div class="fila">El punto naranja de esta otra recta, ¿qué número es?</div>
+  <div class="recta" data-min="1000" data-max="2000" data-paso="100" data-puntos="1.650"></div>
+  <div class="fila">Está justo en medio de <input type="text" inputmode="decimal" data-r="1.600"> y <input type="text" inputmode="decimal" data-r="1.700">, así que es <input type="text" inputmode="decimal" data-r="1.650"></div>
+</div>
+
+<div class="pregunta">
+  <h2><span class="num">4</span>Mira la altura de los pueblos.</h2>
+  <div class="barras" data-valores="Juanita=788;Berta=783;Tomás=878" data-unidad="m"></div>
+  <div class="fila">¿Qué pueblo está más alto?
+    <span class="grupo" data-r="el de tomás"><span class="opcion">El de Juanita</span><span class="opcion">El de Berta</span><span class="opcion">El de Tomás</span></span></div>
+  <div class="fila">Compara: 788 <span class="grupo" data-r=">"><span class="opcion">&gt;</span><span class="opcion">&lt;</span></span> 783</div>
+  <div class="fila">Ordena las alturas de menor a mayor: <input type="text" inputmode="decimal" data-r="783"> &lt; <input type="text" inputmode="decimal" data-r="788"> &lt; <input type="text" inputmode="decimal" data-r="878"></div>
+</div>
+
+<div class="pregunta">
+  <h2><span class="num">5</span>Juanita tiene el número 193 para la rifa.</h2>
+  <div class="tarjetas" data-valores="1 C,9 D,3 U"></div>
+  <div class="fila">El número anterior es <input type="text" inputmode="decimal" data-r="192"> y el posterior es <input type="text" inputmode="decimal" data-r="194"></div>
+  <div class="fila">Si el ganador fuera "una decena más", el número sería <input type="text" inputmode="decimal" data-r="203"></div>
+</div>
+
+<div class="pregunta">
+  <h2><span class="num">6</span>Árboles del bosque Milpinos. Redondea cada cantidad.</h2>
+  <div class="fila">🌳 Robles: 509 → a la decena <input type="text" inputmode="decimal" data-r="510"> · a la centena <input type="text" inputmode="decimal" data-r="500"></div>
+  <div class="fila">🌲 Pinos: 775 → a la decena <input type="text" inputmode="decimal" data-r="780"> · a la centena <input type="text" inputmode="decimal" data-r="800"></div>
+</div>
+
+<div class="pregunta">
+  <h2><span class="num">7</span>Distancias de los pueblos al bosque. Ordénalos del más cercano al más lejano.</h2>
+  <div class="barras" data-tipo="distancia" data-valores="Luerme=636;Castrín=604;Salcén=618" data-unidad="m"></div>
+  <div class="fila">1.º <span class="grupo" data-r="castrín"><span class="opcion">Luerme</span><span class="opcion">Castrín</span><span class="opcion">Salcén</span></span></div>
+  <div class="fila">2.º <span class="grupo" data-r="salcén"><span class="opcion">Luerme</span><span class="opcion">Castrín</span><span class="opcion">Salcén</span></span></div>
+  <div class="fila">3.º <span class="grupo" data-r="luerme"><span class="opcion">Luerme</span><span class="opcion">Castrín</span><span class="opcion">Salcén</span></span></div>
+</div>
+
+<div class="pregunta">
+  <h2><span class="num">8</span>En una carrera participan 87 personas y ya han llegado a la meta 23. ¿Cuántas faltan, aproximadamente? Calcula por estimación.</h2>
+  <div class="recta" data-min="0" data-max="100" data-paso="10" data-puntos="23,87"></div>
+  <div class="fila">87 se aproxima a <input type="text" inputmode="decimal" data-r="90"> y 23 se aproxima a <input type="text" inputmode="decimal" data-r="20"></div>
+  <div class="fila">Faltan unas <input type="text" inputmode="decimal" data-r="70"> personas.</div>
+</div>
+
+<div class="pregunta">
+  <h2><span class="num">9</span>Lucía (L) está en el Parque Central mirando hacia la derecha. Observa el plano.</h2>
+  <div class="plano" data-titulo="EXPO-TIERRA" data-cols="3" data-rows="3"
+       data-salas="0,0,Sala Mares,lila;0,1,Sala Ríos,lila;0,2,Selvas,verdeoscuro;1,0,Cimas,naranja;1,1,Parque Central,rosa;1,2,Sala Conferencias,lila;2,0,Aula Roca,lila;2,1,Dunas,amarillo;2,2,Aula Tierra,lila"
+       data-calles-h="Calle Granizo|Calle Rayo|Calle Trueno|Calle Niebla" data-calles-v="Calle Hielo|Calle Huracán|Calle Brisa|Calle Viento"
+       data-persona="1,1,derecha" data-marca="0,2"></div>
+  <div class="fila">¿Qué sala tiene delante?
+    <span class="grupo" data-r="sala conferencias"><span class="opcion">Cimas</span><span class="opcion">Sala Conferencias</span><span class="opcion">Dunas</span></span></div>
+  <div class="fila">¿Y a su izquierda?
+    <span class="grupo" data-r="sala ríos"><span class="opcion">Sala Ríos</span><span class="opcion">Dunas</span><span class="opcion">Aula Roca</span></span></div>
+  <div class="fila">La ✕ marca la salida. ¿Qué calle está pegada a Selvas por abajo?
+    <span class="grupo" data-r="calle rayo"><span class="opcion">Calle Granizo</span><span class="opcion">Calle Rayo</span><span class="opcion">Calle Viento</span></span></div>
+</div>
+
+<div class="pregunta">
+  <h2><span class="num">10</span>Observa la gota original y las tres de al lado. ¿Cuál es una traslación de la original?</h2>
+  <div class="figuras" data-figura="gota" data-opciones="gira;agranda;traslada" data-etiquetas="a;b;c"></div>
+  <div class="fila">Es la <span class="grupo" data-r="c"><span class="opcion">a</span><span class="opcion">b</span><span class="opcion">c</span></span></div>
+  <div class="fila">La gota <b>a</b> no es una traslación porque:
+    <span class="grupo" data-r="está girada"><span class="opcion">está girada</span><span class="opcion">es más grande</span><span class="opcion">es de otro color</span></span></div>
+</div>
+
+<button class="principal" id="corregir">¡Entregar examen!</button>
+
+</main>
+<script src="../../dibujos.js"></script>
+<script src="../../examen.js"></script>
+</body>
+</html>

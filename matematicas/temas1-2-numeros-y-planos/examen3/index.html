@@ -31,9 +31,10 @@
 </div>
 
 <div class="pregunta">
-  <h2><span class="num">3</span>Observa los bloques: 2 cubos grandes de 1.000, 4 placas de 100, 1 barra de 10 y 8 cubitos.</h2>
+  <h2><span class="num">3</span>Observa los bloques multibase.</h2>
+  <div class="bloques" data-um="2" data-c="4" data-d="1" data-u="8"></div>
   <label>¿Qué número representan? <input type="text" inputmode="decimal" data-r="2.418"></label>
-  <label>Si quitamos las 4 placas, ¿qué número queda? <input type="text" inputmode="decimal" data-r="2.018"></label>
+  <label>Si quitamos las 4 placas verdes, ¿qué número queda? <input type="text" inputmode="decimal" data-r="2.018"></label>
 </div>
 
 <div class="pregunta">
@@ -44,7 +45,7 @@
 
 <div class="pregunta">
   <h2><span class="num">5</span>En esta recta cada marca vale 50. ¿Qué número hay en cada letra?</h2>
-  <div class="fila">0 — 50 — 100 — <b>A</b> — 200 — 250 — <b>B</b> — 350</div>
+  <div class="recta" data-min="0" data-max="350" data-paso="50" data-letras="A=150;B=300"></div>
   <div class="fila">A = <input type="text" inputmode="decimal" data-r="150">   B = <input type="text" inputmode="decimal" data-r="300"></div>
   <div class="fila">Si la recta fuera de 1.000 en 1.000, ¿entre qué dos marcas estaría el 3.600? Entre <input type="text" inputmode="decimal" data-r="3.000"> y <input type="text" inputmode="decimal" data-r="4.000"></div>
 </div>
@@ -69,8 +70,12 @@
 </div>
 
 <div class="pregunta">
-  <h2><span class="num">9</span>El plano de Expo-Tierra. Lucía está en la Sala Luna mirando hacia arriba. Fíjate: a su derecha está el Acuario, a su izquierda el Bosque y delante la Sala Sol.</h2>
-  <div class="fila">Si Lucía avanza 2 casillas hacia delante, ¿a qué sala llega?
+  <h2><span class="num">9</span>Observa el plano de Expo-Tierra. Lucía (L) está en la Sala Luna y la flecha indica hacia dónde mira.</h2>
+  <div class="plano" data-titulo="EXPO-TIERRA" data-cols="3" data-rows="3"
+       data-salas="0,0,Planetario,gris;0,1,Sala Sol,amarillo;0,2,Sala Virtual,lila;1,0,Bosque,verdeoscuro;1,1,Sala Luna,lila;1,2,Acuario,celeste;2,0,Dunas,naranja;2,1,Aula Tierra,lila;2,2,Aula Agua,lila"
+       data-calles-h="Calle Nieve|Calle Granizo|Calle Trueno|Calle Lluvia" data-calles-v="Calle Tornado|Calle Rayo|Calle Viento|Calle Niebla"
+       data-persona="1,1,arriba"></div>
+  <div class="fila">Si Lucía cruza la calle y entra en la sala que tiene delante, ¿a qué sala llega?
     <span class="grupo" data-r="sala sol"><span class="opcion">Acuario</span><span class="opcion">Sala Sol</span><span class="opcion">Bosque</span></span></div>
   <div class="fila">Si se da la vuelta y mira hacia abajo, ¿qué le queda ahora a su derecha?
     <span class="grupo" data-r="el bosque"><span class="opcion">El Acuario</span><span class="opcion">El Bosque</span><span class="opcion">La Sala Sol</span></span></div>
@@ -88,6 +93,7 @@
 <button class="principal" id="corregir">¡Entregar examen!</button>
 
 </main>
+<script src="../../dibujos.js"></script>
 <script src="../../examen.js"></script>
 </body>
 </html>

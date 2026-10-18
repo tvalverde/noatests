@@ -4,6 +4,7 @@ Exámenes interactivos para Noa, organizados por materias y publicados con GitHu
 
 - `index.html` — portada con el índice de materias
 - `matematicas/index.html` — lista de temas de matemáticas
+- `matematicas/dibujos.js` — dibujos SVG declarativos para las preguntas (bloques multibase, rectas numéricas, tarjetas, planos con salas y calles, figuras trasladadas, alturas y distancias); la cabecera del archivo explica cada uno. Regla: toda pregunta que mencione un dibujo debe mostrarlo
 - `matematicas/examen.js` y `examen.css` — código común de los exámenes de matemáticas: corrección, formato de números (1.234), cuadrícula, pantalla de resultado y guardado del último intento en el navegador (localStorage), con una sola corrección por intento. Cada pregunta vale 1 punto repartido entre sus huecos; la nota se redondea al cuarto de punto
 - `matematicas/temas1-2-numeros-y-planos/index.html` — lista de exámenes de los temas 1 y 2
 - `matematicas/temas1-2-numeros-y-planos/examen1/index.html`, `examen2/index.html` — exámenes del tema
