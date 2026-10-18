@@ -144,6 +144,7 @@ velo.innerHTML=`<div id="caja">
   <div class="mensaje" id="r-mensaje"></div>
   <button class="corregir" id="b-corregir">✏️ Corregir los fallos</button>
   <button class="repasar" id="b-repasar">👀 Repasar</button>
+  <button class="soluciones" id="b-soluciones">💡 Ver soluciones</button>
   <button class="reintentar" id="b-reintentar">🔄 Reintentar</button>
   <div class="historial" id="r-historial"></div>
 </div>`;
@@ -175,7 +176,9 @@ function mostrarResultado(res){
   $('r-sub').textContent=(res.huecosBien!=null?res.huecosBien+' de '+res.huecosTotal+' huecos bien':'')+(corregido?' · Primer intento: '+notaTexto(res.nota1):'');
   $('r-mensaje').textContent=mensaje(nota/10);
   if(nota===10&&!res.yaCelebrado){res.yaCelebrado=true;escribir(CLAVE,res);try{confeti();}catch(e){}}
-  $('b-corregir').hidden=corregido||nota===10;
+  $('b-corregir').hidden=corregido||nota===10||!!res.vioSoluciones;
+  $('b-soluciones').hidden=nota===10;
+  $('b-soluciones').textContent=res.vioSoluciones?'💡 Ver soluciones':'💡 Ver soluciones';
   const hist=leer(CLAVE_HIST)||[];
   $('r-historial').textContent=hist.length>1?'Intentos anteriores: '+hist.slice(0,-1).slice(-5).map(h=>notaTexto(h.nota1)+(h.notaCorr!=null?'→'+notaTexto(h.notaCorr):'')).join(' · '):'';
   velo.classList.add('visible');volver.classList.remove('visible');
@@ -222,6 +225,24 @@ $('b-corregir').addEventListener('click',()=>{
 $('b-repasar').addEventListener('click',()=>{
   velo.classList.remove('visible');modo='repaso';bloquearTodo(true);botonEntregar.style.display='none';volver.classList.add('visible');
   window.scrollTo({top:0,behavior:'smooth'});
+});
+function mostrarSoluciones(){
+  document.querySelectorAll('.solucion').forEach(e=>e.remove());
+  preguntas.forEach(q=>{
+    q.querySelectorAll('input[data-r]').forEach(i=>{if(!i.classList.contains('ok')){const b=document.createElement('span');b.className='solucion';b.textContent=i.dataset.r;i.insertAdjacentElement('afterend',b);}});
+    q.querySelectorAll('.grupo').forEach(g=>{if(g.classList.contains('fallado')){const o=[...g.querySelectorAll('.opcion')].find(o=>norm(o.textContent)===norm(g.dataset.r));if(o)o.classList.add('correcta');}});
+    if(grid&&q.contains(grid)&&grid.classList.contains('fallado')){const d=grid.querySelector(`.celda[data-r="${DEST.r}"][data-c="${DEST.c}"]`);if(d&&!d.textContent)d.textContent='✓';}
+  });
+}
+$('b-soluciones').addEventListener('click',()=>{
+  const res=leer(CLAVE);if(!res)return;
+  if(!res.vioSoluciones&&res.notaCorr==null&&!$('b-corregir').hidden){
+    if(!confirm('Si ves las soluciones, ya no podrás corregir los fallos en este intento. ¿Quieres verlas?'))return;
+  }
+  res.vioSoluciones=true;escribir(CLAVE,res);
+  velo.classList.remove('visible');modo='repaso';bloquearTodo(true);botonEntregar.style.display='none';volver.classList.add('visible');
+  mostrarSoluciones();
+  const primera=document.querySelector('.pregunta.mal,.pregunta.medias');if(primera)primera.scrollIntoView({behavior:'smooth',block:'center'});
 });
 $('b-reintentar').addEventListener('click',()=>{
   localStorage.removeItem(CLAVE);localStorage.removeItem(CLAVE_BORRADOR);location.reload();

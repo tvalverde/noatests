@@ -59,6 +59,9 @@ button.principal:active{opacity:.85}
 #caja button.corregir{background:var(--azul)}
 #caja button.repasar{background:#8a8a8a}
 #caja button.reintentar{background:var(--naranja)}
+#caja button.soluciones{background:#8a4fc9}
+.solucion{display:inline-block;background:#eaf8ea;color:#2e7d32;border:2px dashed var(--verde);border-radius:8px;padding:2px 8px;margin-left:4px;font-weight:bold;font-size:1rem}
+.opcion.correcta{border-color:var(--verde);border-style:dashed;background:#eaf8ea}
 #caja button[hidden]{display:none}
 #caja .historial{margin-top:14px;font-size:.8rem;color:#999}
 
