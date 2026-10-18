@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Examen 1 · Matemáticas · Exámenes de Noa</title>
-<link rel="stylesheet" href="../../examen.css?v=7">
+<link rel="manifest" href="../../../manifest.json">
+<meta name="theme-color" content="#f7a823">
+<link rel="stylesheet" href="../../examen.css?v=8">
 </head>
 <body>
 <header>
@@ -15,19 +17,19 @@
 </header>
 <main>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="leer-escribir">
   <h2><span class="num">1</span>Escribe con letras cómo se leen estos números.</h2>
   <label>348: <input type="text" class="largo" data-r="trescientos cuarenta y ocho"></label>
   <label>2.605: <input type="text" class="largo" data-r="dos mil seiscientos cinco"></label>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="descomponer">
   <h2><span class="num">2</span>Descompón el número 3.472.</h2>
   <div class="fila">Según el valor: <input type="text" inputmode="decimal" data-r="3.000"> + <input type="text" inputmode="decimal" data-r="400"> + <input type="text" inputmode="decimal" data-r="70"> + <input type="text" inputmode="decimal" data-r="2"></div>
   <div class="fila">Según la posición: <input type="text" inputmode="decimal" data-r="3"> UM + <input type="text" inputmode="decimal" data-r="4"> C + <input type="text" inputmode="decimal" data-r="7"> D + <input type="text" inputmode="decimal" data-r="2"> U</div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="valor-posicion">
   <h2><span class="num">3</span>Fíjate en la cifra 6 y elige su valor.</h2>
   <div class="fila">En <b>169</b> el 6 vale:
     <span class="grupo" data-r="60"><span class="opcion">6</span><span class="opcion">60</span><span class="opcion">600</span></span></div>
@@ -35,45 +37,45 @@
     <span class="grupo" data-r="6.000"><span class="opcion">6</span><span class="opcion">600</span><span class="opcion">6.000</span></span></div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="valor-posicion">
   <h2><span class="num">4</span>En el pueblo de Juanita hay 1.299 habitantes. Hoy nace un bebé. ¿Cuántos habitantes hay ahora?</h2>
   <label><input type="text" inputmode="decimal" data-r="1.300"> habitantes</label>
   <div class="fila">¿Cuántas cifras han cambiado?
     <span class="grupo" data-r="3"><span class="opcion">1</span><span class="opcion">2</span><span class="opcion">3</span><span class="opcion">4</span></span></div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="comparar">
   <h2><span class="num">5</span>Compara con &gt; o &lt;.</h2>
   <div class="fila">527 <span class="grupo" data-r="<"><span class="opcion">&gt;</span><span class="opcion">&lt;</span></span> 572</div>
   <div class="fila">1.840 <span class="grupo" data-r=">"><span class="opcion">&gt;</span><span class="opcion">&lt;</span></span> 1.480</div>
   <div class="fila">936 <span class="grupo" data-r="<"><span class="opcion">&gt;</span><span class="opcion">&lt;</span></span> 963</div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="ordenar">
   <h2><span class="num">6</span>Ordena de mayor a menor: 745, 457, 754, 475.</h2>
   <div class="fila"><input type="text" inputmode="decimal" data-r="754"> &gt; <input type="text" inputmode="decimal" data-r="745"> &gt; <input type="text" inputmode="decimal" data-r="475"> &gt; <input type="text" inputmode="decimal" data-r="457"></div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="redondear">
   <h2><span class="num">7</span>Redondea.</h2>
   <label>683 a la decena: <input type="text" inputmode="decimal" data-r="680"></label>
   <label>683 a la centena: <input type="text" inputmode="decimal" data-r="700"></label>
   <label>2.350 a la centena: <input type="text" inputmode="decimal" data-r="2.400"></label>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="estimar">
   <h2><span class="num">8</span>Calcula por estimación (redondea a la decena).</h2>
   <div class="fila">58 + 23 → <input type="text" inputmode="decimal" data-r="60"> + <input type="text" inputmode="decimal" data-r="20"> = <input type="text" inputmode="decimal" data-r="80"></div>
   <div class="fila">91 − 47 → <input type="text" inputmode="decimal" data-r="90"> − <input type="text" inputmode="decimal" data-r="50"> = <input type="text" inputmode="decimal" data-r="40"></div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="plano">
   <h2><span class="num">9</span>Mei está en la casilla <b>M</b> del plano. Sigue las indicaciones: 3 casillas a la derecha, 2 hacia arriba y 1 a la izquierda. Toca la casilla donde llega.</h2>
   <div class="grid" data-start="5,0" data-dest="3,2" data-label="M"></div>
   <label>¿Cuántas casillas se ha movido en total? <input type="text" inputmode="decimal" data-r="6"></label>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="traslacion">
   <h2><span class="num">10</span>Traslaciones.</h2>
   <div class="fila">Mover una figura sin girarla y sin cambiar su tamaño se llama:
     <span class="grupo" data-r="traslación"><span class="opcion">rotación</span><span class="opcion">traslación</span><span class="opcion">simetría</span></span></div>
@@ -84,7 +86,8 @@
 <button class="principal" id="corregir">¡Entregar examen!</button>
 
 </main>
-<script src="../../dibujos.js?v=7"></script>
-<script src="../../examen.js?v=7"></script>
+<script src="../../dibujos.js?v=8"></script>
+<script src="../../examen.js?v=8"></script>
+<script src="../../../sw-registro.js"></script>
 </body>
 </html>

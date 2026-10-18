@@ -12,7 +12,9 @@ nav.migas span{opacity:.8}
 main{max-width:720px;margin:0 auto;padding:16px}
 
 .pregunta{background:#fff;border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:8px solid var(--azul)}
-.pregunta h2{margin:0 0 10px;font-size:1.05rem}
+.pregunta h2{margin:0 0 10px;font-size:1.05rem;position:relative;padding-right:40px}
+button.leer{position:absolute;right:0;top:-4px;border:2px solid #ddd;background:#fff;border-radius:50%;width:34px;height:34px;font-size:1rem;cursor:pointer}
+button.leer:active{background:#e3f6fb}
 .pregunta.ok{border-left-color:var(--verde)}
 .pregunta.mal{border-left-color:var(--rojo)}
 .pregunta.medias{border-left-color:var(--naranja)}

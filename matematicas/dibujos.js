@@ -5,6 +5,8 @@
    <div class="tarjetas" data-valores="1.000,400,70,5"></div>                     → tarjetas de composición
    <div class="plano" data-cols="3" data-rows="3" data-salas="0,0,Planetario,gris;..." data-calles-h="Calle Nieve|..." data-calles-v="..." data-persona="2,1,arriba" data-marca="0,2"></div>
    <div class="figuras" data-figura="gota" data-opciones="traslada;gira;agranda" data-etiquetas="a;b;c"></div> → figura original + opciones
+   <div class="tabla-posiciones" data-cifras="2,1,7,4"></div>                    → tabla UM C D U
+   <div class="venn" data-a="Plano 1" data-b="Plano 2" data-solo-a="…" data-comun="…" data-solo-b="…"></div>
    <div class="barras" data-valores="Juanita=788;Berta=783" data-unidad="m"></div> → comparar alturas
 */
 (function(){
@@ -151,6 +153,30 @@ function dibujarFiguras(div){
   div.appendChild(s);
 }
 
+// ---------- Tabla de posiciones UM | C | D | U (como el muro del libro) ----------
+// <div class="tabla-posiciones" data-cifras="2,1,7,4"></div>  (vacío = hueco en blanco; puede llevar menos de 4 columnas: "1,4,5" → C D U)
+function dibujarTablaPosiciones(div){
+  const cifras=div.dataset.cifras.split(',');const n=cifras.length;const cab=['UM','C','D','U'].slice(4-n);
+  const col=['#f7d21c','#4caf50','#e4452c','#2b6cd9'].slice(4-n);const W=70;const s=svg(n*W+4,96);
+  cifras.forEach((c,i)=>{const x=2+i*W;
+    el('rect',{x,y:2,width:W,height:34,fill:col[i],stroke:'#333','stroke-width':1.5},s);texto(s,x+W/2,25,cab[i],{'font-size':16,'font-weight':'bold',fill:'#fff'});
+    el('rect',{x,y:36,width:W,height:56,fill:'#fff',stroke:'#333','stroke-width':1.5},s);if(c.trim())texto(s,x+W/2,74,c.trim(),{'font-size':30,'font-weight':'bold'});});
+  div.appendChild(s);
+}
+
+// ---------- Diagrama de Venn (comparar dos cosas) ----------
+// <div class="venn" data-a="Plano 1" data-b="Plano 2" data-solo-a="…;…" data-comun="…" data-solo-b="…"></div>
+function dibujarVenn(div){
+  const W=700,H=260;const s=svg(W,H);
+  el('circle',{cx:250,cy:140,r:110,fill:'#2bb3d9',opacity:.35,stroke:'#2bb3d9','stroke-width':2},s);
+  el('circle',{cx:450,cy:140,r:110,fill:'#f7a823',opacity:.35,stroke:'#f7a823','stroke-width':2},s);
+  texto(s,200,24,div.dataset.a||'A',{'font-size':16,'font-weight':'bold'});texto(s,500,24,div.dataset.b||'B',{'font-size':16,'font-weight':'bold'});
+  const lineas=(t,x)=>(t||'').split(';').filter(Boolean).forEach((l,i)=>texto(s,x,110+i*22,l.trim(),{'font-size':13}));
+  lineas(div.dataset.soloA,190);lineas(div.dataset.comun,350);lineas(div.dataset.soloB,510);
+  if(!(div.dataset.comun||'').trim())texto(s,350,142,'?',{'font-size':30,'font-weight':'bold',fill:'#e4452c'});
+  div.appendChild(s);
+}
+
 // ---------- Barras comparativas (alturas, distancias) ----------
 function dibujarDistancias(div){
   const pares=div.dataset.valores.split(';').map(p=>{const [n,v]=p.split('=');return [n,num(v)];});const uni=div.dataset.unidad||'';
@@ -183,4 +209,6 @@ document.querySelectorAll('.tarjetas').forEach(dibujarTarjetas);
 document.querySelectorAll('.plano').forEach(dibujarPlano);
 document.querySelectorAll('.figuras').forEach(dibujarFiguras);
 document.querySelectorAll('.barras').forEach(dibujarBarras);
+document.querySelectorAll('.tabla-posiciones').forEach(dibujarTablaPosiciones);
+document.querySelectorAll('.venn').forEach(dibujarVenn);
 })();

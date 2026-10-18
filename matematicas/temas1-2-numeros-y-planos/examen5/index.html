@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Examen 5 · Matemáticas · Exámenes de Noa</title>
-<link rel="stylesheet" href="../../examen.css?v=7">
+<link rel="manifest" href="../../../manifest.json">
+<meta name="theme-color" content="#f7a823">
+<link rel="stylesheet" href="../../examen.css?v=8">
 </head>
 <body>
 <header>
@@ -15,14 +17,14 @@
 </header>
 <main>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="descomponer">
   <h2><span class="num">1</span>En la clase de Juanita guardan los tapones así: en cada <b>caja</b> caben 100, una <b>torre</b> son 10 cajas y en cada <b>bolsita</b> hay 10. Mira lo que han reunido.</h2>
   <div class="tapones" data-torres="2" data-cajas="3" data-bolsas="4" data-sueltos="5"></div>
   <label>Una torre tiene <input type="text" inputmode="decimal" data-r="1.000"> tapones.</label>
   <label>En total hay <input type="text" inputmode="decimal" data-r="2.345"> tapones.</label>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="descomponer">
   <h2><span class="num">2</span>Completa el muro de descomposición del número 2.174.</h2>
   <div class="fila">2.174 = <input type="text" inputmode="decimal" data-r="2"> UM + <input type="text" inputmode="decimal" data-r="1"> C + <input type="text" inputmode="decimal" data-r="7"> D + <input type="text" inputmode="decimal" data-r="4"> U</div>
   <div class="fila">2.174 = <input type="text" inputmode="decimal" data-r="21"> C + 7 D + 4 U</div>
@@ -30,7 +32,7 @@
   <div class="fila">2.174 = <input type="text" inputmode="decimal" data-r="2.174"> U</div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="leer-escribir">
   <h2><span class="num">3</span>Leer números de 4 cifras.</h2>
   <div class="fila">Para leer las unidades de millar se dice el número y después la palabra "mil", menos cuando hay 1, que se dice solo:
     <span class="grupo" data-r="mil"><span class="opcion">un mil</span><span class="opcion">mil</span><span class="opcion">uno mil</span></span></div>
@@ -39,7 +41,7 @@
   <label>Escribe con letras 4.016: <input type="text" class="largo" data-r="cuatro mil dieciséis"></label>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="recta">
   <h2><span class="num">4</span>Esta recta va de 1.000 en 1.000. ¿Qué número hay en cada letra?</h2>
   <div class="recta" data-min="0" data-max="10.000" data-paso="1.000" data-letras="A=3.000;B=8.000"></div>
   <div class="fila">A = <input type="text" inputmode="decimal" data-r="3.000">   B = <input type="text" inputmode="decimal" data-r="8.000"></div>
@@ -47,7 +49,7 @@
     <span class="grupo" data-r="una de 10 en 10 desde 100"><span class="opcion">esta de 1.000 en 1.000</span><span class="opcion">una de 10 en 10 desde 100</span></span></div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="comparar">
   <h2><span class="num">5</span>Compara el número de las tarjetas con 5.199.</h2>
   <div class="tarjetas" data-valores="5.000,200,0,0"></div>
   <div class="fila">Las tarjetas forman el número <input type="text" inputmode="decimal" data-r="5.200"></div>
@@ -56,7 +58,7 @@
     <span class="grupo" data-r="la de las centenas"><span class="opcion">la de las unidades de millar</span><span class="opcion">la de las centenas</span><span class="opcion">la de las unidades</span></span></div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="ordenar">
   <h2><span class="num">6</span>Habitantes de cuatro pueblos: San José 849, Fondón 994, Liendo 1.194 y Lucas 985. Ordénalos de mayor a menor.</h2>
   <div class="barras" data-valores="San José=849;Fondón=994;Liendo=1.194;Lucas=985" data-unidad="hab."></div>
   <div class="fila"><input type="text" inputmode="decimal" data-r="1.194"> &gt; <input type="text" inputmode="decimal" data-r="994"> &gt; <input type="text" inputmode="decimal" data-r="985"> &gt; <input type="text" inputmode="decimal" data-r="849"></div>
@@ -64,7 +66,7 @@
     <span class="grupo" data-r="san josé"><span class="opcion">San José</span><span class="opcion">Fondón</span><span class="opcion">Liendo</span><span class="opcion">Lucas</span></span></div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="redondear">
   <h2><span class="num">7</span>Redondear a la decena con la recta. El punto naranja es 343.</h2>
   <div class="recta" data-min="340" data-paso="1" data-max="350" data-puntos="343"></div>
   <div class="fila">343 está más cerca de:
@@ -72,7 +74,7 @@
   <div class="fila">Redondea a la decena: 682 → <input type="text" inputmode="decimal" data-r="680">   717 → <input type="text" inputmode="decimal" data-r="720">   595 → <input type="text" inputmode="decimal" data-r="600"></div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="estimar">
   <h2><span class="num">8</span>Calcula por estimación, redondeando a la decena.</h2>
   <div class="fila">36 + 47 → <input type="text" inputmode="decimal" data-r="40"> + <input type="text" inputmode="decimal" data-r="50"> = <input type="text" inputmode="decimal" data-r="90"></div>
   <div class="fila">76 − 47 → <input type="text" inputmode="decimal" data-r="80"> − <input type="text" inputmode="decimal" data-r="50"> = <input type="text" inputmode="decimal" data-r="30"></div>
@@ -80,7 +82,7 @@
     <span class="grupo" data-r="no, sale 83, parecido pero no igual"><span class="opcion">sí, exactamente 90</span><span class="opcion">no, sale 83, parecido pero no igual</span></span></div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="plano">
   <h2><span class="num">9</span>Lucía (L) está en Dunas mirando hacia abajo. ¡Fíjate bien hacia dónde mira!</h2>
   <div class="plano" data-titulo="EXPO-TIERRA" data-cols="3" data-rows="3"
        data-salas="0,0,Sala Mares,lila;0,1,Sala Ríos,lila;0,2,Selvas,verdeoscuro;1,0,Cimas,naranja;1,1,Parque Central,rosa;1,2,Sala Conferencias,lila;2,0,Aula Roca,lila;2,1,Dunas,amarillo;2,2,Aula Tierra,lila"
@@ -94,7 +96,7 @@
     <span class="grupo" data-r="calle niebla"><span class="opcion">Calle Niebla</span><span class="opcion">Calle Trueno</span><span class="opcion">Calle Brisa</span></span></div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="traslacion">
   <h2><span class="num">10</span>Traslada la casita 🏠 1 casilla a la derecha y 3 hacia abajo. Toca la casilla donde queda.</h2>
   <div class="grid" data-start="1,2" data-dest="4,3" data-label="🏠"></div>
   <div class="fila">Observa la casa original y las copias. ¿Cuál NO es una traslación?</div>
@@ -105,7 +107,8 @@
 <button class="principal" id="corregir">¡Entregar examen!</button>
 
 </main>
-<script src="../../dibujos.js?v=7"></script>
-<script src="../../examen.js?v=7"></script>
+<script src="../../dibujos.js?v=8"></script>
+<script src="../../examen.js?v=8"></script>
+<script src="../../../sw-registro.js"></script>
 </body>
 </html>

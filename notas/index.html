@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mis notas · Exámenes de Noa</title>
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#f7a823">
+<style>
+  body{margin:0;font-family:"Segoe UI",Arial,sans-serif;background:#fff7e6;color:#333}
+  header{background:#2bb3d9;color:#fff;padding:24px 16px;text-align:center}
+  header h1{margin:0;font-size:1.8rem}
+  nav.migas{font-size:.9rem;margin-bottom:8px}
+  nav.migas a{color:#fff;text-decoration:underline}
+  main{max-width:720px;margin:0 auto;padding:16px}
+  .tarjeta{background:#fff;border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+  .tarjeta h2{margin:0 0 10px;font-size:1.1rem}
+  table{width:100%;border-collapse:collapse;font-size:.95rem}
+  th,td{padding:8px 6px;text-align:left;border-bottom:1px solid #eee}
+  th{color:#777;font-weight:normal;font-size:.85rem}
+  td.nota{font-weight:bold;white-space:nowrap}
+  .barra{background:#eee;border-radius:6px;height:12px;overflow:hidden}
+  .barra i{display:block;height:100%;background:#4caf50}
+  .barra.mal i{background:#e4452c}.barra.medio i{background:#f7a823}
+  .vacio{color:#777;text-align:center;padding:20px}
+  .aviso{font-size:.85rem;color:#777;margin-top:10px}
+</style>
+</head>
+<body>
+<header><nav class="migas"><a href="../">Inicio</a> › <span>Mis notas</span></nav><h1>Mis notas</h1></header>
+<main>
+  <div class="tarjeta"><h2>Exámenes hechos</h2><div id="lista"></div></div>
+  <div class="tarjeta"><h2>¿Qué se me da mejor y peor?</h2><div id="tipos"></div>
+    <p class="aviso">Calculado con todos los intentos de matemáticas (primer intento, sin contar correcciones).</p></div>
+  <p class="aviso">Las notas se guardan en este dispositivo. Si hace un examen en otro móvil o tablet, sus notas estarán allí.</p>
+</main>
+<script>
+const NOMBRES={'leer-escribir':'Leer y escribir números','descomponer':'Descomponer números','valor-posicion':'Valor de cada cifra','recta':'Rectas numéricas','comparar':'Comparar números','ordenar':'Ordenar números','redondear':'Redondear','estimar':'Estimar sumas y restas','plano':'Planos','traslacion':'Traslaciones','otros':'Otros'};
+const notaTexto=n=>n.toFixed(2).replace('.',',');
+const fecha=iso=>new Date(iso).toLocaleDateString('es-ES',{day:'numeric',month:'short'});
+const filas=[];const tipos={};
+for(let i=0;i<localStorage.length;i++){
+  const k=localStorage.key(i);
+  if(!k.startsWith('noatests-mates:')||!k.endsWith(':historial'))continue;
+  const ruta=k.slice('noatests-mates:'.length,-':historial'.length);
+  let hist=[];try{hist=JSON.parse(localStorage.getItem(k))||[];}catch(e){}
+  let res=null;try{res=JSON.parse(localStorage.getItem('noatests-mates:'+ruta));}catch(e){}
+  const partes=ruta.split('/').filter(Boolean);
+  const titulo=(res&&res.titulo)||partes.slice(-2).join(' · ');
+  hist.forEach(h=>{filas.push({titulo,ruta,...h});if(h.tipos)for(const t in h.tipos){tipos[t]=tipos[t]||{bien:0,total:0};tipos[t].bien+=h.tipos[t].bien;tipos[t].total+=h.tipos[t].total;}});
+}
+filas.sort((a,b)=>b.fecha.localeCompare(a.fecha));
+const L=document.getElementById('lista');
+if(!filas.length)L.innerHTML='<div class="vacio">Todavía no hay ningún examen entregado.</div>';
+else L.innerHTML='<table><tr><th>Fecha</th><th>Examen</th><th>Nota</th><th>Tras corregir</th></tr>'+filas.map(f=>`<tr><td>${fecha(f.fecha)}</td><td><a href="..${f.ruta}">${f.titulo}</a></td><td class="nota">${notaTexto(f.nota1)}</td><td class="nota">${f.notaCorr!=null?notaTexto(f.notaCorr):'—'}</td></tr>`).join('')+'</table>';
+const T=document.getElementById('tipos');const lista=Object.entries(tipos).filter(([,v])=>v.total).map(([t,v])=>[t,v.bien/v.total,v]).sort((a,b)=>b[1]-a[1]);
+if(!lista.length)T.innerHTML='<div class="vacio">Aún no hay datos.</div>';
+else T.innerHTML='<table>'+lista.map(([t,p,v])=>`<tr><td style="width:45%">${NOMBRES[t]||t}</td><td><div class="barra ${p<.5?'mal':p<.8?'medio':''}"><i style="width:${Math.round(p*100)}%"></i></div></td><td class="nota">${Math.round(p*100)}%</td></tr>`).join('')+'</table>';
+</script>
+<script src="../sw-registro.js"></script>
+</body>
+</html>

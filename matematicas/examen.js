@@ -52,6 +52,21 @@ function marcar(r,c){
   const d=grid.querySelector(`.celda[data-r="${r}"][data-c="${c}"]`);d.classList.add('x');d.textContent='X';marcada={r,c};
 }
 
+// Botón de leer en voz alta en cada pregunta
+if('speechSynthesis' in window){
+  preguntas.forEach(q=>{
+    const h=q.querySelector('h2');if(!h)return;
+    const b=document.createElement('button');b.type='button';b.className='leer';b.title='Leer en voz alta';b.textContent='🔊';
+    b.addEventListener('click',()=>{
+      speechSynthesis.cancel();
+      const partes=[h.textContent.replace(/^\d+\s*/,'')];
+      q.querySelectorAll('.fila,label').forEach(e=>{const t=e.textContent.replace(/\s+/g,' ').trim();if(t)partes.push(t.replace(/[<>]/g,m=>m==='>'?' mayor que ':' menor que '));});
+      const u=new SpeechSynthesisUtterance(partes.join('. '));u.lang='es-ES';u.rate=0.9;speechSynthesis.speak(u);
+    });
+    h.appendChild(b);
+  });
+}
+
 // Opciones
 grupos.forEach(g=>g.querySelectorAll('.opcion').forEach(o=>o.addEventListener('click',()=>{
   if(g.classList.contains('bloqueado'))return;
@@ -83,7 +98,7 @@ function reponer(r){
 // ---------- corrección ----------
 // Cada pregunta vale 1 punto repartido entre sus huecos. Devuelve {puntos, huecosBien, huecosTotal}.
 function corregir(){
-  let puntos=0,huecosBien=0,huecosTotal=0;
+  let puntos=0,huecosBien=0,huecosTotal=0;const tipos={};
   preguntas.forEach(q=>{
     let bien=0,total=0;
     q.querySelectorAll('input[data-r]').forEach(i=>{
@@ -103,8 +118,9 @@ function corregir(){
     }
     q.classList.remove('ok','mal','medias');q.classList.add(bien===total?'ok':bien===0?'mal':'medias');
     if(total)puntos+=bien/total;huecosBien+=bien;huecosTotal+=total;
+    const t=q.dataset.tipo||'otros';tipos[t]=tipos[t]||{bien:0,total:0};tipos[t].bien+=bien;tipos[t].total+=total;
   });
-  return {puntos,huecosBien,huecosTotal};
+  return {puntos,huecosBien,huecosTotal,tipos};
 }
 // Nota sobre 10 redondeada al cuarto de punto (los empates suben)
 const redondear=p=>Math.round(p/preguntas.length*10*4+1e-9)/4;
@@ -135,7 +151,20 @@ document.body.appendChild(velo);
 const volver=document.createElement('button');volver.id='volver';volver.textContent='Ver resultado';document.body.appendChild(volver);
 const $=id=>document.getElementById(id);
 
-function mensaje(p){return p===1?'¡Perfecto! 🌟':p>=.7?'¡Muy bien! Repasa las preguntas en rojo.':'Sigue practicando, ¡tú puedes! 💪';}
+const MENSAJES={
+  perfecto:['¡Perfecto! 🌟 ¡Ni un fallo!','¡10! ¡Eres una crack! 🏆','¡Impresionante! Todo bien 🎉','¡Matrícula de honor! 🥇'],
+  bien:['¡Muy bien! Repasa las que están en rojo.','¡Buen trabajo! Casi perfecto 👏','¡Genial! Un poquito más y lo bordas.','¡Qué bien! Mira las naranjas y rojas.'],
+  regular:['¡Vas por buen camino! Repasa con calma.','No está mal. Fíjate en lo que falló.','¡Ánimo! Corrige los fallos y verás.','Sigue así, cada vez mejor 💪'],
+  flojo:['No pasa nada, ¡a practicar! 💪','Hoy ha costado. Lo repasamos y a por otra.','Lo importante es aprender. ¡Vamos a corregirlo!','¡Tú puedes! Mira dónde te has liado.']
+};
+function mensaje(p){const g=p===1?'perfecto':p>=.8?'bien':p>=.5?'regular':'flojo';const l=MENSAJES[g];return l[Math.floor(Math.random()*l.length)];}
+function confeti(){
+  const c=document.createElement('canvas');c.style.cssText='position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:30';document.body.appendChild(c);
+  const ctx=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;
+  const cols=['#e4452c','#f7a823','#f7d21c','#4caf50','#2bb3d9','#8a4fc9','#ff8ac4'];
+  const ps=Array.from({length:140},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height*0.5,vx:(Math.random()-.5)*2,vy:2+Math.random()*3,r:4+Math.random()*5,a:Math.random()*6,va:(Math.random()-.5)*.3,col:cols[Math.floor(Math.random()*cols.length)]}));
+  let t=0;(function paso(){ctx.clearRect(0,0,c.width,c.height);ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.a+=p.va;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.a);ctx.fillStyle=p.col;ctx.fillRect(-p.r,-p.r/2,p.r*2,p.r);ctx.restore();});if(++t<220)requestAnimationFrame(paso);else c.remove();})();
+}
 
 function mostrarResultado(res){
   const corregido=res.notaCorr!=null;
@@ -145,6 +174,7 @@ function mostrarResultado(res){
   $('r-nota').textContent=notaTexto(nota)+' / 10';
   $('r-sub').textContent=(res.huecosBien!=null?res.huecosBien+' de '+res.huecosTotal+' huecos bien':'')+(corregido?' · Primer intento: '+notaTexto(res.nota1):'');
   $('r-mensaje').textContent=mensaje(nota/10);
+  if(nota===10&&!res.yaCelebrado){res.yaCelebrado=true;escribir(CLAVE,res);try{confeti();}catch(e){}}
   $('b-corregir').hidden=corregido||nota===10;
   const hist=leer(CLAVE_HIST)||[];
   $('r-historial').textContent=hist.length>1?'Intentos anteriores: '+hist.slice(0,-1).slice(-5).map(h=>notaTexto(h.nota1)+(h.notaCorr!=null?'→'+notaTexto(h.notaCorr):'')).join(' · '):'';
@@ -154,16 +184,27 @@ function mostrarResultado(res){
 // ---------- entregar ----------
 const botonEntregar=document.getElementById('corregir');
 botonEntregar.textContent='¡Entregar examen!';
+function huecosVacios(){
+  let n=0;
+  preguntas.forEach(q=>{
+    q.querySelectorAll('input[data-r]').forEach(i=>{if(!i.disabled&&!i.value.trim())n++;});
+    q.querySelectorAll('.grupo').forEach(g=>{if(!g.classList.contains('bloqueado')&&!g.querySelector('.opcion.sel'))n++;});
+    if(grid&&q.contains(grid)&&!grid.classList.contains('bloqueado')&&!marcada)n++;
+  });
+  return n;
+}
 botonEntregar.addEventListener('click',()=>{
+  const vacios=huecosVacios();
+  if(vacios>0&&!confirm(vacios===1?'Te queda 1 hueco sin contestar. ¿Entregas igual?':'Te quedan '+vacios+' huecos sin contestar. ¿Entregas igual?'))return;
   const r=corregir();const nota=redondear(r.puntos);
   let res=leer(CLAVE);
   const hist=leer(CLAVE_HIST)||[];
   if(modo==='correccion'&&res){
-    res.notaCorr=nota;res.fecha=new Date().toISOString();res.respuestas=recoger();res.huecosBien=r.huecosBien;res.huecosTotal=r.huecosTotal;
+    res.notaCorr=nota;res.fecha=new Date().toISOString();res.respuestas=recoger();res.huecosBien=r.huecosBien;res.huecosTotal=r.huecosTotal;res.tiposCorr=r.tipos;
     if(hist.length)hist[hist.length-1].notaCorr=nota;
   }else{
-    res={fecha:new Date().toISOString(),nota1:nota,notaCorr:null,huecosBien:r.huecosBien,huecosTotal:r.huecosTotal,respuestas:recoger()};
-    hist.push({fecha:res.fecha,nota1:nota,notaCorr:null});
+    res={fecha:new Date().toISOString(),titulo:document.title.split(' · ').slice(0,2).join(' · '),nota1:nota,notaCorr:null,huecosBien:r.huecosBien,huecosTotal:r.huecosTotal,tipos:r.tipos,respuestas:recoger()};
+    hist.push({fecha:res.fecha,nota1:nota,notaCorr:null,tipos:r.tipos});
   }
   escribir(CLAVE,res);escribir(CLAVE_HIST,hist.slice(-20));localStorage.removeItem(CLAVE_BORRADOR);
   bloquearTodo(true);botonEntregar.style.display='none';modo='repaso';

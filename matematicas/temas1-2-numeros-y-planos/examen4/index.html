@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Examen 4 · Matemáticas · Exámenes de Noa</title>
-<link rel="stylesheet" href="../../examen.css?v=7">
+<link rel="manifest" href="../../../manifest.json">
+<meta name="theme-color" content="#f7a823">
+<link rel="stylesheet" href="../../examen.css?v=8">
 </head>
 <body>
 <header>
@@ -15,21 +17,21 @@
 </header>
 <main>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="descomponer">
   <h2><span class="num">1</span>Observa los bloques y escribe el número que representan.</h2>
   <div class="bloques" data-um="1" data-c="2" data-d="5" data-u="3"></div>
   <label>El número es <input type="text" inputmode="decimal" data-r="1.253"></label>
   <div class="fila">Se descompone: <input type="text" inputmode="decimal" data-r="1"> UM + <input type="text" inputmode="decimal" data-r="2"> C + <input type="text" inputmode="decimal" data-r="5"> D + <input type="text" inputmode="decimal" data-r="3"> U</div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="leer-escribir">
   <h2><span class="num">2</span>Estas son las tarjetas de composición de un número.</h2>
   <div class="tarjetas" data-valores="3.000,600,20,9"></div>
   <label>¿Qué número forman? <input type="text" inputmode="decimal" data-r="3.629"></label>
   <label>Escríbelo con letras: <input type="text" class="largo" data-r="tres mil seiscientos veintinueve"></label>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="recta">
   <h2><span class="num">3</span>En esta recta cada marca vale 100. ¿Qué número hay en cada letra?</h2>
   <div class="recta" data-min="0" data-max="1000" data-paso="100" data-letras="A=400;B=900"></div>
   <div class="fila">A = <input type="text" inputmode="decimal" data-r="400">   B = <input type="text" inputmode="decimal" data-r="900"></div>
@@ -38,7 +40,7 @@
   <div class="fila">Está justo en medio de <input type="text" inputmode="decimal" data-r="1.600"> y <input type="text" inputmode="decimal" data-r="1.700">, así que es <input type="text" inputmode="decimal" data-r="1.650"></div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="comparar">
   <h2><span class="num">4</span>Mira la altura de los pueblos.</h2>
   <div class="barras" data-valores="Juanita=788;Berta=783;Tomás=878" data-unidad="m"></div>
   <div class="fila">¿Qué pueblo está más alto?
@@ -47,20 +49,20 @@
   <div class="fila">Ordena las alturas de menor a mayor: <input type="text" inputmode="decimal" data-r="783"> &lt; <input type="text" inputmode="decimal" data-r="788"> &lt; <input type="text" inputmode="decimal" data-r="878"></div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="valor-posicion">
   <h2><span class="num">5</span>Juanita tiene el número 193 para la rifa.</h2>
   <div class="tarjetas" data-valores="1 C,9 D,3 U"></div>
   <div class="fila">El número anterior es <input type="text" inputmode="decimal" data-r="192"> y el posterior es <input type="text" inputmode="decimal" data-r="194"></div>
   <div class="fila">Si el ganador fuera "una decena más", el número sería <input type="text" inputmode="decimal" data-r="203"></div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="redondear">
   <h2><span class="num">6</span>Árboles del bosque Milpinos. Redondea cada cantidad.</h2>
   <div class="fila">🌳 Robles: 509 → a la decena <input type="text" inputmode="decimal" data-r="510"> · a la centena <input type="text" inputmode="decimal" data-r="500"></div>
   <div class="fila">🌲 Pinos: 775 → a la decena <input type="text" inputmode="decimal" data-r="780"> · a la centena <input type="text" inputmode="decimal" data-r="800"></div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="ordenar">
   <h2><span class="num">7</span>Distancias de los pueblos al bosque. Ordénalos del más cercano al más lejano.</h2>
   <div class="barras" data-tipo="distancia" data-valores="Luerme=636;Castrín=604;Salcén=618" data-unidad="m"></div>
   <div class="fila">1.º <span class="grupo" data-r="castrín"><span class="opcion">Luerme</span><span class="opcion">Castrín</span><span class="opcion">Salcén</span></span></div>
@@ -68,14 +70,14 @@
   <div class="fila">3.º <span class="grupo" data-r="luerme"><span class="opcion">Luerme</span><span class="opcion">Castrín</span><span class="opcion">Salcén</span></span></div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="estimar">
   <h2><span class="num">8</span>En una carrera participan 87 personas y ya han llegado a la meta 23. ¿Cuántas faltan, aproximadamente? Calcula por estimación.</h2>
   <div class="recta" data-min="0" data-max="100" data-paso="10" data-puntos="23,87"></div>
   <div class="fila">87 se aproxima a <input type="text" inputmode="decimal" data-r="90"> y 23 se aproxima a <input type="text" inputmode="decimal" data-r="20"></div>
   <div class="fila">Faltan unas <input type="text" inputmode="decimal" data-r="70"> personas.</div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="plano">
   <h2><span class="num">9</span>Lucía (L) está en el Parque Central mirando hacia la derecha. Observa el plano.</h2>
   <div class="plano" data-titulo="EXPO-TIERRA" data-cols="3" data-rows="3"
        data-salas="0,0,Sala Mares,lila;0,1,Sala Ríos,lila;0,2,Selvas,verdeoscuro;1,0,Cimas,naranja;1,1,Parque Central,rosa;1,2,Sala Conferencias,lila;2,0,Aula Roca,lila;2,1,Dunas,amarillo;2,2,Aula Tierra,lila"
@@ -89,7 +91,7 @@
     <span class="grupo" data-r="calle rayo"><span class="opcion">Calle Granizo</span><span class="opcion">Calle Rayo</span><span class="opcion">Calle Viento</span></span></div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="traslacion">
   <h2><span class="num">10</span>Observa la gota original y las tres de al lado. ¿Cuál es una traslación de la original?</h2>
   <div class="figuras" data-figura="gota" data-opciones="gira;agranda;traslada" data-etiquetas="a;b;c"></div>
   <div class="fila">Es la <span class="grupo" data-r="c"><span class="opcion">a</span><span class="opcion">b</span><span class="opcion">c</span></span></div>
@@ -100,7 +102,8 @@
 <button class="principal" id="corregir">¡Entregar examen!</button>
 
 </main>
-<script src="../../dibujos.js?v=7"></script>
-<script src="../../examen.js?v=7"></script>
+<script src="../../dibujos.js?v=8"></script>
+<script src="../../examen.js?v=8"></script>
+<script src="../../../sw-registro.js"></script>
 </body>
 </html>

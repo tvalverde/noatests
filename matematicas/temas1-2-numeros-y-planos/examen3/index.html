@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Examen 3 · Matemáticas · Exámenes de Noa</title>
-<link rel="stylesheet" href="../../examen.css?v=7">
+<link rel="manifest" href="../../../manifest.json">
+<meta name="theme-color" content="#f7a823">
+<link rel="stylesheet" href="../../examen.css?v=8">
 </head>
 <body>
 <header>
@@ -15,7 +17,7 @@
 </header>
 <main>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="leer-escribir">
   <h2><span class="num">1</span>Une cada número con cómo se lee.</h2>
   <div class="fila">1.070 se lee:
     <span class="grupo" data-r="mil setenta"><span class="opcion">mil setecientos</span><span class="opcion">mil setenta</span><span class="opcion">mil siete</span></span></div>
@@ -23,34 +25,35 @@
     <span class="grupo" data-r="909"><span class="opcion">990</span><span class="opcion">909</span><span class="opcion">99</span></span></div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="descomponer">
   <h2><span class="num">2</span>Completa el muro de descomposición de 5.306.</h2>
   <div class="fila">5.306 = <input type="text" inputmode="decimal" data-r="5"> UM + <input type="text" inputmode="decimal" data-r="3"> C + <input type="text" inputmode="decimal" data-r="0"> D + <input type="text" inputmode="decimal" data-r="6"> U</div>
   <div class="fila">5.306 = 53 C + <input type="text" inputmode="decimal" data-r="6"> U</div>
   <div class="fila">5.306 = <input type="text" inputmode="decimal" data-r="530"> D + 6 U</div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="descomponer">
   <h2><span class="num">3</span>Observa los bloques multibase.</h2>
   <div class="bloques" data-um="2" data-c="4" data-d="1" data-u="8"></div>
   <label>¿Qué número representan? <input type="text" inputmode="decimal" data-r="2.418"></label>
   <label>Si quitamos las 4 placas verdes, ¿qué número queda? <input type="text" inputmode="decimal" data-r="2.018"></label>
 </div>
 
-<div class="pregunta">
-  <h2><span class="num">4</span>¿Cuántas UM, C, D y U tiene en total? (como el muro del libro)</h2>
+<div class="pregunta" data-tipo="descomponer">
+  <h2><span class="num">4</span>Fíjate en la tabla de posiciones del número 2.174 y piensa en el muro de descomposición.</h2>
+  <div class="tabla-posiciones" data-cifras="2,1,7,4"></div>
   <label>¿Cuántas decenas hay en 2.174? <input type="text" inputmode="decimal" data-r="217"></label>
   <label>¿Cuántas centenas hay en 2.174? <input type="text" inputmode="decimal" data-r="21"></label>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="recta">
   <h2><span class="num">5</span>En esta recta cada marca vale 50. ¿Qué número hay en cada letra?</h2>
   <div class="recta" data-min="0" data-max="350" data-paso="50" data-letras="A=150;B=300"></div>
   <div class="fila">A = <input type="text" inputmode="decimal" data-r="150">   B = <input type="text" inputmode="decimal" data-r="300"></div>
   <div class="fila">Si la recta fuera de 1.000 en 1.000, ¿entre qué dos marcas estaría el 3.600? Entre <input type="text" inputmode="decimal" data-r="3.000"> y <input type="text" inputmode="decimal" data-r="4.000"></div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="comparar">
   <h2><span class="num">6</span>Los pueblos de Juanita y Berta.</h2>
   <div class="fila">En el pueblo de Juanita viven 1.258 personas y en el de Berta 1.285. ¿Dónde vive más gente?
     <span class="grupo" data-r="en el de berta"><span class="opcion">En el de Juanita</span><span class="opcion">En el de Berta</span></span></div>
@@ -58,18 +61,18 @@
     <span class="grupo" data-r="las decenas"><span class="opcion">Las unidades de millar</span><span class="opcion">Las centenas</span><span class="opcion">Las decenas</span></span></div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="redondear">
   <h2><span class="num">7</span>El bosque está a 467 m del pueblo.</h2>
   <label>¿Entre qué dos decenas está 467? Entre <input type="text" inputmode="decimal" data-r="460"> y <input type="text" inputmode="decimal" data-r="470"></label>
   <label>Redondeado a la decena es <input type="text" inputmode="decimal" data-r="470"> y a la centena es <input type="text" inputmode="decimal" data-r="500"></label>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="estimar">
   <h2><span class="num">8</span>En el aparcamiento hay 62 coches en la primera planta y 29 en la segunda. ¿Cuántos hay aproximadamente? Calcula por estimación.</h2>
   <div class="fila"><input type="text" inputmode="decimal" data-r="60"> + <input type="text" inputmode="decimal" data-r="30"> = <input type="text" inputmode="decimal" data-r="90"> coches, aproximadamente.</div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="plano">
   <h2><span class="num">9</span>Observa el plano de Expo-Tierra. Lucía (L) está en la Sala Luna y la flecha indica hacia dónde mira.</h2>
   <div class="plano" data-titulo="EXPO-TIERRA" data-cols="3" data-rows="3"
        data-salas="0,0,Planetario,gris;0,1,Sala Sol,amarillo;0,2,Sala Virtual,lila;1,0,Bosque,verdeoscuro;1,1,Sala Luna,lila;1,2,Acuario,celeste;2,0,Dunas,naranja;2,1,Aula Tierra,lila;2,2,Aula Agua,lila"
@@ -83,7 +86,7 @@
     <span class="grupo" data-r="arriba"><span class="opcion">arriba</span><span class="opcion">de frente</span><span class="opcion">de lado</span></span></div>
 </div>
 
-<div class="pregunta">
+<div class="pregunta" data-tipo="traslacion">
   <h2><span class="num">10</span>Traslada el corazón ❤️ 3 casillas a la izquierda y 2 hacia arriba. Toca la casilla donde queda.</h2>
   <div class="grid" data-start="4,4" data-dest="2,1" data-label="❤️"></div>
   <div class="fila">Después de la traslación, el corazón es:
@@ -93,7 +96,8 @@
 <button class="principal" id="corregir">¡Entregar examen!</button>
 
 </main>
-<script src="../../dibujos.js?v=7"></script>
-<script src="../../examen.js?v=7"></script>
+<script src="../../dibujos.js?v=8"></script>
+<script src="../../examen.js?v=8"></script>
+<script src="../../../sw-registro.js"></script>
 </body>
 </html>
