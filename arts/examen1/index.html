@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Examen de Arts</title>
+<style>
+  :root{--naranja:#f7a823;--azul:#2bb3d9;--rojo:#e4452c;--texto:#333;--fondo:#fff7e6;}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",Arial,sans-serif;background:var(--fondo);color:var(--texto);}
+  header{background:#a86bd6;color:#fff;padding:18px 16px;text-align:center}
+  header h1{margin:0;font-size:1.6rem}
+  header p{margin:6px 0 0;opacity:.9}
+  main{max-width:720px;margin:0 auto;padding:12px 12px 40px}
+  /* Barra de herramientas fija */
+  .barra{position:sticky;top:0;z-index:5;background:#fff;border-radius:0 0 16px 16px;box-shadow:0 2px 10px rgba(0,0,0,.12);padding:10px;margin:0 -12px 14px;}
+  .herramientas{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+  .tool{border:2px solid #ddd;background:#fff;border-radius:12px;padding:8px 12px;font-size:1.05rem;cursor:pointer}
+  .tool.sel{border-color:var(--azul);background:#e3f6fb}
+  .colores{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .color{width:40px;height:40px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;cursor:pointer}
+  .color.sel{box-shadow:0 0 0 3px var(--texto);transform:scale(1.15)}
+  .grosor{display:flex;gap:6px;justify-content:center;margin-top:8px;align-items:center;font-size:.9rem;color:#666}
+  .grosor button{border:2px solid #ddd;background:#fff;border-radius:50%;width:34px;height:34px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .grosor button.sel{border-color:var(--azul);background:#e3f6fb}
+  .grosor i{display:block;background:#333;border-radius:50%}
+  /* Puntos */
+  .punto{background:#fff;border-radius:16px;padding:14px;margin-bottom:18px;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:8px solid #a86bd6}
+  .punto h2{margin:0 0 6px;font-size:1.1rem}
+  .num{display:inline-block;background:var(--rojo);color:#fff;border-radius:50%;width:28px;height:28px;line-height:28px;text-align:center;margin-right:8px;font-weight:bold}
+  .punto p{margin:0 0 10px;color:#666;font-size:.95rem}
+  .lienzo{width:100%;border:3px solid #333;border-radius:8px;background:#fff;touch-action:none;display:block;cursor:crosshair}
+  .lienzo.cubo{cursor:cell}
+  .nombre{margin-top:10px;display:flex;align-items:center;gap:8px;font-size:1rem}
+  .nombre input{flex:1;font-size:1.05rem;padding:6px 10px;border:2px solid #ccc;border-radius:8px;min-width:0}
+  .acciones{display:flex;gap:8px;margin-top:10px}
+  .acciones button{flex:1;border:none;border-radius:10px;padding:10px;font-size:.95rem;cursor:pointer;background:#eee}
+  .acciones button.guardar{background:var(--azul);color:#fff}
+  button.principal{display:block;width:100%;font-size:1.2rem;padding:14px;border:none;border-radius:12px;background:var(--naranja);color:#fff;cursor:pointer;margin-top:8px}
+  .aviso{text-align:center;color:#777;font-size:.9rem;margin-top:8px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Examen de Arts</h1>
+  <p>Examen 1 · 5 puntos para dibujar</p>
+</header>
+<main>
+
+<div class="barra">
+  <div class="herramientas">
+    <button class="tool sel" data-tool="lapiz">✏️ Lápiz</button>
+    <button class="tool" data-tool="cubo">🪣 Pintar zona</button>
+    <button class="tool" data-tool="goma">🩹 Goma</button>
+  </div>
+  <div class="colores" id="colores"></div>
+  <div class="grosor">Grosor:
+    <button data-g="3"><i style="width:6px;height:6px"></i></button>
+    <button data-g="7" class="sel"><i style="width:12px;height:12px"></i></button>
+    <button data-g="14"><i style="width:20px;height:20px"></i></button>
+  </div>
+</div>
+
+<div class="punto" data-titulo="Dibújate en monstruo">
+  <h2><span class="num">1</span>Dibújate en monstruo</h2>
+  <p>Dibuja tu monstruo con el lápiz. Para colorear, elige "Pintar zona", toca dentro de una parte (el cuerpo, un brazo…) y luego toca un color.</p>
+  <canvas class="lienzo" width="700" height="500"></canvas>
+  <div class="nombre">Nombre del monstruo: <input type="text" placeholder="¿Cómo se llama?"></div>
+  <div class="acciones"><button class="deshacer">↩ Deshacer</button><button class="borrar">🗑 Borrar todo</button><button class="guardar">⬇ Guardar</button></div>
+</div>
+
+<div class="punto" data-titulo="Inventa un logo">
+  <h2><span class="num">2</span>Inventa un logo</h2>
+  <p>Diseña un logo que te represente. Puede ser un símbolo, un animal, tus iniciales… ¡lo que quieras!</p>
+  <canvas class="lienzo" width="700" height="400"></canvas>
+  <div class="nombre">Nombre del logo: <input type="text" placeholder="Escribe el nombre"></div>
+  <div class="acciones"><button class="deshacer">↩ Deshacer</button><button class="borrar">🗑 Borrar todo</button><button class="guardar">⬇ Guardar</button></div>
+</div>
+
+<div class="punto" data-titulo="Tu mascota imaginaria">
+  <h2><span class="num">3</span>Tu mascota imaginaria</h2>
+  <p>Inventa una mascota que no exista: mezcla animales, ponle alas, tres ojos, cola de pez… Luego coloréala.</p>
+  <canvas class="lienzo" width="700" height="500"></canvas>
+  <div class="nombre">Nombre de la mascota: <input type="text" placeholder="¿Cómo se llama?"></div>
+  <div class="acciones"><button class="deshacer">↩ Deshacer</button><button class="borrar">🗑 Borrar todo</button><button class="guardar">⬇ Guardar</button></div>
+</div>
+
+<div class="punto" data-titulo="La bandera de tu país inventado">
+  <h2><span class="num">4</span>La bandera de tu país inventado</h2>
+  <p>Imagina que tienes tu propio país. Dibuja su bandera con franjas, estrellas o el dibujo que quieras, y píntala con tus colores favoritos.</p>
+  <canvas class="lienzo" width="700" height="450"></canvas>
+  <div class="nombre">Nombre del país: <input type="text" placeholder="¿Cómo se llama tu país?"></div>
+  <div class="acciones"><button class="deshacer">↩ Deshacer</button><button class="borrar">🗑 Borrar todo</button><button class="guardar">⬇ Guardar</button></div>
+</div>
+
+<div class="punto" data-titulo="La casa de tus sueños">
+  <h2><span class="num">5</span>La casa de tus sueños</h2>
+  <p>Dibuja la casa donde te gustaría vivir: ¿tiene tobogán, piscina de chocolate, torre de princesa? Colorea el tejado, las paredes y el jardín.</p>
+  <canvas class="lienzo" width="700" height="500"></canvas>
+  <div class="nombre">Nombre de la casa: <input type="text" placeholder="Ponle un nombre"></div>
+  <div class="acciones"><button class="deshacer">↩ Deshacer</button><button class="borrar">🗑 Borrar todo</button><button class="guardar">⬇ Guardar</button></div>
+</div>
+
+<button class="principal" id="guardarTodos">⬇ Guardar todos los dibujos</button>
+<p class="aviso">Se descarga una imagen por cada dibujo, con su título y su nombre.</p>
+
+</main>
+<script>
+// ---------- Paleta: arcoíris + rosa, carne, gris y negro ----------
+const COLORES=[
+  ['#e4452c','rojo'],['#f58a1f','naranja'],['#f7d21c','amarillo'],['#4caf50','verde'],
+  ['#2b6cd9','azul'],['#8a4fc9','violeta'],['#ff8ac4','rosa'],['#f6c9a0','carne'],
+  ['#9e9e9e','gris'],['#222222','negro']
+];
+let color='#222222', tool='lapiz', grosor=7, pendiente=null; // pendiente = {canvas,x,y} zona marcada esperando color
+
+const cont=document.getElementById('colores');
+COLORES.forEach(([hex,nombre])=>{
+  const d=document.createElement('div');d.className='color'+(hex===color?' sel':'');d.style.background=hex;d.title=nombre;d.dataset.hex=hex;
+  d.addEventListener('click',()=>{
+    document.querySelectorAll('.color').forEach(c=>c.classList.remove('sel'));d.classList.add('sel');color=hex;
+    if(pendiente){ rellenar(pendiente.canvas,pendiente.x,pendiente.y,color); pendiente=null; }
+  });
+  cont.appendChild(d);
+});
+document.querySelectorAll('.tool').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.tool').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');tool=b.dataset.tool;pendiente=null;
+  document.querySelectorAll('.lienzo').forEach(c=>c.classList.toggle('cubo',tool==='cubo'));
+}));
+document.querySelectorAll('.grosor button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.grosor button').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');grosor=+b.dataset.g;
+}));
+
+// ---------- Lienzos ----------
+const estados=new Map(); // canvas -> {ctx, historial[]}
+function fondoBlanco(ctx,c){ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);}
+function guardarEstado(c){const e=estados.get(c);e.historial.push(e.ctx.getImageData(0,0,c.width,c.height));if(e.historial.length>25)e.historial.shift();}
+function pos(c,ev){const r=c.getBoundingClientRect();return {x:(ev.clientX-r.left)*c.width/r.width,y:(ev.clientY-r.top)*c.height/r.height};}
+
+document.querySelectorAll('.lienzo').forEach(c=>{
+  const ctx=c.getContext('2d',{willReadFrequently:true});
+  fondoBlanco(ctx,c);
+  estados.set(c,{ctx,historial:[]});
+  let dibujando=false, ultimo=null, inicio=null, movio=false;
+
+  c.addEventListener('pointerdown',ev=>{
+    ev.preventDefault();c.setPointerCapture(ev.pointerId);
+    const p=pos(c,ev);inicio=p;movio=false;
+    if(tool==='cubo'){return;}
+    guardarEstado(c);dibujando=true;ultimo=p;
+    trazo(ctx,p,p);
+  });
+  c.addEventListener('pointermove',ev=>{
+    if(!dibujando)return;ev.preventDefault();
+    const p=pos(c,ev);movio=true;trazo(ctx,ultimo,p);ultimo=p;
+  });
+  const fin=ev=>{
+    if(tool==='cubo'&&inicio){
+      // Toca una zona: si ya hay color elegido, se pinta al momento; además queda marcada por si cambia de color
+      guardarEstado(c);rellenar(c,inicio.x,inicio.y,color);pendiente={canvas:c,x:inicio.x,y:inicio.y};
+    }
+    dibujando=false;inicio=null;
+  };
+  c.addEventListener('pointerup',fin);c.addEventListener('pointercancel',()=>{dibujando=false;inicio=null;});
+
+  function trazo(ctx,a,b){
+    ctx.lineCap='round';ctx.lineJoin='round';
+    ctx.lineWidth=tool==='goma'?grosor*3:grosor;
+    ctx.strokeStyle=tool==='goma'?'#fff':color;
+    ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+  }
+
+  const punto=c.closest('.punto');
+  punto.querySelector('.deshacer').addEventListener('click',()=>{
+    const e=estados.get(c);const img=e.historial.pop();if(img)e.ctx.putImageData(img,0,0);pendiente=null;
+  });
+  punto.querySelector('.borrar').addEventListener('click',()=>{
+    if(confirm('¿Borrar todo este dibujo?')){guardarEstado(c);fondoBlanco(ctx,c);pendiente=null;}
+  });
+  punto.querySelector('.guardar').addEventListener('click',()=>descargar(punto));
+});
+
+// ---------- Cubo de pintura (relleno de zona) ----------
+function rellenar(c,x,y,hex){
+  const ctx=estados.get(c).ctx;x=Math.floor(x);y=Math.floor(y);
+  const w=c.width,h=c.height,img=ctx.getImageData(0,0,w,h),d=img.data;
+  const i0=(y*w+x)*4,objetivo=[d[i0],d[i0+1],d[i0+2]];
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  if(Math.abs(objetivo[0]-r)+Math.abs(objetivo[1]-g)+Math.abs(objetivo[2]-b)<10)return;
+  const tol=60;
+  const parecido=i=>Math.abs(d[i]-objetivo[0])+Math.abs(d[i+1]-objetivo[1])+Math.abs(d[i+2]-objetivo[2])<tol;
+  const visitado=new Uint8Array(w*h);const pila=[x+y*w];
+  while(pila.length){
+    const p=pila.pop();if(visitado[p])continue;
+    const i=p*4;if(!parecido(i))continue;
+    visitado[p]=1;d[i]=r;d[i+1]=g;d[i+2]=b;d[i+3]=255;
+    const px=p%w;
+    if(px>0)pila.push(p-1);if(px<w-1)pila.push(p+1);if(p>=w)pila.push(p-w);if(p<w*(h-1))pila.push(p+w);
+  }
+  ctx.putImageData(img,0,0);
+}
+
+// ---------- Guardar como imagen ----------
+function limpiarNombre(s){return s.normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-zA-Z0-9]+/g,'-').replace(/^-|-$/g,'').toLowerCase();}
+function descargar(punto){
+  const c=punto.querySelector('.lienzo'),titulo=punto.dataset.titulo,nombre=punto.querySelector('input').value.trim();
+  const out=document.createElement('canvas');out.width=c.width;out.height=c.height+90;
+  const o=out.getContext('2d');o.fillStyle='#fff';o.fillRect(0,0,out.width,out.height);
+  o.fillStyle='#333';o.font='bold 32px Arial';o.fillText(titulo,20,42);
+  if(nombre){o.font='26px Arial';o.fillStyle='#555';o.fillText(nombre,20,76);}
+  o.drawImage(c,0,90);o.strokeStyle='#333';o.lineWidth=4;o.strokeRect(2,90,c.width-4,c.height-2);
+  const a=document.createElement('a');a.download=limpiarNombre(titulo+(nombre?'-'+nombre:''))+'.png';a.href=out.toDataURL('image/png');a.click();
+}
+document.getElementById('guardarTodos').addEventListener('click',()=>{
+  const puntos=[...document.querySelectorAll('.punto')];
+  puntos.forEach((p,i)=>setTimeout(()=>descargar(p),i*600));
+});
+</script>
+</body>
+</html>
