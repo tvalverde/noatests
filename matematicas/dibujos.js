@@ -1,5 +1,6 @@
 /* Dibujos SVG para los exámenes de matemáticas. Se declaran en el HTML y se pintan al cargar:
    <div class="bloques" data-um="2" data-c="4" data-d="1" data-u="8"></div>      → bloques multibase
+   <div class="tapones" data-torres="2" data-cajas="3" data-bolsas="4" data-sueltos="5"></div>   → tapones en torres, cajas, bolsitas y sueltos
    <div class="recta" data-min="0" data-max="350" data-paso="50" data-letras="A=150;B=300" data-puntos="120"></div>
    <div class="tarjetas" data-valores="1.000,400,70,5"></div>                     → tarjetas de composición
    <div class="plano" data-cols="3" data-rows="3" data-salas="0,0,Planetario,gris;..." data-calles-h="Calle Nieve|..." data-calles-v="..." data-persona="2,1,arriba" data-marca="0,2"></div>
@@ -50,6 +51,27 @@ function dibujarBloques(div){
   for(let i=0;i<u;i++){const col=Math.floor(i/5),fila=i%5;unidad(s,x+col*(w+6),yBase+fila*(w+2),T);}
   if(u){const cols=Math.ceil(u/5);eti(x,x+cols*(w+6)-6,'1');x+=cols*(w+6)-6;}
   const W=Math.max(x+10,200);s.setAttribute('viewBox',`0 0 ${W} ${yLey+14}`);s.style.maxWidth=W+'px';
+  div.appendChild(s);
+}
+
+// ---------- Tapones (torres de 10 cajas, cajas de 100, bolsitas de 10, sueltos) ----------
+function caja(s,x,y,w,h){el('rect',{x,y,width:w,height:h,rx:2,fill:'#d9a066',stroke:'#7a4a1a','stroke-width':1.2},s);el('line',{x1:x,y1:y+h/2,x2:x+w,y2:y+h/2,stroke:'#7a4a1a','stroke-width':.6,'stroke-dasharray':'3 2'},s);}
+function tapon(s,x,y,r,color){el('circle',{cx:x,cy:y,r,fill:color,stroke:'#333','stroke-width':1},s);el('circle',{cx:x,cy:y,r:r*0.45,fill:'none',stroke:'#fff','stroke-width':1,opacity:.8},s);}
+function dibujarTapones(div){
+  const t=+div.dataset.torres||0,c=+div.dataset.cajas||0,b=+div.dataset.bolsas||0,u=+div.dataset.sueltos||0;
+  const W=46,H=13,yBase=150,sep=28;let x=10;const s=svg(200,yBase+28);
+  const colores=['#e4452c','#2b6cd9','#f7d21c','#4caf50','#f58a1f','#8a4fc9','#7fd3ee','#ff8ac4','#9e9e9e','#333'];
+  const eti=(x0,x1,tx)=>texto(s,(x0+x1)/2,yBase+20,tx,{'font-size':13,fill:'#555','font-weight':'bold'});
+  for(let i=0;i<t;i++){for(let k=0;k<10;k++)caja(s,x,yBase-(k+1)*H,W,H);eti(x,x+W,'torre');x+=W+14;}
+  if(t)x+=sep;
+  for(let i=0;i<c;i++){caja(s,x,yBase-H,W,H);eti(x,x+W,'caja');x+=W+14;}
+  if(c)x+=sep;
+  for(let i=0;i<b;i++){el('path',{d:`M${x+4},${yBase-30} q14,-14 28,0 l6,28 q-20,8 -40,0 z`,fill:'#e8f4fb',stroke:'#2b6cd9','stroke-width':1.2},s);
+    for(let k=0;k<10;k++)tapon(s,x+10+(k%4)*7,yBase-22+Math.floor(k/4)*7,2.6,colores[k]);eti(x,x+40,'bolsita');x+=52;}
+  if(b)x+=sep;
+  const x0=x;for(let i=0;i<u;i++){tapon(s,x+10+(i%5)*20,yBase-10-Math.floor(i/5)*20,8,colores[i%colores.length]);}
+  if(u){x+=Math.min(u,5)*20+4;eti(x0,x,'sueltos');}
+  const Wt=Math.max(x+10,200);s.setAttribute('viewBox',`0 0 ${Wt} ${yBase+28}`);s.style.maxWidth=Wt+'px';
   div.appendChild(s);
 }
 
@@ -155,6 +177,7 @@ function dibujarBarras(div){
 }
 
 document.querySelectorAll('.bloques').forEach(dibujarBloques);
+document.querySelectorAll('.tapones').forEach(dibujarTapones);
 document.querySelectorAll('.recta').forEach(dibujarRecta);
 document.querySelectorAll('.tarjetas').forEach(dibujarTarjetas);
 document.querySelectorAll('.plano').forEach(dibujarPlano);
