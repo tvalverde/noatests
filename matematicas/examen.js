@@ -212,6 +212,7 @@ botonEntregar.addEventListener('click',()=>{
     hist.push({fecha:res.fecha,nota1:nota,notaCorr:null,tipos:r.tipos});
   }
   escribir(CLAVE,res);escribir(CLAVE_HIST,hist.slice(-20));localStorage.removeItem(CLAVE_BORRADOR);
+  if(window.noatestsSync)try{window.noatestsSync.subirIntento(CLAVE.slice('noatests-mates:'.length),hist[hist.length-1],res);}catch(e){}
   bloquearTodo(true);botonEntregar.style.display='none';modo='repaso';
   mostrarResultado(res);
 });
@@ -242,6 +243,7 @@ $('b-soluciones').addEventListener('click',()=>{
     if(!confirm('Si ves las soluciones, ya no podrás corregir los fallos en este intento. ¿Quieres verlas?'))return;
   }
   res.vioSoluciones=true;escribir(CLAVE,res);
+  if(window.noatestsSync)try{const h=(leer(CLAVE_HIST)||[]).slice(-1)[0];if(h)window.noatestsSync.subirIntento(CLAVE.slice('noatests-mates:'.length),h,res);}catch(e){}
   velo.classList.remove('visible');modo='repaso';bloquearTodo(true);botonEntregar.style.display='none';volver.classList.add('visible');
   mostrarSoluciones();
   const primera=document.querySelector('.pregunta.mal,.pregunta.medias');if(primera)primera.scrollIntoView({behavior:'smooth',block:'center'});
@@ -252,10 +254,12 @@ $('b-reintentar').addEventListener('click',()=>{
 volver.addEventListener('click',()=>{const res=leer(CLAVE);if(res)mostrarResultado(res);});
 
 // ---------- al abrir: ¿hay un intento guardado o un borrador? ----------
+function arrancar(){
 const guardado=leer(CLAVE);
 const borrador=leer(CLAVE_BORRADOR);
-if(guardado&&guardado.respuestas){
-  reponer(guardado.respuestas);corregir();bloquearTodo(true);botonEntregar.style.display='none';modo='repaso';
+if(guardado&&(guardado.respuestas||guardado.deOtroDispositivo)){
+  if(guardado.respuestas){reponer(guardado.respuestas);corregir();}
+  bloquearTodo(true);botonEntregar.style.display='none';modo='repaso';
   if(borrador&&borrador.modo==='correccion'&&guardado.notaCorr==null){
     // estaba a mitad de corregir: volver a ese punto con lo que llevaba
     preguntas.forEach(q=>bloquear(q,true,true));reponer(borrador.respuestas);modo='correccion';
@@ -266,4 +270,6 @@ if(guardado&&guardado.respuestas){
 }else if(borrador&&borrador.respuestas){
   reponer(borrador.respuestas);
 }
+}
+if(window.noatestsSync&&window.noatestsSync.activo()&&navigator.onLine){window.noatestsSync.bajar(CLAVE.slice('noatests-mates:'.length)).catch(()=>{}).then(arrancar);}else arrancar();
 })();

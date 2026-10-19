@@ -40,13 +40,34 @@ function importar(archivo){
   };
   r.readAsText(archivo);
 }
+// ---- Conexión con la nube ----
+const nube=document.createElement('div');nube.className='materia';nube.style.cssText='border-left-color:#4caf50;padding:14px 16px';
+function pintarNube(){
+  const S=window.noatestsSync;if(!S){nube.style.display='none';return;}
+  if(S.activo()){
+    const pend=S.pendientes();const u=S.ultimaSync();
+    nube.innerHTML='<b>☁️ Notas en la nube: conectado</b><p style="margin:6px 0 10px;color:#666;font-size:.9rem">Las notas de este dispositivo se guardan en la nube y se juntan con las de los demás dispositivos conectados con el mismo código.'+(pend?' <b style="color:#e4452c">'+pend+' pendiente(s) de enviar</b> (se enviarán al recuperar la conexión).':'')+(u?' Última sincronización: '+new Date(u).toLocaleString('es-ES',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})+'.':'')+'</p>'+
+      '<button id="btn-sync" style="border:none;border-radius:10px;padding:10px 14px;background:#4caf50;color:#fff;font-size:1rem;cursor:pointer;margin-right:8px">🔄 Sincronizar ahora</button>'+
+      '<button id="btn-desconectar" style="border:2px solid #ccc;border-radius:10px;padding:8px 14px;background:#fff;color:#666;font-size:.95rem;cursor:pointer">Desconectar</button>';
+    document.getElementById('btn-sync').addEventListener('click',async()=>{const b=document.getElementById('btn-sync');b.textContent='Sincronizando…';b.disabled=true;try{await S.vaciarCola();await S.bajar();location.reload();}catch(e){alert('No se ha podido sincronizar. ¿Hay conexión?');pintarNube();}});
+    document.getElementById('btn-desconectar').addEventListener('click',()=>{if(confirm('¿Desconectar este dispositivo de la nube? Las notas guardadas aquí no se borran.')){S.desconectar();pintarNube();}});
+  }else{
+    nube.innerHTML='<b>☁️ Notas en la nube: no conectado</b><p style="margin:6px 0 10px;color:#666;font-size:.9rem">Escribe el código de familia para que las notas se guarden en la nube y se vean desde cualquier dispositivo.</p>'+
+      '<input id="inp-codigo" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="noa-xxxx-xxxx-xxxx-xxxx" style="font-size:1rem;padding:8px 10px;border:2px solid #ccc;border-radius:8px;width:100%;max-width:280px;margin-right:8px;margin-bottom:8px">'+
+      '<button id="btn-conectar" style="border:none;border-radius:10px;padding:10px 14px;background:#4caf50;color:#fff;font-size:1rem;cursor:pointer">Conectar</button>';
+    document.getElementById('btn-conectar').addEventListener('click',async()=>{const b=document.getElementById('btn-conectar');const cod=document.getElementById('inp-codigo').value;if(!cod.trim())return;b.textContent='Conectando…';b.disabled=true;
+      try{const nombre=await S.conectar(cod);if(!nombre){alert('Ese código no es válido.');pintarNube();return;}alert('Conectado a '+nombre+'. Se han juntado las notas de este dispositivo con las de la nube.');location.reload();}
+      catch(e){alert('No se ha podido conectar. ¿Hay conexión a internet?');pintarNube();}});
+  }
+}
+
 const caja=document.createElement('div');caja.className='materia';caja.style.cssText='border-left-color:#8a8a8a;padding:14px 16px';
 caja.innerHTML='<b>Copiar a otro dispositivo</b><p style="margin:6px 0 10px;color:#666;font-size:.9rem">Exporta las notas a un archivo y ábrelo en el otro móvil o tablet con "Importar". Se juntan con las que ya haya; no se borra nada.</p>'+
   '<button id="btn-exportar" style="border:none;border-radius:10px;padding:10px 14px;background:#2bb3d9;color:#fff;font-size:1rem;cursor:pointer;margin-right:8px">⬇ Exportar</button>'+
   '<label style="display:inline-block;border-radius:10px;padding:10px 14px;background:#f7a823;color:#fff;font-size:1rem;cursor:pointer">⬆ Importar<input type="file" accept=".json,application/json" style="display:none" id="inp-importar"></label>';
 function colocar(){
   const main=document.querySelector('main');if(main.contains(caja))return;
-  main.appendChild(caja);
+  main.appendChild(nube);main.appendChild(caja);pintarNube();
   document.getElementById('btn-exportar').addEventListener('click',exportar);
   document.getElementById('inp-importar').addEventListener('change',e=>{if(e.target.files[0])importar(e.target.files[0]);});
 }

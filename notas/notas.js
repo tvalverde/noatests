@@ -45,7 +45,8 @@ function fechaUltimaArts(ruta){
   const d=leer(clave);return d&&d.some(x=>x&&x.img)?true:false;
 }
 
-fetch(RAIZ+'catalogo.json').then(r=>r.json()).then(cat=>{
+const bajada=(window.noatestsSync&&window.noatestsSync.activo()&&navigator.onLine)?window.noatestsSync.bajar().catch(()=>0):Promise.resolve(0);
+bajada.then(()=>fetch(RAIZ+'catalogo.json')).then(r=>r.json()).then(cat=>{
   let html='';let algo=false;
   cat.materias.forEach((m,mi)=>{
     const rutaM=RAIZ+m.id+'/';
@@ -65,7 +66,7 @@ fetch(RAIZ+'catalogo.json').then(r=>r.json()).then(cat=>{
     });
     html+=`<section class="materia" style="border-left-color:${m.color}"><h2>${esc(m.nombre)}${mediaHtml(media(notasMateria),notasMateria.length,0)}</h2>${temasHtml}</section>`;
   });
-  html+='<p class="aviso">Las notas se guardan en este dispositivo. Si hace un examen en otro móvil o tablet, sus notas estarán allí. La media usa la nota del primer intento de cada examen (sin contar correcciones).</p>';
+  html+='<p class="aviso">La media usa la nota del primer intento de cada examen (sin contar correcciones).</p>';
   document.getElementById('contenido').innerHTML=html;
 }).catch(()=>{document.getElementById('contenido').innerHTML='<div class="vacio">No se ha podido cargar el catálogo.</div>';});
 })();

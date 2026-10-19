@@ -1,0 +1,16 @@
+name: Latido Supabase (evita la pausa del plan gratuito)
+
+on:
+  schedule:
+    - cron: "17 6 */3 * *"
+  workflow_dispatch:
+
+jobs:
+  latido:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          curl -sS -f -X POST "https://zwvipvswiguxqjsblijo.supabase.co/rest/v1/rpc/latido" \
+            -H "apikey: sb_publishable_SYUGY1AdqIU4wM142_o4Dg_mscFfSzm" \
+            -H "Authorization: Bearer sb_publishable_SYUGY1AdqIU4wM142_o4Dg_mscFfSzm" \
+            -H "Content-Type: application/json" -d '{}'
