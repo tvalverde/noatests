@@ -73,7 +73,7 @@ for(const f of examenes.sort()){
     q.querySelectorAll('.grupo').forEach(g=>{const ok=[...g.querySelectorAll('.opcion')].some(o=>o.textContent.trim().toLowerCase()===g.dataset.r.toLowerCase());if(!ok)fallo('pregunta '+(i+1)+': la respuesta "'+g.dataset.r+'" no está entre las opciones');});
   });
   // ningún campo de texto con autocorrector
-  d.querySelectorAll('input[type=text]').forEach(i=>{if(i.getAttribute('autocorrect')!=='off'||i.getAttribute('spellcheck')!=='false'||i.getAttribute('autocomplete')!=='off'||i.getAttribute('autocapitalize')!=='off')fallo('campo de texto con autocorrector activo');});
+  d.querySelectorAll('input[type=text]').forEach(i=>{if(i.getAttribute('autocorrect')!=='off'||i.getAttribute('spellcheck')!=='false'||!['off','new-password'].includes(i.getAttribute('autocomplete'))||i.getAttribute('autocapitalize')!=='off')fallo('campo de texto con autocorrector activo');});
   // rellenar todo bien y entregar
   d.querySelectorAll('input[data-r]').forEach(i=>i.value=i.dataset.r);
   d.querySelectorAll('.grupo').forEach(g=>{const o=[...g.querySelectorAll('.opcion')].find(o=>o.textContent.trim().toLowerCase()===g.dataset.r.toLowerCase());if(o)o.click();});

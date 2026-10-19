@@ -29,7 +29,9 @@ function escribir(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}
 const preguntas=[...document.querySelectorAll('.pregunta')];
 const inputs=[...document.querySelectorAll('input[data-r]')];
 // Sin autocorrector ni sugerencias en ningún campo: debe escribir ella los números y las palabras tal cual
-document.querySelectorAll('input[type=text]').forEach(i=>{i.setAttribute('autocomplete','off');i.setAttribute('autocorrect','off');i.setAttribute('autocapitalize','off');i.setAttribute('spellcheck','false');});
+document.querySelectorAll('input[type=text]').forEach(i=>{i.setAttribute('autocorrect','off');i.setAttribute('autocapitalize','off');i.setAttribute('spellcheck','false');
+  // Gboard (Android) ignora lo anterior salvo en campos que considera "sensibles": new-password lo consigue sin ocultar el texto
+  i.setAttribute('autocomplete',i.getAttribute('inputmode')==='decimal'?'off':'new-password');i.setAttribute('name','campo-'+Math.random().toString(36).slice(2,8));});
 const grupos=[...document.querySelectorAll('.grupo')];
 const grid=document.querySelector('.grid');
 let marcada=null, START=null, DEST=null;

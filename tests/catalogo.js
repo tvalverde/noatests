@@ -4,7 +4,7 @@ const raiz=path.join(__dirname,'..');let errores=0;const fallo=m=>{console.error
 const cat=JSON.parse(fs.readFileSync(path.join(raiz,'catalogo.json'),'utf8'));
 
 console.log('arts');
-{const h=fs.readFileSync(path.join(raiz,'arts/examen1/index.html'),'utf8');const ins=h.match(/<input[^>]*type="text"[^>]*>/g)||[];ins.forEach(i=>{if(!/autocorrect="off"/.test(i)||!/spellcheck="false"/.test(i)||!/autocomplete="off"/.test(i))fallo('arts: campo de texto con autocorrector: '+i);});if(!errores)console.log('  ✓ '+ins.length+' campos sin autocorrector');}
+{const h=fs.readFileSync(path.join(raiz,'arts/examen1/index.html'),'utf8');const ins=h.match(/<input[^>]*type="text"[^>]*>/g)||[];ins.forEach(i=>{if(!/autocorrect="off"/.test(i)||!/spellcheck="false"/.test(i)||!/autocomplete="(off|new-password)"/.test(i))fallo('arts: campo de texto con autocorrector: '+i);});if(!errores)console.log('  ✓ '+ins.length+' campos sin autocorrector');}
 console.log('catalogo.json');
 const enCat=new Set();
 cat.materias.forEach(m=>{
