@@ -28,6 +28,8 @@ function escribir(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}
 // ---------- elementos ----------
 const preguntas=[...document.querySelectorAll('.pregunta')];
 const inputs=[...document.querySelectorAll('input[data-r]')];
+// Sin autocorrector ni sugerencias en ningún campo: debe escribir ella los números y las palabras tal cual
+document.querySelectorAll('input[type=text]').forEach(i=>{i.setAttribute('autocomplete','off');i.setAttribute('autocorrect','off');i.setAttribute('autocapitalize','off');i.setAttribute('spellcheck','false');});
 const grupos=[...document.querySelectorAll('.grupo')];
 const grid=document.querySelector('.grid');
 let marcada=null, START=null, DEST=null;
