@@ -11,17 +11,16 @@
   header{background:#f7a823;color:#fff;padding:24px 16px;text-align:center}
   header h1{margin:0;font-size:1.8rem}
   main{max-width:600px;margin:0 auto;padding:16px}
-  a.materia{display:block;background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;text-decoration:none;color:#333;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:8px solid #2bb3d9;font-size:1.2rem}
-  a.materia span{display:block;font-size:.95rem;color:#777;margin-top:4px}
+  a.examen{display:block;background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;text-decoration:none;color:#333;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:8px solid #2bb3d9;font-size:1.2rem}
+  a.examen span{display:block;font-size:.95rem;color:#777;margin-top:4px}
+  a.examen{position:relative;padding-right:120px}
+  .nota-lista{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#fff;border-radius:12px;padding:2px 10px;font-size:.95rem}
 </style>
 </head>
 <body>
 <header><h1>Exámenes de Noa</h1></header>
-<main>
-  <a class="materia" href="matematicas/">Matemáticas<span>Números de 3 y 4 cifras, comparar, redondear, planos</span></a>
-  <a class="materia" href="arts/" style="border-left-color:#a86bd6">Arts<span>Dibujar y colorear</span></a>
-  <a class="materia" href="notas/" style="border-left-color:#2bb3d9">Mis notas<span>Exámenes hechos y qué se te da mejor</span></a>
-</main>
+<main data-lista="portada"></main>
+<script src="listas.js"></script>
 <script src="sw-registro.js"></script>
 </body>
 </html>

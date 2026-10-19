@@ -16,13 +16,14 @@
   main{max-width:600px;margin:0 auto;padding:16px}
   a.examen{display:block;background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;text-decoration:none;color:#333;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:8px solid #a86bd6;font-size:1.2rem}
   a.examen span{display:block;font-size:.95rem;color:#777;margin-top:4px}
+  a.examen{position:relative;padding-right:120px}
+  .nota-lista{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#fff;border-radius:12px;padding:2px 10px;font-size:.95rem}
 </style>
 </head>
 <body>
 <header><nav class="migas"><a href="../">Inicio</a> › <span>Arts</span></nav><h1>Arts</h1></header>
-<main>
-  <a class="examen" href="examen1/">Examen 1<span>Dibújate en monstruo, inventa un logo, mascota imaginaria, bandera y casa de tus sueños</span></a>
-</main>
+<main data-lista="materia" data-materia="arts"></main>
+<script src="../listas.js"></script>
 <script src="../sw-registro.js"></script>
 </body>
 </html>

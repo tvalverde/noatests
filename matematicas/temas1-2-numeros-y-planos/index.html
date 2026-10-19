@@ -16,20 +16,14 @@
   main{max-width:600px;margin:0 auto;padding:16px}
   a.examen{display:block;background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;text-decoration:none;color:#333;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:8px solid #2bb3d9;font-size:1.2rem}
   a.examen span{display:block;font-size:.95rem;color:#777;margin-top:4px}
+  a.examen{position:relative;padding-right:120px}
+  .nota-lista{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#fff;border-radius:12px;padding:2px 10px;font-size:.95rem}
 </style>
 </head>
 <body>
 <header><nav class="migas"><a href="../../">Inicio</a> › <a href="../">Matemáticas</a> › <span>Temas 1 y 2</span></nav><h1>Temas 1 y 2 · Números y planos</h1></header>
-<main>
-  <a class="examen" href="examen1/">Examen 1<span>Leer y descomponer, comparar, redondear, estimar, plano y traslaciones</span></a>
-  <a class="examen" href="examen2/">Examen 2<span>Escribir con cifras, anterior y posterior, pistas, rectas, verdadero o falso, plano y traslaciones</span></a>
-  <a class="examen" href="examen3/">Examen 3<span>Muro de descomposición, bloques, rectas de 50 en 50, pueblos, bosque, orientarse en Expo-Tierra, traslación</span></a>
-  <a class="examen" href="examen4/">Examen 4<span>Bloques, tarjetas, rectas, alturas de pueblos, rifa, redondeo de árboles, distancias, plano y gota trasladada</span></a>
-  <a class="examen" href="examen5/">Examen 5<span>Tapones en torres y cajas, muro de 2.174, leer "mil", recta de 1.000 en 1.000, tarjetas vs 5.199, pueblos, redondear con recta, estimación, Lucía mirando hacia abajo, casita trasladada</span></a>
-  <a class="examen" href="examen6/">Examen 6<span>Tabla de posiciones, tarjetas, pistas, recta de 2.000 a 3.000, bloques de Juanita y Berta, árboles, redondear, aparcamiento, Lucía en Sala Mares, coche trasladado</span></a>
-  <a class="examen" href="examen7/">Examen 7<span>Escribir con cifras, bloques sin decenas, anterior y posterior de 2.999, recta de 100 a 200, dos filas de tarjetas, cinco pueblos, redondeos, visitantes del bosque, Lucía en el Aula Tierra, estrella trasladada</span></a>
-</main>
-<script src="../notas-lista.js"></script>
+<main data-lista="tema" data-materia="matematicas" data-tema="temas1-2-numeros-y-planos"></main>
+<script src="../../listas.js"></script>
 <script src="../../sw-registro.js"></script>
 </body>
 </html>
