@@ -178,7 +178,7 @@ function mostrarResultado(res){
   $('r-sub').textContent=(res.huecosBien!=null?res.huecosBien+' de '+res.huecosTotal+' huecos bien':'')+(corregido?' · Primer intento: '+notaTexto(res.nota1):'');
   $('r-mensaje').textContent=mensaje(nota/10);
   if(nota===10&&!res.yaCelebrado){res.yaCelebrado=true;escribir(CLAVE,res);try{confeti();}catch(e){}}
-  $('b-corregir').hidden=corregido||nota===10||!!res.vioSoluciones;
+  $('b-corregir').hidden=corregido||nota===10||!!res.vioSoluciones||!res.respuestas;
   $('b-soluciones').hidden=nota===10;
   $('b-soluciones').textContent=res.vioSoluciones?'💡 Ver soluciones':'💡 Ver soluciones';
   const hist=leer(CLAVE_HIST)||[];

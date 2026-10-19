@@ -55,9 +55,28 @@ function rellenarBien(d){d.querySelectorAll('input[data-r]').forEach(i=>i.value=
   const nubeCaja=d.getElementById('btn-sync');if(!nubeCaja)fallo('falta la caja de nube conectada en Mis notas');
   // F) en B, abrir el examen: aparece la caja de resultado del intento de A (sin poder corregir, sin respuestas)
   w=abrir(EX,B);await wait(120);d=w.document;
-  if(!d.getElementById('velo').classList.contains('visible')||!/10,00/.test(d.getElementById('r-nota').textContent))fallo('en B el examen no muestra el resultado venido de A');else console.log('  ✓ en otro dispositivo el examen muestra el último resultado');
+  if(!d.getElementById('velo').classList.contains('visible')||!/10,00/.test(d.getElementById('r-nota').textContent))fallo('en B el examen no muestra el resultado venido de A');
+  const inp0=d.querySelectorAll('input[data-r]')[0];if(inp0.value!==inp0.dataset.r)fallo('en B no se han repuesto las respuestas del intento hecho en A: "'+inp0.value+'"');
+  if(!d.querySelectorAll('.pregunta')[0].classList.contains('ok'))fallo('en B el examen no aparece corregido');
+  else console.log('  ✓ en otro dispositivo el examen muestra el resultado con las respuestas repuestas');
+  // H) sin respuestas en la nube (fila antigua): no se puede corregir
+  nube.intentos.push({examen:'/noatests/matematicas/temas1-2-numeros-y-planos/examen2/',fecha:'2026-10-18T09:00:00.000Z',nota1:6,nota_corr:null,huecos_bien:null,huecos_total:null,tipos:null,respuestas:null,vio_soluciones:false});
+  w=abrir('matematicas/temas1-2-numeros-y-planos/examen2/index.html',B);await wait(120);d=w.document;
+  if(!d.getElementById('velo').classList.contains('visible')||!d.getElementById('b-corregir').hidden)fallo('sin respuestas debería verse el resultado pero sin botón Corregir');else console.log('  ✓ un intento sin respuestas no permite corregir');
+  // I) borrado en la nube: desaparece en el dispositivo (y no borra lo pendiente de enviar)
+  nube.intentos=nube.intentos.filter(x=>!(x.examen===RUTA&&x.nota1===9.5));
+  red=false;w=abrir('matematicas/temas1-2-numeros-y-planos/examen3/index.html',B);await wait(80);d=w.document;rellenarBien(d);d.getElementById('corregir').click();await wait(50);red=true;
+  w=abrir('notas/index.html',B);await wait(150);
+  const h1=JSON.parse(B['noatests-mates:'+RUTA+':historial']);const h3=B['noatests-mates:/noatests/matematicas/temas1-2-numeros-y-planos/examen3/:historial'];
+  if(h1.length!==1||h1[0].nota1!==10)fallo('el intento borrado en la nube sigue en el dispositivo: '+JSON.stringify(h1));
+  else if(!h3)fallo('el borrado en la nube se ha llevado por delante un intento pendiente de enviar');
+  else console.log('  ✓ lo borrado en la nube desaparece del dispositivo; lo pendiente de enviar se conserva');
+  // J) borrar en la nube el único intento de un examen → el examen vuelve a "sin hacer"
+  nube.intentos=nube.intentos.filter(x=>x.examen!=='/noatests/matematicas/temas1-2-numeros-y-planos/examen2/');
+  w=abrir('notas/index.html',B);await wait(150);
+  if(B['noatests-mates:/noatests/matematicas/temas1-2-numeros-y-planos/examen2/']||B['noatests-mates:/noatests/matematicas/temas1-2-numeros-y-planos/examen2/:historial'])fallo('al borrar el único intento no se limpia el examen en el dispositivo');else console.log('  ✓ borrar el único intento deja el examen como sin hacer');
   // G) reimportar no duplica
-  const antes=JSON.parse(B['noatests-mates:'+RUTA+':historial']).length;await w.noatestsSync.bajar();const despues=JSON.parse(B['noatests-mates:'+RUTA+':historial']).length;
-  if(antes!==despues||antes!==2)fallo('bajar dos veces duplica: '+antes+' → '+despues);else console.log('  ✓ bajar de nuevo no duplica');
+  w=abrir(EX,B);await wait(120);const antes=JSON.parse(B['noatests-mates:'+RUTA+':historial']).length;await w.noatestsSync.bajar();const despues=JSON.parse(B['noatests-mates:'+RUTA+':historial']).length;
+  if(antes!==despues)fallo('bajar dos veces duplica: '+antes+' → '+despues);else console.log('  ✓ bajar de nuevo no duplica');
   if(errores){console.error('\n'+errores+' error(es)');process.exit(1);}else console.log('\nSincronización correcta.');
 })();

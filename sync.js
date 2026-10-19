@@ -53,35 +53,47 @@ function subirIntento(ruta,h,ultimo){
 }
 
 // ---- descargar y fusionar ----
-function fusionarRemotos(filas){
+function fusionarRemotos(filas,rutaPedida){
   let nuevos=0;
   const porExamen={};
   filas.forEach(f=>{(porExamen[f.examen]=porExamen[f.examen]||[]).push(f);});
-  for(const ruta in porExamen){
+  // exámenes locales a revisar: si la lectura fue completa, todos; si fue de un examen, ese
+  const rutas=new Set(Object.keys(porExamen));
+  if(rutaPedida)rutas.add(rutaPedida);
+  else for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k.startsWith(PREF)&&k.endsWith(':historial'))rutas.add(k.slice(PREF.length,-':historial'.length));}
+  const enCola=new Set((leer(K_COLA)||[]).map(x=>x.p_examen+'|'+new Date(x.p_fecha).toISOString()));
+  rutas.forEach(ruta=>{
     const kH=PREF+ruta+':historial',kU=PREF+ruta;
+    const remotos=(porExamen[ruta]||[]).map(f=>Object.assign({},f,{iso:new Date(f.fecha).toISOString()}));
+    const remotoPorFecha=new Map(remotos.map(f=>[f.iso,f]));
     let hist=leer(kH)||[];const fechas=new Map(hist.map(h=>[h.fecha,h]));
-    porExamen[ruta].forEach(f=>{
-      const fecha=new Date(f.fecha).toISOString();
-      const h={fecha,nota1:+f.nota1,notaCorr:f.nota_corr==null?null:+f.nota_corr,tipos:f.tipos||undefined};
-      const ya=fechas.get(fecha);
-      if(!ya){hist.push(h);fechas.set(fecha,h);nuevos++;}
+    remotos.forEach(f=>{
+      const h={fecha:f.iso,nota1:+f.nota1,notaCorr:f.nota_corr==null?null:+f.nota_corr,tipos:f.tipos||undefined};
+      const ya=fechas.get(f.iso);
+      if(!ya){hist.push(h);fechas.set(f.iso,h);nuevos++;}
       else if(ya.notaCorr==null&&h.notaCorr!=null){ya.notaCorr=h.notaCorr;nuevos++;}
     });
-    hist.sort((a,b)=>a.fecha.localeCompare(b.fecha));escribir(kH,hist.slice(-20));
-    // último intento: si el remoto más reciente es posterior al local, guardarlo (sin respuestas: se repone en repaso solo si están)
-    const remotoUlt=porExamen[ruta].map(f=>Object.assign({},f,{iso:new Date(f.fecha).toISOString()})).sort((a,b)=>b.iso.localeCompare(a.iso))[0];
+    // borrados en la nube: intentos locales que no están en la nube ni pendientes de enviar
+    const antes=hist.length;
+    hist=hist.filter(h=>remotoPorFecha.has(h.fecha)||enCola.has(ruta+'|'+h.fecha));
+    if(hist.length!==antes)nuevos++;
+    hist.sort((a,b)=>a.fecha.localeCompare(b.fecha));
+    if(hist.length)escribir(kH,hist.slice(-20));else{try{localStorage.removeItem(kH);}catch(e){}}
+    // último intento
     const local=leer(kU);
-    if(remotoUlt&&(!local||remotoUlt.iso>local.fecha)){
+    const remotoUlt=remotos.sort((a,b)=>b.iso.localeCompare(a.iso))[0];
+    if(local&&!remotoPorFecha.has(local.fecha)&&!enCola.has(ruta+'|'+local.fecha)){try{localStorage.removeItem(kU);}catch(e){}}
+    else if(remotoUlt&&(!local||remotoUlt.iso>local.fecha||(local.fecha===remotoUlt.iso&&!local.respuestas&&remotoUlt.respuestas))){
       escribir(kU,{fecha:remotoUlt.iso,nota1:+remotoUlt.nota1,notaCorr:remotoUlt.nota_corr==null?null:+remotoUlt.nota_corr,huecosBien:remotoUlt.huecos_bien,huecosTotal:remotoUlt.huecos_total,tipos:remotoUlt.tipos,respuestas:remotoUlt.respuestas||null,vioSoluciones:!!remotoUlt.vio_soluciones,deOtroDispositivo:true});
     }
-  }
+  });
   return nuevos;
 }
 async function bajar(ruta){
   if(!activo()||!navigator.onLine)return 0;
   const filas=await rpc('leer_intentos',ruta?{codigo:codigo(),p_examen:ruta}:{codigo:codigo()});
   if(!Array.isArray(filas))return 0;
-  const n=fusionarRemotos(filas);escribir(K_ULTIMA,new Date().toISOString());return n;
+  const n=fusionarRemotos(filas,ruta||null);escribir(K_ULTIMA,new Date().toISOString());return n;
 }
 // Subir todo lo local que la nube no tenga (al conectar un dispositivo por primera vez)
 async function subirTodo(){
