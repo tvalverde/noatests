@@ -75,5 +75,27 @@ const store={
   // sin datos
   d=await abrir('notas/index.html',{});
   if(!/sin exámenes hechos/.test(d.body.textContent)||!/sin hacer/.test(d.body.textContent))fallo('notas vacías: no muestra el estado inicial');else console.log('  ✓ sin datos: lista completa en "sin hacer"');
+  console.log('exportar / importar');
+  {
+    const st={};const k1='noatests-mates:'+R+'examen1/',h1=k1+':historial';
+    st[k1]=JSON.stringify({fecha:'2026-10-18T10:00:00Z',nota1:9.5,notaCorr:null,respuestas:{}});
+    st[h1]=JSON.stringify([{fecha:'2026-10-17T10:00:00Z',nota1:7,notaCorr:8.5},{fecha:'2026-10-18T10:00:00Z',nota1:9.5,notaCorr:null}]);
+    const d2=await abrir('notas/index.html',st);
+    if(!d2.getElementById('btn-exportar')||!d2.getElementById('inp-importar'))fallo('la caja de exportar/importar no está en la página tras cargar el catálogo');
+    const fus=d2.defaultView.__noatestsFusionar;
+    // entrante: un intento repetido (misma fecha), uno nuevo más reciente, y un examen3 que no teníamos
+    const res=fus({[k1]:{fecha:'2026-10-19T09:00:00Z',nota1:8,notaCorr:null,respuestas:{}},[h1]:[{fecha:'2026-10-18T10:00:00Z',nota1:9.5,notaCorr:null},{fecha:'2026-10-19T09:00:00Z',nota1:8,notaCorr:null}],
+      ['noatests-mates:'+R+'examen3/']:{fecha:'2026-10-18T12:00:00Z',nota1:6.5,notaCorr:8.75,respuestas:{}},['noatests-mates:'+R+'examen3/:historial']:[{fecha:'2026-10-18T12:00:00Z',nota1:6.5,notaCorr:8.75}],
+      'noatests-arts-examen1':[{img:'x'}]});
+    const hist=JSON.parse(st[h1]);const ult=JSON.parse(st[k1]);
+    if(res.intentos!==2||res.examenes!==2||res.dibujos!==1)fallo('fusión: contadores '+JSON.stringify(res));
+    if(hist.length!==3||hist[2].nota1!==8)fallo('fusión: historial no unido sin duplicados: '+JSON.stringify(hist));
+    if(ult.nota1!==8)fallo('fusión: no se quedó con el último intento más reciente');
+    // importar lo mismo otra vez no cambia nada
+    const res2=fus({[h1]:JSON.parse(st[h1]),[k1]:JSON.parse(st[k1])});if(res2.intentos||res2.examenes)fallo('fusión: reimportar duplica');
+    // un último intento más antiguo no pisa al actual
+    const res3=fus({[k1]:{fecha:'2026-10-01T00:00:00Z',nota1:1}});if(res3.examenes||JSON.parse(st[k1]).nota1!==8)fallo('fusión: un intento antiguo ha pisado al reciente');
+    if(!errores)console.log('  ✓ fusiona sin duplicar, conserva lo más reciente y no borra nada');
+  }
   if(errores){console.error('\n'+errores+' error(es)');process.exit(1);}else console.log('\nCatálogo, listas y Mis notas correctos.');
 })();
