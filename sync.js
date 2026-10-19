@@ -73,16 +73,25 @@ function fusionarRemotos(filas,rutaPedida){
       if(!ya){hist.push(h);fechas.set(f.iso,h);nuevos++;}
       else if(ya.notaCorr==null&&h.notaCorr!=null){ya.notaCorr=h.notaCorr;nuevos++;}
     });
-    // borrados en la nube: intentos locales que no están en la nube ni pendientes de enviar
+    // borrados en la nube: intentos locales que no están en la nube ni pendientes de enviar.
+    // Solo si la nube ha devuelto algo: una respuesta vacía nunca borra (por seguridad)
     const antes=hist.length;
-    hist=hist.filter(h=>remotoPorFecha.has(h.fecha)||enCola.has(ruta+'|'+h.fecha));
+    if(filas.length)hist=hist.filter(h=>remotoPorFecha.has(h.fecha)||enCola.has(ruta+'|'+h.fecha));
     if(hist.length!==antes)nuevos++;
     hist.sort((a,b)=>a.fecha.localeCompare(b.fecha));
     if(hist.length)escribir(kH,hist.slice(-20));else{try{localStorage.removeItem(kH);}catch(e){}}
     // último intento
     const local=leer(kU);
     const remotoUlt=remotos.sort((a,b)=>b.iso.localeCompare(a.iso))[0];
-    if(local&&!remotoPorFecha.has(local.fecha)&&!enCola.has(ruta+'|'+local.fecha)){try{localStorage.removeItem(kU);}catch(e){}}
+    if(filas.length&&local&&!remotoPorFecha.has(local.fecha)&&!enCola.has(ruta+'|'+local.fecha)){try{localStorage.removeItem(kU);}catch(e){}}
+    else if(local&&remotoUlt&&local.fecha===remotoUlt.iso){
+      // mismo intento: completar lo que la nube sepa de más (corrección o soluciones vistas desde otro dispositivo)
+      let cambio=false;
+      if(local.notaCorr==null&&remotoUlt.nota_corr!=null){local.notaCorr=+remotoUlt.nota_corr;local.huecosBien=remotoUlt.huecos_bien;local.huecosTotal=remotoUlt.huecos_total;if(remotoUlt.respuestas)local.respuestas=remotoUlt.respuestas;cambio=true;}
+      if(!local.vioSoluciones&&remotoUlt.vio_soluciones){local.vioSoluciones=true;cambio=true;}
+      if(!local.respuestas&&remotoUlt.respuestas){local.respuestas=remotoUlt.respuestas;local.huecosBien=local.huecosBien??remotoUlt.huecos_bien;local.huecosTotal=local.huecosTotal??remotoUlt.huecos_total;cambio=true;}
+      if(cambio)escribir(kU,local);
+    }
     else if(remotoUlt&&(!local||remotoUlt.iso>local.fecha||(local.fecha===remotoUlt.iso&&!local.respuestas&&remotoUlt.respuestas))){
       escribir(kU,{fecha:remotoUlt.iso,nota1:+remotoUlt.nota1,notaCorr:remotoUlt.nota_corr==null?null:+remotoUlt.nota_corr,huecosBien:remotoUlt.huecos_bien,huecosTotal:remotoUlt.huecos_total,tipos:remotoUlt.tipos,respuestas:remotoUlt.respuestas||null,vioSoluciones:!!remotoUlt.vio_soluciones,deOtroDispositivo:true});
     }
@@ -105,6 +114,13 @@ async function subirTodo(){
   }
   await vaciarCola();
 }
+// Encola los intentos locales de las claves indicadas (o todas) y los envía
+function subirLocal(claves){
+  if(!activo())return;
+  const todas=[];if(claves)claves.forEach(k=>todas.push(k));else for(let i=0;i<localStorage.length;i++)todas.push(localStorage.key(i));
+  todas.forEach(k=>{if(!k.startsWith(PREF)||!k.endsWith(':historial'))return;const ruta=k.slice(PREF.length,-':historial'.length);const hist=leer(k)||[];const ult=leer(PREF+ruta);hist.forEach(h=>encolar(aRegistro(ruta,h,ult)));});
+  return vaciarCola();
+}
 async function conectar(cod){
   const nombre=await rpc('comprobar_codigo',{codigo:cod.trim()});
   if(!nombre)return null;
@@ -117,5 +133,5 @@ function desconectar(){try{localStorage.removeItem(K_CODIGO);localStorage.remove
 window.addEventListener('online',vaciarCola);
 if(activo())vaciarCola();
 
-window.noatestsSync={activo,codigo,conectar,desconectar,subirIntento,bajar,vaciarCola,pendientes:()=>(leer(K_COLA)||[]).length,ultimaSync:()=>leer(K_ULTIMA),_fusionar:fusionarRemotos,_rpc:rpc};
+window.noatestsSync={activo,codigo,conectar,desconectar,subirIntento,subirLocal,bajar,vaciarCola,pendientes:()=>(leer(K_COLA)||[]).length,ultimaSync:()=>leer(K_ULTIMA),_fusionar:fusionarRemotos,_rpc:rpc};
 })();

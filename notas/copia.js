@@ -18,7 +18,7 @@ function fusionar(entrantes){
     if(k.endsWith(':historial')){
       let actual=[];try{actual=JSON.parse(localStorage.getItem(k))||[];}catch(e){}
       const fechas=new Set(actual.map(h=>h.fecha));
-      const nuevos=(v||[]).filter(h=>h&&!fechas.has(h.fecha));
+      const vistas=new Set();const nuevos=(v||[]).filter(h=>{if(!h||fechas.has(h.fecha)||vistas.has(h.fecha))return false;vistas.add(h.fecha);return true;});
       if(nuevos.length){const u=actual.concat(nuevos).sort((a,b)=>String(a.fecha).localeCompare(String(b.fecha)));localStorage.setItem(k,JSON.stringify(u.slice(-20)));intentos+=nuevos.length;}
     }else if(k.startsWith('noatests-mates:')&&!k.endsWith(':borrador')){
       let actual=null;try{actual=JSON.parse(localStorage.getItem(k));}catch(e){}
@@ -35,6 +35,8 @@ function importar(archivo){
     let j=null;try{j=JSON.parse(r.result);}catch(e){}
     if(!j||j.formato!=='noatests-1'||!j.datos){alert('Ese archivo no es una copia de notas válida.');return;}
     const res=fusionar(j.datos);
+    // con la nube activa, lo importado se sube también (si no, la siguiente sincronización lo tomaría por borrado)
+    if(window.noatestsSync&&window.noatestsSync.activo()){try{window.noatestsSync.subirLocal(Object.keys(j.datos));}catch(e){}}
     alert('Importado: '+res.intentos+' intentos nuevos, '+res.examenes+' exámenes actualizados'+(res.dibujos?', '+res.dibujos+' dibujos':'')+'.');
     location.reload();
   };

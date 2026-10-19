@@ -180,7 +180,7 @@ function dibujarVenn(div){
 // ---------- Barras comparativas (alturas, distancias) ----------
 function dibujarDistancias(div){
   const pares=div.dataset.valores.split(';').map(p=>{const [n,v]=p.split('=');return [n,num(v)];});const uni=div.dataset.unidad||'';
-  const W=700,H=pares.length*50+30;const s=svg(W,H);const max=Math.max(...pares.map(p=>p[1]));
+  const W=700,H=pares.length*50+30;const s=svg(W,H);const max=Math.max(1,...pares.map(p=>p[1]));
   pares.forEach(([n,v],i)=>{const y=30+i*50;const L=420*v/max;
     el('rect',{x:120,y:y-6,width:L,height:12,rx:6,fill:'#c8b89a'},s);
     el('rect',{x:98,y:y-16,width:22,height:16,fill:'#e4452c',stroke:'#333'},s);el('polygon',{points:`98,${y-16} 109,${y-27} 120,${y-16}`,fill:'#8a5a00'},s);
@@ -192,7 +192,7 @@ function dibujarDistancias(div){
 }
 function dibujarCantidades(div){
   const pares=div.dataset.valores.split(';').map(p=>{const [n,v]=p.split('=');return [n,num(v)];});const uni=div.dataset.unidad||'';
-  const W=700,H=pares.length*46+16;const s=svg(W,H);const max=Math.max(...pares.map(p=>p[1]));
+  const W=700,H=pares.length*46+16;const s=svg(W,H);const max=Math.max(1,...pares.map(p=>p[1]));
   pares.forEach(([n,v],i)=>{const y=14+i*46;const L=Math.max(30,470*v/max);
     texto(s,70,y+22,n,{'font-size':14,'font-weight':'bold','text-anchor':'middle'});
     el('rect',{x:140,y,width:L,height:30,rx:8,fill:['#8bc34a','#2bb3d9','#f7a823','#b39ddb','#f48fb1'][i%5],stroke:'#333','stroke-width':1},s);
@@ -203,7 +203,7 @@ function dibujarBarras(div){
   if(div.dataset.tipo==='distancia')return dibujarDistancias(div);
   if(div.dataset.tipo==='cantidad')return dibujarCantidades(div);
   const pares=div.dataset.valores.split(';').map(p=>{const [n,v]=p.split('=');return [n,num(v)];});const uni=div.dataset.unidad||'';
-  const W=Math.min(700,pares.length*140+40),H=200;const s=svg(W,H);const max=Math.max(...pares.map(p=>p[1]));
+  const W=Math.min(700,pares.length*140+40),H=200;const s=svg(W,H);const max=Math.max(1,...pares.map(p=>p[1]));
   pares.forEach(([n,v],i)=>{const x=40+i*140;const h=120*v/max;
     el('polygon',{points:`${x},170 ${x+50},${170-h} ${x+100},170`,fill:['#8bc34a','#4caf50','#aed581','#7cb342'][i%4],stroke:'#2e5e1a','stroke-width':2},s);
     el('rect',{x:x+38,y:170-h-10,width:24,height:14,fill:'#e4452c',stroke:'#333'},s);el('polygon',{points:`${x+38},${170-h-10} ${x+50},${170-h-22} ${x+62},${170-h-10}`,fill:'#8a5a00'},s);
