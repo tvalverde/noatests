@@ -78,5 +78,25 @@ function rellenarBien(d){d.querySelectorAll('input[data-r]').forEach(i=>i.value=
   // G) reimportar no duplica
   w=abrir(EX,B);await wait(120);const antes=JSON.parse(B['noatests-mates:'+RUTA+':historial']).length;await w.noatestsSync.bajar();const despues=JSON.parse(B['noatests-mates:'+RUTA+':historial']).length;
   if(antes!==despues)fallo('bajar dos veces duplica: '+antes+' → '+despues);else console.log('  ✓ bajar de nuevo no duplica');
+  // K) una tablet con muchas notas se conecta: todo sube y nada se pierde, aunque la red falle a medias
+  const T={};const base='/noatests/matematicas/temas1-2-numeros-y-planos/';let esperados=0;
+  for(let e=1;e<=7;e++){const hist=[];for(let i=0;i<3;i++){hist.push({fecha:`2026-10-0${e}T1${i}:00:00.000Z`,nota1:5+i,notaCorr:i===1?9:null,tipos:{recta:{bien:i,total:3}}});esperados++;}
+    T['noatests-mates:'+base+'examen'+e+'/:historial']=JSON.stringify(hist);T['noatests-mates:'+base+'examen'+e+'/']=JSON.stringify(Object.assign({respuestas:{inputs:['x']},huecosBien:1,huecosTotal:2},hist[2]));}
+  const antesNube=nube.intentos.length;
+  // la red se cae tras 10 llamadas de guardado
+  let contador=0;const servidorReal=servidor;const srvOriginal=global.__srv;
+  llamadas.length=0;
+  w=abrir('notas/index.html',T);await wait(80);
+  const fetchOrig=w.fetch;let cortes=0;
+  w.fetch=(u,opt)=>{if(String(u).includes('guardar_intento')&&++contador===10){red=false;cortes++;setTimeout(()=>{red=true;w.dispatchEvent(new w.Event('online'));},30);}return fetchOrig(u,opt);};
+  await w.noatestsSync.conectar(CODIGO);await wait(300);await w.noatestsSync.vaciarCola();
+  const subidos=nube.intentos.length-antesNube;
+  if(subidos!==esperados)fallo('tablet: se esperaban '+esperados+' intentos subidos y hay '+subidos+' (pendientes '+w.noatestsSync.pendientes()+')');
+  else if(cortes!==1)fallo('tablet: el corte de red no se simuló');
+  else{
+    // y en la tablet siguen todos los suyos más los de la nube
+    let total=0;for(const k in T)if(k.endsWith(':historial'))total+=JSON.parse(T[k]).length;
+    if(total<esperados)fallo('tablet: se han perdido intentos locales ('+total+' < '+esperados+')');else console.log('  ✓ una tablet con '+esperados+' intentos los sube todos pese a un corte de red, y no pierde ninguno');
+  }
   if(errores){console.error('\n'+errores+' error(es)');process.exit(1);}else console.log('\nSincronización correcta.');
 })();
