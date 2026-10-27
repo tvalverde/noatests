@@ -44,6 +44,23 @@ const insignia=(v,txt)=>v==null?`<span class="media sin">${txt||'sin hacer'}</sp
 function tarjeta(href,titulo,sub,derecha,color){
   return `<a class="tarjeta" href="${esc(href)}" style="border-left-color:${color||'#2bb3d9'}"><span class="tt"><b>${esc(titulo)}</b>${sub?`<span class="sub">${sub}</span>`:''}</span>${derecha||''}<span class="flecha">›</span></a>`;
 }
+function agregarTipos(historiales){
+  const tipos={};
+  historiales.forEach(hist=>hist.forEach(h=>{if(h&&h.tipos)for(const t in h.tipos){tipos[t]=tipos[t]||{bien:0,total:0};tipos[t].bien+=h.tipos[t].bien;tipos[t].total+=h.tipos[t].total;}}));
+  return Object.entries(tipos).filter(([,v])=>v.total).map(([t,v])=>({tipo:t,p:v.bien/v.total,total:v.total}));
+}
+// Línea de resumen: lo mejor y lo que hay que repasar (vacío si no hay datos)
+function resumenTipos(lista){
+  if(!lista.length)return '';
+  const ord=lista.slice().sort((a,b)=>b.p-a.p||b.total-a.total);
+  const mejor=ord[0],peor=ord[ord.length-1];
+  let h=`<div class="resumen-tipos"><span>👍 Lo que mejor llevas: <b>${NOMBRES[mejor.tipo]||esc(mejor.tipo)}</b> (${Math.round(mejor.p*100)}%)</span>`;
+  if(ord.length>1&&peor.p<1)h+=`<span>📌 Para repasar: <b>${NOMBRES[peor.tipo]||esc(peor.tipo)}</b> (${Math.round(peor.p*100)}%)</span>`;
+  return h+'</div>';
+}
+function pestanas(base,activa,nombres){
+  return '<nav class="pestanas">'+nombres.map(([id,txt])=>`<a href="${esc(base+(id?'/'+id:''))}" class="${id===activa?'activa':''}">${txt}</a>`).join('')+'</nav>';
+}
 function tiposHtml(historiales,ambito){
   const tipos={};
   historiales.forEach(hist=>hist.forEach(h=>{if(h&&h.tipos)for(const t in h.tipos){tipos[t]=tipos[t]||{bien:0,total:0};tipos[t].bien+=h.tipos[t].bien;tipos[t].total+=h.tipos[t].total;}}));
@@ -64,7 +81,16 @@ function grafica(hist){
     s+=`<circle cx="${x(i)}" cy="${y(h.nota1)}" r="7.5" fill="${colorNota(h.nota1)}" stroke="#fff" stroke-width="2.5"/>`;
     if(nI<=5||i===0||i===nI-1||i%Math.ceil(nI/4)===0)s+=`<text x="${x(i)}" y="${H-10}" text-anchor="${nI>1&&i===0?'start':nI>1&&i===nI-1?'end':'middle'}" font-size="12" fill="#777">${esc(fechaCorta(h.fecha))}</text>`;
   });
-  return s+'</svg><p class="leyenda"><span class="pt" style="background:#2bb3d9"></span>primer intento <span class="pt hueco"></span>tras corregir</p>';
+  const conCorr=hist.some(h=>h.notaCorr!=null);
+  return s+'</svg><p class="leyenda"><span class="pt" style="background:#2bb3d9"></span>primer intento'+(conCorr?' <span class="pt hueco"></span>tras corregir':'')+'</p>';
+}
+
+function intentosDe(exs){
+  return exs.flatMap(x=>x.d.historial.map(h=>({fecha:h.fecha,nota1:h.nota1,notaCorr:null,examen:x.e.nombre}))).filter(h=>h.fecha&&h.nota1!=null).sort((a,b)=>String(a.fecha).localeCompare(String(b.fecha)));
+}
+function bloqueGrafica(intentos,texto){
+  if(intentos.length<2)return `<section class="bloque"><h3>Evolución</h3><p class="vacio">La gráfica aparece cuando haya al menos 2 exámenes entregados.</p></section>`;
+  return `<section class="bloque"><h3>Evolución</h3>${grafica(intentos)}<p class="aviso">${texto}</p></section>`;
 }
 
 // ---------- pantallas ----------
@@ -93,26 +119,49 @@ function pantallaMateria(cat,m){
     }));
     return {titulo:m.nombre,migas:[[m.nombre]],html:h};
   }
-  const r=resumenMateria(m);
+  const r=resumenMateria(m);const base='#/'+m.id;
+  const todos=r.temas.flatMap(x=>x.r.exs);
   let h=`<div class="cabecera">${r.media==null?insignia(null,'sin exámenes hechos'):insignia(r.media,'media '+n(r.media))}<span class="sub">${r.hechos} de ${r.total} exámenes hechos</span></div>`;
-  r.temas.forEach(({t,r:rt})=>{
-    const sub=`${esc(t.descripcion||'')}<br>${rt.hechos} de ${rt.total} hechos`+(rt.ultimo?` · último ${fechaCorta(rt.ultimo.f)}`:'');
-    h+=tarjeta('#/'+m.id+'/'+t.id,t.nombre,sub,rt.media==null?insignia(null):insignia(rt.media,n(rt.media)),m.color);
-  });
-  h+=tiposHtml(r.temas.flatMap(x=>x.r.exs.map(e=>e.d.historial)),'en '+m.nombre.toLowerCase());
+  h+=resumenTipos(agregarTipos(todos.map(x=>x.d.historial)));
+  h+=pestanas(base,pestanaActual,[['','Temas'],['progreso','Progreso']]);
+  if(pestanaActual==='progreso'){
+    h+=bloqueGrafica(intentosDe(todos),'Nota del primer intento de cada examen entregado, en orden de fecha.');
+    // por (contenido, tema): 3 peores y 3 mejores. Empates: primero los temas más recientes
+    const filas=[];r.temas.forEach(({t,r:rt},ti)=>agregarTipos(rt.exs.map(x=>x.d.historial)).forEach(x=>filas.push(Object.assign(x,{t,ti}))));
+    if(!filas.length)h+='<section class="bloque"><p class="vacio">Cuando haya exámenes entregados verás aquí qué repasar.</p></section>';
+    else{
+      const linea=x=>`<tr><td class="tn">${NOMBRES[x.tipo]||esc(x.tipo)}<a class="sub" href="${esc(base+'/'+x.t.id+'/progreso')}">${esc(x.t.nombre)}</a></td><td><div class="barra ${x.p<.5?'mal':x.p<.8?'medio':''}"><i style="width:${Math.round(x.p*100)}%"></i></div></td><td class="nota">${Math.round(x.p*100)}%</td></tr>`;
+      const peores=filas.filter(x=>x.p<1).sort((a,b)=>a.p-b.p||b.ti-a.ti).slice(0,3);
+      const mejores=filas.slice().sort((a,b)=>b.p-a.p||b.ti-a.ti||b.total-a.total).filter(x=>!peores.includes(x)).slice(0,3);
+      if(peores.length)h+=`<section class="bloque"><h3>📌 Para repasar</h3><table class="tipos repasar">${peores.map(linea).join('')}</table></section>`;
+      if(mejores.length)h+=`<section class="bloque"><h3>👍 Lo que mejor llevas</h3><table class="tipos mejores">${mejores.map(linea).join('')}</table></section>`;
+      h+='<p class="aviso">Con todos los intentos (primer intento, sin contar correcciones). El detalle completo está en el progreso de cada tema.</p>';
+    }
+  }else{
+    r.temas.forEach(({t,r:rt})=>{
+      const sub=`${esc(t.descripcion||'')}<br>${rt.hechos} de ${rt.total} hechos`+(rt.ultimo?` · último ${fechaCorta(rt.ultimo.f)}`:'');
+      h+=tarjeta(base+'/'+t.id,t.nombre,sub,rt.media==null?insignia(null):insignia(rt.media,n(rt.media)),m.color);
+    });
+  }
   return {titulo:m.nombre,migas:[[m.nombre]],html:h};
 }
 function pantallaTema(cat,m,t){
-  const r=resumenTema(m,t);
+  const r=resumenTema(m,t);const base='#/'+m.id+'/'+t.id;
   let h=`<div class="cabecera">${r.media==null?insignia(null,'sin exámenes hechos'):insignia(r.media,'media '+n(r.media))}<span class="sub">${r.hechos} de ${r.total} exámenes hechos</span></div>`;
-  r.exs.forEach(({e,d,nota})=>{
-    const u=ultimoDe(d);
-    let der,sub=esc(e.descripcion||'');
-    if(nota==null)der=insignia(null);
-    else{der=insignia(nota,n(nota)+(u&&u.notaCorr!=null?' → '+n(u.notaCorr):''));sub=`${fechaCorta(u.fecha)}${d.historial.length>1?' · '+d.historial.length+' intentos':''}<br>`+sub;}
-    h+=`<div class="${nota==null?'gris':''}">`+tarjeta('#/'+m.id+'/'+t.id+'/'+e.id,e.nombre,sub,der,m.color)+'</div>';
-  });
-  h+=tiposHtml(r.exs.map(x=>x.d.historial),'en este tema');
+  h+=resumenTipos(agregarTipos(r.exs.map(x=>x.d.historial)));
+  h+=pestanas(base,pestanaActual,[['','Exámenes'],['progreso','Progreso']]);
+  if(pestanaActual==='progreso'){
+    h+=bloqueGrafica(intentosDe(r.exs),'Nota del primer intento de cada examen entregado de este tema, en orden de fecha.');
+    h+=tiposHtml(r.exs.map(x=>x.d.historial),'en este tema')||'<section class="bloque"><p class="vacio">Cuando haya exámenes entregados verás aquí qué se te da mejor y peor.</p></section>';
+  }else{
+    r.exs.forEach(({e,d,nota})=>{
+      const u=ultimoDe(d);
+      let der,sub=esc(e.descripcion||'');
+      if(nota==null)der=insignia(null);
+      else{der=insignia(nota,n(nota)+(u&&u.notaCorr!=null?' → '+n(u.notaCorr):''));sub=`${fechaCorta(u.fecha)}${d.historial.length>1?' · '+d.historial.length+' intentos':''}<br>`+sub;}
+      h+=`<div class="${nota==null?'gris':''}">`+tarjeta(base+'/'+e.id,e.nombre,sub,der,m.color)+'</div>';
+    });
+  }
   return {titulo:t.nombre,migas:[[m.nombre,'#/'+m.id],[t.nombre]],html:h};
 }
 function pantallaExamen(cat,m,t,e){
@@ -133,9 +182,11 @@ function pantallaExamen(cat,m,t,e){
 }
 
 // ---------- enrutado ----------
-let CAT=null;
+let CAT=null;let pestanaActual='';
 function resolver(cat,hash){
   let p;try{p=decodeURIComponent(hash.replace(/^#\/?/,'')).split('/').filter(Boolean);}catch(e){p=[];}
+  pestanaActual='';
+  if(p.length&&p[p.length-1]==='progreso'){p.pop();pestanaActual='progreso';}
   if(!p.length)return pantallaResumen(cat);
   const m=cat.materias.find(x=>x.id===p[0]);if(!m)return pantallaResumen(cat);
   if(p.length===1||!m.evaluable)return pantallaMateria(cat,m);

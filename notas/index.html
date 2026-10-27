@@ -52,6 +52,11 @@
   .miniaturas figure{margin:0;background:#fafafa;border:1px solid #eee;border-radius:10px;overflow:hidden}
   .miniaturas img{width:100%;display:block;aspect-ratio:7/5;object-fit:contain;background:#fff}
   .miniaturas figcaption{font-size:.8rem;color:#555;padding:4px 6px;min-height:1em}
+  .resumen-tipos{background:#fff;border-radius:14px;padding:10px 14px;margin:0 0 12px;box-shadow:0 2px 8px rgba(0,0,0,.08);font-size:.92rem;display:flex;flex-direction:column;gap:4px}
+  .pestanas{display:flex;background:#fff;border-radius:12px;padding:4px;margin:0 0 14px;box-shadow:0 2px 8px rgba(0,0,0,.08);position:sticky;top:0;z-index:2}
+  .pestanas a{flex:1;text-align:center;padding:10px 6px;border-radius:9px;color:#555;text-decoration:none;font-weight:bold}
+  .pestanas a.activa{background:#2bb3d9;color:#fff}
+  table.tipos td.tn .sub{font-size:.8rem;text-decoration:underline;color:#777}
   .vacio{color:#777;text-align:center;padding:20px}
   .aviso{font-size:.85rem;color:#777;margin-top:10px}
   #extras .caja{background:#fff;border-radius:16px;margin:18px 0;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:8px solid #8a8a8a;padding:14px 16px}
@@ -61,7 +66,7 @@
 <header><nav class="migas" id="migas"><a href="../">Inicio</a> › <span>Mis notas</span></nav><h1 id="titulo">Mis notas</h1></header>
 <main><div id="contenido"><div class="vacio">Cargando…</div></div><div id="extras"></div></main>
 <script src="../sync.js?v=18"></script>
-<script src="notas.js?v=18"></script>
+<script src="notas.js?v=19"></script>
 <script src="copia.js?v=18"></script>
 <script src="../sw-registro.js"></script>
 </body>

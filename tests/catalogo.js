@@ -73,10 +73,23 @@ const store={
   await ir(d,'#/matematicas');ts=tarjetas(d);
   if(ts.length!==1||!/Temas 1 y 2.*2 de 7 hechos.*8,00/.test(txt(ts[0])))fallo('materia: tarjeta del tema: '+txt(ts[0]));
   if(ts[0].getAttribute('href')!=='#/matematicas/temas1-2-numeros-y-planos')fallo('materia: enlace al tema: '+ts[0].getAttribute('href'));
-  if(!/en matemáticas/.test(txt(d.querySelector('.bloque h3'))))fallo('materia: falta "mejor y peor" de la materia');
+  if(!d.querySelector('.pestanas a.activa')||txt(d.querySelector('.pestanas a.activa'))!=='Temas')fallo('materia: la pestaña activa debería ser Temas');
+  if(!/Lo que mejor llevas: Planos \(100%\).*Para repasar: Redondear \(33%\)/.test(txt(d.querySelector('.resumen-tipos'))))fallo('materia: línea de resumen: '+txt(d.querySelector('.resumen-tipos')));
+  if(d.querySelector('.tipos'))fallo('materia: la tabla de tipos no debe estar en la pestaña Temas');
   if(d.getElementById('extras').style.display!=='none')fallo('materia: nube y copia deberían ocultarse fuera del resumen');
   if(txt(d.getElementById('migas'))!=='Inicio › Mis notas › Matemáticas'||!d.querySelector('#migas a[href="#/"]'))fallo('materia: migas '+txt(d.getElementById('migas')));
-  if(!errores)console.log('  ✓ materia: temas con media, "mejor y peor" de la materia, migas y extras ocultos');
+  if(!errores)console.log('  ✓ materia: temas con media, línea de resumen, pestaña Temas activa, migas y extras ocultos');
+  await ir(d,'#/matematicas/progreso');
+  if(txt(d.querySelector('.pestanas a.activa'))!=='Progreso'||tarjetas(d).length)fallo('materia/progreso: pestaña o contenido incorrecto');
+  if(!d.querySelector('svg.grafica'))fallo('materia/progreso: falta la gráfica (hay 3 intentos)');
+  else if(/tras corregir/.test(txt(d.querySelector('.leyenda'))))fallo('materia/progreso: la gráfica de materia no debería mostrar correcciones');
+  const rep=[...d.querySelectorAll('table.repasar tr')].map(txt),mej=[...d.querySelectorAll('table.mejores tr')].map(txt);
+  if(rep.length<1||rep.length>3||!/^Redondear/.test(rep[0]))fallo('materia/progreso: para repasar: '+rep.join(' | '));
+  if(mej.length<1||mej.length>3||!/^Planos/.test(mej[0]))fallo('materia/progreso: lo mejor: '+mej.join(' | '));
+  if(rep.some(x=>mej.includes(x)))fallo('materia/progreso: un contenido aparece en repasar y en mejor a la vez');
+  if(!d.querySelector('table.repasar a[href="#/matematicas/temas1-2-numeros-y-planos/progreso"]'))fallo('materia/progreso: falta el enlace al progreso del tema');
+  if(txt(d.getElementById('migas'))!=='Inicio › Mis notas › Matemáticas')fallo('materia/progreso: migas '+txt(d.getElementById('migas')));
+  if(!errores)console.log('  ✓ materia/progreso: gráfica, "para repasar" y "lo mejor" con máximo 3, sin solaparse y con enlace al tema');
   // tema
   await ir(d,'#/matematicas/temas1-2-numeros-y-planos');ts=tarjetas(d);
   const t1=ts.find(a=>/Examen 1/.test(txt(a))),t2=ts.find(a=>/Examen 2/.test(txt(a))),t3=ts.find(a=>/Examen 3/.test(txt(a)));
@@ -85,7 +98,13 @@ const store={
   if(!/6,50 → 8,75/.test(txt(t3)))fallo('tema: examen3: '+txt(t3));
   if(!/sin hacer/.test(txt(t2))||!t2.parentElement.classList.contains('gris'))fallo('tema: examen2 debería estar en gris y "sin hacer"');
   if(!/media 8,00/.test(txt(d.querySelector('.cabecera'))))fallo('tema: media de cabecera');
-  const pct=[...d.querySelectorAll('.tipos td.nota')].map(t=>t.textContent);if(!pct.includes('100%')||!pct.includes('33%'))fallo('tema: porcentajes por tipo: '+pct.join(','));
+  if(d.querySelector('.tipos'))fallo('tema: la tabla de tipos no debe estar en la pestaña Exámenes');
+  if(!d.querySelector('.resumen-tipos'))fallo('tema: falta la línea de resumen');
+  await ir(d,'#/matematicas/temas1-2-numeros-y-planos/progreso');
+  const pct=[...d.querySelectorAll('.tipos td.nota')].map(t=>t.textContent);if(!pct.includes('100%')||!pct.includes('33%'))fallo('tema/progreso: porcentajes por tipo: '+pct.join(','));
+  if(!d.querySelector('svg.grafica')||tarjetas(d).length)fallo('tema/progreso: falta la gráfica o sobran tarjetas');
+  if(txt(d.getElementById('migas'))!=='Inicio › Mis notas › Matemáticas › Temas 1 y 2 · Números y planos')fallo('tema/progreso: migas');
+  await ir(d,'#/matematicas/temas1-2-numeros-y-planos');
   if(txt(d.getElementById('migas'))!=='Inicio › Mis notas › Matemáticas › Temas 1 y 2 · Números y planos')fallo('tema: migas '+txt(d.getElementById('migas')));
   if(!errores)console.log('  ✓ tema: 7 exámenes con nota, intentos, "sin hacer" en gris, tipos y migas');
   // examen con 2 intentos: gráfica
@@ -107,16 +126,28 @@ const store={
   if(!d.querySelector('.arte a.boton[href="/noatests/arts/examen1/"]'))fallo('arts: falta el botón para abrir el examen');
   if(!errores)console.log('  ✓ Arts: miniaturas de los dibujos guardados y botón para abrir');
   // direcciones raras: vuelven a un sitio válido sin romper
-  for(const h of ['#/no-existe','#/matematicas/no-existe','#/matematicas/temas1-2-numeros-y-planos/examen99','#/arts/lo-que-sea','#%E0%A4%A','#/matematicas/temas1-2-numeros-y-planos/examen1/extra']){
+  for(const h of ['#/progreso','#/arts/progreso','#/matematicas/progreso/progreso','#/no-existe','#/matematicas/no-existe','#/matematicas/temas1-2-numeros-y-planos/examen99','#/arts/lo-que-sea','#%E0%A4%A','#/matematicas/temas1-2-numeros-y-planos/examen1/extra']){
     try{await ir(d,h);}catch(e){fallo('dirección "'+h+'" lanza error: '+e.message);continue;}
     if(!tarjetas(d).length&&!d.querySelector('.bloque')&&!d.querySelector('.cifras'))fallo('dirección "'+h+'" deja la pantalla vacía');
   }
   if(!errores)console.log('  ✓ direcciones inexistentes o mal formadas llevan a la pantalla válida más cercana');
+  // muchos contenidos: tope de 3 por bloque
+  {
+    const st={};const tipos={};['leer-escribir','descomponer','valor-posicion','recta','comparar','ordenar','redondear','estimar','plano','traslacion'].forEach((t,i)=>tipos[t]={bien:i,total:10});
+    st['noatests-mates:'+R+'examen4/:historial']=JSON.stringify([{fecha:'2026-10-20T10:00:00Z',nota1:5,notaCorr:null,tipos}]);
+    const d2=await abrir('notas/index.html',st);await ir(d2,'#/matematicas/progreso');
+    const rep=[...d2.querySelectorAll('table.repasar tr')].map(txt),mej=[...d2.querySelectorAll('table.mejores tr')].map(txt);
+    if(rep.length!==3||mej.length!==3)fallo('con 10 contenidos: '+rep.length+' para repasar y '+mej.length+' mejores (deben ser 3 y 3)');
+    else if(!/^Leer y escribir números.*0%/.test(rep[0])||!/^Traslaciones.*90%/.test(mej[0]))fallo('con 10 contenidos: orden incorrecto: '+rep[0]+' / '+mej[0]);
+    else console.log('  ✓ con 10 contenidos la materia muestra solo 3 para repasar y 3 mejores, bien ordenados');
+  }
   // sin datos
   d=await abrir('notas/index.html',{});
   if(!/sin exámenes hechos/.test(d.body.textContent))fallo('notas vacías: resumen');
   await ir(d,'#/matematicas/temas1-2-numeros-y-planos');if(tarjetas(d).filter(a=>/sin hacer/.test(txt(a))).length!==7)fallo('notas vacías: tema');
-  if(d.querySelector('.tipos'))fallo('notas vacías: no debería haber tabla de tipos');
+  if(d.querySelector('.tipos')||d.querySelector('.resumen-tipos'))fallo('notas vacías: no debería haber tabla ni resumen de tipos');
+  await ir(d,'#/matematicas/progreso');if(d.querySelector('svg.grafica')||!/al menos 2 exámenes/.test(d.body.textContent)||!/verás aquí qué repasar/.test(d.body.textContent))fallo('notas vacías: progreso de materia');
+  await ir(d,'#/matematicas/temas1-2-numeros-y-planos/progreso');if(d.querySelector('svg.grafica')||!/verás aquí qué se te da mejor/.test(d.body.textContent))fallo('notas vacías: progreso de tema');
   if(!errores)console.log('  ✓ sin datos: todo "sin hacer" y sin tablas vacías');
   console.log('exportar / importar');
   {
