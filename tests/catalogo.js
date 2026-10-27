@@ -25,6 +25,7 @@ function abrir(rel,store){
   const url='https://x.test/noatests/'+rel.replace(/index\.html$/,'');
   const dom=new JSDOM(html,{url,runScripts:'outside-only',pretendToBeVisual:true});const w=dom.window;
   Object.defineProperty(w,'localStorage',{value:{getItem:k=>store[k]??null,setItem:(k,v)=>store[k]=String(v),removeItem:k=>delete store[k],key:i=>Object.keys(store)[i],get length(){return Object.keys(store).length;}}});
+  w.scrollTo=()=>{};
   w.fetch=u=>{const p=new URL(u,url).pathname.replace(/^\/noatests\//,'');return Promise.resolve({json:()=>Promise.resolve(JSON.parse(fs.readFileSync(path.join(raiz,p),'utf8')))});};
   [...dom.window.document.querySelectorAll('script[src]')].forEach(s=>{const p=new URL(s.getAttribute('src'),url).pathname.replace(/^\/noatests\//,'').replace(/\?.*$/,'');w.eval(fs.readFileSync(path.join(raiz,p),'utf8'));});
   return new Promise(res=>setTimeout(()=>res(w.document),50));
@@ -54,27 +55,69 @@ const store={
   if(!errores)console.log('  ✓ tema: 7 exámenes, notas 9,50 y 6,50 → 8,75');
   d=await abrir('arts/index.html',store);if(d.querySelectorAll('a.examen').length!==1)fallo('arts: lista incorrecta');
 
-  console.log('Mis notas');
+  console.log('Mis notas (pantallas)');
+  const ir=async(d,hash)=>{d.defaultView.location.hash=hash;d.defaultView.__noatestsNotas.pintar();await new Promise(r=>setTimeout(r,10));};
+  const tarjetas=d=>[...d.querySelectorAll('#contenido a.tarjeta')];
+  const txt=e=>e?e.textContent.replace(/\s+/g,' ').trim():'(nada)';
   d=await abrir('notas/index.html',store);
-  const secs=[...d.querySelectorAll('section.materia')];
-  if(secs.length!==2)fallo('notas: '+secs.length+' materias en vez de 2');
-  const mat=secs[0];
-  if(!/Matemáticas/.test(mat.querySelector('h2').textContent))fallo('notas: primera materia no es Matemáticas');
-  const mediaM=mat.querySelector('h2 .media').textContent;if(!/media 8,00/.test(mediaM))fallo('notas: media de materia = '+mediaM+' (esperado 8,00 = (9,5+6,5)/2)');
-  const tema=mat.querySelector('details.tema');if(!tema||!tema.open)fallo('notas: el tema no está abierto');
-  const mediaT=tema.querySelector('summary .media').textContent;if(!/media 8,00 · 2 de 7/.test(mediaT))fallo('notas: media del tema = '+mediaT);
-  const filas=[...tema.querySelectorAll('tbody tr, table tr')].filter(tr=>tr.querySelector('td'));
-  const f1=filas.find(tr=>/Examen 1/.test(tr.textContent)),f3=filas.find(tr=>/Examen 3/.test(tr.textContent)),f2=filas.find(tr=>/Examen 2/.test(tr.textContent));
-  if(!f1||!/9,50/.test(f1.textContent)||!/2 intentos/.test(f1.textContent))fallo('notas: fila examen1: '+(f1&&f1.textContent.replace(/\s+/g,' ')));
-  if(!f3||!/6,50 → 8,75/.test(f3.textContent))fallo('notas: fila examen3: '+(f3&&f3.textContent.replace(/\s+/g,' ')));
-  if(!f2||!f2.classList.contains('sin')||!/sin hacer/.test(f2.textContent))fallo('notas: examen2 debería aparecer como sin hacer');
-  const tipos=tema.querySelector('h3');if(!tipos||!/en este tema/.test(tipos.textContent))fallo('notas: falta la tabla de tipos por tema');
-  const pct=[...tema.querySelectorAll('td.nota')].map(t=>t.textContent);if(!pct.includes('100%')||!pct.includes('33%'))fallo('notas: porcentajes por tipo incorrectos: '+pct.join(','));
-  const arts=secs[1];if(!/Arts/.test(arts.querySelector('h2').textContent)||!/Examen 1/.test(arts.querySelector('.arts').textContent))fallo('notas: sección Arts incorrecta');
-  if(!errores)console.log('  ✓ agrupado por materia y tema, medias 8,00, examen sin hacer listado, tipos por tema, Arts sin nota');
+  // resumen
+  let ts=tarjetas(d);
+  if(ts.length!==2)fallo('resumen: '+ts.length+' materias en vez de 2');
+  if(!/Matemáticas.*2 de 7 exámenes hechos.*media 8,00/.test(txt(ts[0])))fallo('resumen: tarjeta de mates: '+txt(ts[0]));
+  if(!/último: Examen 3, 18 oct/.test(txt(ts[0])))fallo('resumen: no indica el último examen hecho: '+txt(ts[0]));
+  if(!/Arts.*1 de 1 con dibujos.*sin nota/.test(txt(ts[1])))fallo('resumen: tarjeta de Arts: '+txt(ts[1]));
+  if(d.getElementById('extras').style.display==='none'||!d.getElementById('btn-exportar'))fallo('resumen: faltan nube y exportar/importar');
+  if(d.getElementById('titulo').textContent!=='Mis notas'||/Mis notas<\/a>/.test(d.getElementById('migas').innerHTML))fallo('resumen: título o migas incorrectos');
+  if(!errores)console.log('  ✓ resumen: una tarjeta por materia con media, hechos y último; nube y copia visibles');
+  // materia
+  await ir(d,'#/matematicas');ts=tarjetas(d);
+  if(ts.length!==1||!/Temas 1 y 2.*2 de 7 hechos.*8,00/.test(txt(ts[0])))fallo('materia: tarjeta del tema: '+txt(ts[0]));
+  if(ts[0].getAttribute('href')!=='#/matematicas/temas1-2-numeros-y-planos')fallo('materia: enlace al tema: '+ts[0].getAttribute('href'));
+  if(!/en matemáticas/.test(txt(d.querySelector('.bloque h3'))))fallo('materia: falta "mejor y peor" de la materia');
+  if(d.getElementById('extras').style.display!=='none')fallo('materia: nube y copia deberían ocultarse fuera del resumen');
+  if(txt(d.getElementById('migas'))!=='Inicio › Mis notas › Matemáticas'||!d.querySelector('#migas a[href="#/"]'))fallo('materia: migas '+txt(d.getElementById('migas')));
+  if(!errores)console.log('  ✓ materia: temas con media, "mejor y peor" de la materia, migas y extras ocultos');
+  // tema
+  await ir(d,'#/matematicas/temas1-2-numeros-y-planos');ts=tarjetas(d);
+  const t1=ts.find(a=>/Examen 1/.test(txt(a))),t2=ts.find(a=>/Examen 2/.test(txt(a))),t3=ts.find(a=>/Examen 3/.test(txt(a)));
+  if(ts.length!==7)fallo('tema: '+ts.length+' exámenes en vez de 7');
+  if(!/9,50.*/.test(txt(t1))||!/2 intentos/.test(txt(t1)))fallo('tema: examen1: '+txt(t1));
+  if(!/6,50 → 8,75/.test(txt(t3)))fallo('tema: examen3: '+txt(t3));
+  if(!/sin hacer/.test(txt(t2))||!t2.parentElement.classList.contains('gris'))fallo('tema: examen2 debería estar en gris y "sin hacer"');
+  if(!/media 8,00/.test(txt(d.querySelector('.cabecera'))))fallo('tema: media de cabecera');
+  const pct=[...d.querySelectorAll('.tipos td.nota')].map(t=>t.textContent);if(!pct.includes('100%')||!pct.includes('33%'))fallo('tema: porcentajes por tipo: '+pct.join(','));
+  if(txt(d.getElementById('migas'))!=='Inicio › Mis notas › Matemáticas › Temas 1 y 2 · Números y planos')fallo('tema: migas '+txt(d.getElementById('migas')));
+  if(!errores)console.log('  ✓ tema: 7 exámenes con nota, intentos, "sin hacer" en gris, tipos y migas');
+  // examen con 2 intentos: gráfica
+  await ir(d,'#/matematicas/temas1-2-numeros-y-planos/examen1');
+  const filasI=[...d.querySelectorAll('table.intentos tr')].filter(tr=>tr.querySelector('td'));
+  if(filasI.length!==2)fallo('examen1: '+filasI.length+' intentos en vez de 2');
+  if(!/9,50/.test(txt(filasI[0]))||!/7,00.*8,50/.test(txt(filasI[1])))fallo('examen1: orden o notas de los intentos: '+filasI.map(txt).join(' | '));
+  if(!d.querySelector('svg.grafica'))fallo('examen1: falta la gráfica con 2 intentos');
+  else{const svg=d.querySelector('svg.grafica').outerHTML;if(/NaN|undefined/.test(svg))fallo('examen1: la gráfica tiene NaN');if((svg.match(/<circle/g)||[]).length!==3)fallo('examen1: la gráfica debería tener 3 puntos (2 intentos + 1 corrección)');}
+  const cif=txt(d.querySelector('.cifras'));if(!/Último\s*9,50.*Mejor\s*9,50.*Intentos\s*2/.test(cif))fallo('examen1: cifras '+cif);
+  if(d.querySelector('.cabecera a.boton').getAttribute('href')!==R+'examen1/')fallo('examen1: el botón no abre el examen');
+  if(!errores)console.log('  ✓ examen: intentos del más reciente al más antiguo, cifras, gráfica sin NaN y botón para abrirlo');
+  // examen con 1 intento: sin gráfica; sin hacer: mensaje
+  await ir(d,'#/matematicas/temas1-2-numeros-y-planos/examen3');if(d.querySelector('svg.grafica'))fallo('examen3: con 1 intento no debe haber gráfica');
+  await ir(d,'#/matematicas/temas1-2-numeros-y-planos/examen2');if(!/Todavía no has hecho este examen/.test(d.body.textContent)||!/Hacer el examen/.test(txt(d.querySelector('a.boton'))))fallo('examen2: estado sin hacer');
+  if(!errores)console.log('  ✓ examen: sin gráfica con 1 intento; "sin hacer" con botón para hacerlo');
+  // Arts: miniaturas
+  await ir(d,'#/arts');const imgs=d.querySelectorAll('.miniaturas img');if(imgs.length!==1||imgs[0].getAttribute('src')!=='data:x')fallo('arts: miniaturas '+imgs.length);
+  if(!d.querySelector('.arte a.boton[href="/noatests/arts/examen1/"]'))fallo('arts: falta el botón para abrir el examen');
+  if(!errores)console.log('  ✓ Arts: miniaturas de los dibujos guardados y botón para abrir');
+  // direcciones raras: vuelven a un sitio válido sin romper
+  for(const h of ['#/no-existe','#/matematicas/no-existe','#/matematicas/temas1-2-numeros-y-planos/examen99','#/arts/lo-que-sea','#%E0%A4%A','#/matematicas/temas1-2-numeros-y-planos/examen1/extra']){
+    try{await ir(d,h);}catch(e){fallo('dirección "'+h+'" lanza error: '+e.message);continue;}
+    if(!tarjetas(d).length&&!d.querySelector('.bloque')&&!d.querySelector('.cifras'))fallo('dirección "'+h+'" deja la pantalla vacía');
+  }
+  if(!errores)console.log('  ✓ direcciones inexistentes o mal formadas llevan a la pantalla válida más cercana');
   // sin datos
   d=await abrir('notas/index.html',{});
-  if(!/sin exámenes hechos/.test(d.body.textContent)||!/sin hacer/.test(d.body.textContent))fallo('notas vacías: no muestra el estado inicial');else console.log('  ✓ sin datos: lista completa en "sin hacer"');
+  if(!/sin exámenes hechos/.test(d.body.textContent))fallo('notas vacías: resumen');
+  await ir(d,'#/matematicas/temas1-2-numeros-y-planos');if(tarjetas(d).filter(a=>/sin hacer/.test(txt(a))).length!==7)fallo('notas vacías: tema');
+  if(d.querySelector('.tipos'))fallo('notas vacías: no debería haber tabla de tipos');
+  if(!errores)console.log('  ✓ sin datos: todo "sin hacer" y sin tablas vacías');
   console.log('exportar / importar');
   {
     const st={};const k1='noatests-mates:'+R+'examen1/',h1=k1+':historial';

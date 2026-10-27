@@ -43,7 +43,7 @@ function importar(archivo){
   r.readAsText(archivo);
 }
 // ---- Conexión con la nube ----
-const nube=document.createElement('div');nube.className='materia';nube.style.cssText='border-left-color:#4caf50;padding:14px 16px';
+const nube=document.createElement('div');nube.className='caja';nube.style.borderLeftColor='#4caf50';
 function pintarNube(){
   const S=window.noatestsSync;if(!S){nube.style.display='none';return;}
   if(S.activo()){
@@ -63,18 +63,16 @@ function pintarNube(){
   }
 }
 
-const caja=document.createElement('div');caja.className='materia';caja.style.cssText='border-left-color:#8a8a8a;padding:14px 16px';
+const caja=document.createElement('div');caja.className='caja';
 caja.innerHTML='<b>Copiar a otro dispositivo</b><p style="margin:6px 0 10px;color:#666;font-size:.9rem">Exporta las notas a un archivo y ábrelo en el otro móvil o tablet con "Importar". Se juntan con las que ya haya; no se borra nada.</p>'+
   '<button id="btn-exportar" style="border:none;border-radius:10px;padding:10px 14px;background:#2bb3d9;color:#fff;font-size:1rem;cursor:pointer;margin-right:8px">⬇ Exportar</button>'+
   '<label style="display:inline-block;border-radius:10px;padding:10px 14px;background:#f7a823;color:#fff;font-size:1rem;cursor:pointer">⬆ Importar<input type="file" accept=".json,application/json" style="display:none" id="inp-importar"></label>';
-function colocar(){
-  const main=document.querySelector('main');if(main.contains(caja))return;
-  main.appendChild(nube);main.appendChild(caja);pintarNube();
+// Las dos cajas viven en #extras, que notas.js solo muestra en la pantalla de resumen
+(function colocar(){
+  const ex=document.getElementById('extras');
+  ex.appendChild(nube);ex.appendChild(caja);pintarNube();
   document.getElementById('btn-exportar').addEventListener('click',exportar);
   document.getElementById('inp-importar').addEventListener('change',e=>{if(e.target.files[0])importar(e.target.files[0]);});
-}
-// notas.js repinta main cuando llega el catálogo: colocar la caja después de cada repintado
-new MutationObserver(()=>{if(!document.querySelector('main').contains(caja))colocar();}).observe(document.querySelector('main'),{childList:true});
-colocar();
+})();
 window.__noatestsFusionar=fusionar; // para los tests
 })();

@@ -197,11 +197,11 @@ console.log('6. Mis notas y exportar/importar: esquinas');
   // examen en localStorage que ya no está en el catálogo: no rompe la página
   const st={};st['noatests-mates:/noatests/matematicas/tema-borrado/examen9/:historial']=JSON.stringify([{fecha:'2026-01-01T00:00:00.000Z',nota1:5,notaCorr:null}]);
   let w=abrir('notas/index.html',st);await wait(120);let d=w.document;
-  check(d.querySelectorAll('section.materia').length===2&&!/Cargando/.test(d.body.textContent),'un examen guardado que ya no existe en el catálogo no rompe Mis notas');
+  check(d.querySelectorAll('#contenido a.tarjeta').length===2&&!/Cargando/.test(d.body.textContent),'un examen guardado que ya no existe en el catálogo no rompe Mis notas');
   // media con un solo examen y nota con cuartos
   const st2={};st2['noatests-mates:'+BASE+'examen2/:historial']=JSON.stringify([{fecha:'2026-01-01T00:00:00.000Z',nota1:7.75,notaCorr:null}]);st2['noatests-mates:'+BASE+'examen2/']=JSON.stringify({fecha:'2026-01-01T00:00:00.000Z',nota1:7.75,respuestas:{}});
-  w=abrir('notas/index.html',st2);await wait(120);d=w.document;
-  check(/media 7,75 · 1 de 7/.test(d.querySelector('details.tema summary').textContent),'la media muestra cuartos (7,75) y "1 de 7"');
+  w=abrir('notas/index.html',st2);await wait(120);d=w.document;w.location.hash='#/matematicas';w.__noatestsNotas.pintar();
+  check(/1 de 7 hechos/.test(d.querySelector('a.tarjeta').textContent)&&/7,75/.test(d.querySelector('a.tarjeta').textContent),'la media muestra cuartos (7,75) y "1 de 7"');
   // importar archivo inválido: nada cambia
   w=abrir('notas/index.html',st2);await wait(120);
   const fus=w.__noatestsFusionar;const copia=JSON.stringify(st2);

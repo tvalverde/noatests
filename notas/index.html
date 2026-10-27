@@ -8,46 +8,61 @@
 <meta name="theme-color" content="#f7a823">
 <style>
   body{margin:0;font-family:"Segoe UI",Arial,sans-serif;background:#fff7e6;color:#333}
-  header{background:#2bb3d9;color:#fff;padding:24px 16px;text-align:center}
-  header h1{margin:0;font-size:1.8rem}
+  header{background:#2bb3d9;color:#fff;padding:20px 16px;text-align:center}
+  header h1{margin:0;font-size:1.6rem}
   nav.migas{font-size:.9rem;margin-bottom:8px}
   nav.migas a{color:#fff;text-decoration:underline}
+  nav.migas span{opacity:.85}
   main{max-width:720px;margin:0 auto;padding:16px}
-  .materia{background:#fff;border-radius:16px;margin-bottom:18px;box-shadow:0 2px 8px rgba(0,0,0,.08);overflow:hidden;border-left:8px solid #2bb3d9}
-  .materia>h2{margin:0;padding:14px 16px;font-size:1.25rem;display:flex;justify-content:space-between;align-items:center}
-  .media{font-size:1rem;background:#fff3cd;border-radius:12px;padding:3px 10px;white-space:nowrap}
-  .media.sin{background:#eee;color:#777;font-weight:normal;font-size:.85rem}
-  details.tema{border-top:1px solid #eee}
-  details.tema>summary{list-style:none;cursor:pointer;padding:12px 16px;font-weight:bold;display:flex;justify-content:space-between;align-items:center;gap:8px}
-  details.tema>summary::-webkit-details-marker{display:none}
-  details.tema>summary::before{content:"▸";margin-right:8px;color:#999;transition:transform .15s}
-  details.tema[open]>summary::before{transform:rotate(90deg)}
-  details.tema>summary .sub{font-weight:normal;color:#777;font-size:.85rem;display:block}
-  .cuerpo{padding:0 16px 14px}
+  .tarjeta{display:flex;align-items:center;gap:10px;background:#fff;border-radius:16px;padding:14px 12px 14px 16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:8px solid #2bb3d9;text-decoration:none;color:#333}
+  .tarjeta:active{background:#f3fbfe}
+  .tarjeta .tt{flex:1;min-width:0}
+  .tarjeta b{font-size:1.15rem;display:block}
+  .sub{color:#777;font-size:.88rem;display:block;margin-top:3px;line-height:1.35}
+  .flecha{font-size:1.6rem;color:#bbb;line-height:1}
+  .gris .tarjeta{opacity:.7}
+  .media{font-size:.95rem;font-weight:bold;background:#fff3cd;border-radius:12px;padding:4px 10px;white-space:nowrap}
+  .media.sin{background:#eee;color:#777;font-weight:normal;font-size:.82rem}
+  .cabecera{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin:2px 0 14px}
+  .cabecera .sub{margin:0;flex:1;min-width:180px}
+  .boton{display:inline-block;background:#f7a823;color:#fff;text-decoration:none;border-radius:10px;padding:10px 14px;font-size:1rem;white-space:nowrap}
+  .bloque{background:#fff;border-radius:16px;padding:14px 16px;margin:14px 0;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+  .bloque h3{font-size:1rem;color:#555;margin:0 0 8px}
+  .cifras{display:flex;gap:10px}
+  .cifras div{flex:1;background:#fff;border-radius:14px;padding:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+  .cifras span{display:block;color:#777;font-size:.85rem}
+  .cifras b{font-size:1.7rem}
   table{width:100%;border-collapse:collapse;font-size:.95rem}
   th,td{padding:8px 6px;text-align:left;border-bottom:1px solid #eee;vertical-align:middle}
   th{color:#777;font-weight:normal;font-size:.85rem}
   td.nota{font-weight:bold;white-space:nowrap}
-  td.fecha{color:#777;font-size:.85rem;white-space:nowrap}
-  tr.sin td{color:#aaa}
-  tr.sin td.nota{font-weight:normal}
-  td a{color:#333;text-decoration:none}
-  tr:not(.sin) td a{text-decoration:underline}
-  h3{font-size:.95rem;color:#555;margin:16px 0 6px}
+  td.fecha{color:#555;font-size:.9rem}
+  td.tn{width:45%}
   .barra{background:#eee;border-radius:6px;height:12px;overflow:hidden}
   .barra i{display:block;height:100%;background:#4caf50}
   .barra.mal i{background:#e4452c}.barra.medio i{background:#f7a823}
+  .grafica{width:100%;max-width:520px;height:auto;display:block;margin:0 auto}
+  .leyenda{font-size:.85rem;color:#777;margin:4px 0 0;text-align:center}
+  .pt{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:middle;margin:0 4px 0 10px}
+  .pt.hueco{border:2.5px solid #4caf50;width:8px;height:8px}
+  .arte{border-left:8px solid #a86bd6}
+  .arte .cab{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .arte .cab b{font-size:1.15rem}
+  .miniaturas{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-top:10px}
+  .miniaturas figure{margin:0;background:#fafafa;border:1px solid #eee;border-radius:10px;overflow:hidden}
+  .miniaturas img{width:100%;display:block;aspect-ratio:7/5;object-fit:contain;background:#fff}
+  .miniaturas figcaption{font-size:.8rem;color:#555;padding:4px 6px;min-height:1em}
   .vacio{color:#777;text-align:center;padding:20px}
   .aviso{font-size:.85rem;color:#777;margin-top:10px}
-  .arts{padding:14px 16px;color:#555}
+  #extras .caja{background:#fff;border-radius:16px;margin:18px 0;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:8px solid #8a8a8a;padding:14px 16px}
 </style>
 </head>
 <body>
-<header><nav class="migas"><a href="../">Inicio</a> › <span>Mis notas</span></nav><h1>Mis notas</h1></header>
-<main id="contenido"><div class="vacio">Cargando…</div></main>
-<script src="../sync.js?v=17"></script>
-<script src="notas.js"></script>
-<script src="copia.js"></script>
+<header><nav class="migas" id="migas"><a href="../">Inicio</a> › <span>Mis notas</span></nav><h1 id="titulo">Mis notas</h1></header>
+<main><div id="contenido"><div class="vacio">Cargando…</div></div><div id="extras"></div></main>
+<script src="../sync.js?v=18"></script>
+<script src="notas.js?v=18"></script>
+<script src="copia.js?v=18"></script>
 <script src="../sw-registro.js"></script>
 </body>
 </html>
