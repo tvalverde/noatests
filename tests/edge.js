@@ -214,14 +214,14 @@ console.log('6. Mis notas y exportar/importar: esquinas');
 // =====================================================================
 console.log('7. Reglas generales de los exámenes');
 {
-  const ex=fs.readdirSync(path.join(raiz,'matematicas/temas1-2-numeros-y-planos')).filter(f=>/^examen\d+$/.test(f));
+  const ex=[];fs.readdirSync(path.join(raiz,'matematicas'),{withFileTypes:true}).filter(t=>t.isDirectory()).forEach(t=>fs.readdirSync(path.join(raiz,'matematicas',t.name)).filter(f=>/^examen\d+$/.test(f)).forEach(f=>ex.push(t.name+'/'+f)));
   let todos=true;
   for(const e of ex){
-    const html=fs.readFileSync(path.join(raiz,'matematicas/temas1-2-numeros-y-planos',e,'index.html'),'utf8');
+    const html=fs.readFileSync(path.join(raiz,'matematicas',e,'index.html'),'utf8');
     const dom=new JSDOM(html);const d=dom.window.document;
     // cada pregunta tiene al menos un hueco y un enunciado no vacío
     [...d.querySelectorAll('.pregunta')].forEach((q,i)=>{
-      const huecos=q.querySelectorAll('input[data-r],.grupo,.grid').length;if(!huecos){fallo(e+' pregunta '+(i+1)+' sin huecos');todos=false;}
+      const huecos=q.querySelectorAll('input[data-r],.grupo,.grid').length+[...q.querySelectorAll('.cuenta')].reduce((n,c)=>n+c.dataset.mostrado.split('?').length-1,0);if(!huecos){fallo(e+' pregunta '+(i+1)+' sin huecos');todos=false;}
       if(!q.querySelector('h2')||q.querySelector('h2').textContent.trim().length<10){fallo(e+' pregunta '+(i+1)+' sin enunciado');todos=false;}
       // ninguna respuesta numérica sin punto de millar cuando debe llevarlo
       q.querySelectorAll('input[data-r]').forEach(inp=>{const r=inp.dataset.r;if(/^\d{4,}$/.test(r)){fallo(e+' pregunta '+(i+1)+': respuesta "'+r+'" sin punto de millar');todos=false;}});

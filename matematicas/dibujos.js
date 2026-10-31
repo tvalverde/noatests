@@ -8,6 +8,12 @@
    <div class="tabla-posiciones" data-cifras="2,1,7,4"></div>                    → tabla UM C D U
    <div class="venn" data-a="Plano 1" data-b="Plano 2" data-solo-a="…" data-comun="…" data-solo-b="…"></div>
    <div class="barras" data-valores="Juanita=788;Berta=783" data-unidad="m"></div> → comparar alturas (montañas); data-tipo="distancia" → distancias al bosque; data-tipo="cantidad" → barras horizontales simples
+   <div class="cuenta" data-op="+" data-numeros="2.638|795" data-resultado="3.433" data-mostrado="2.638|795|????"></div>
+        → suma o resta en vertical con cabecera UM C D U. En data-mostrado cada "?" es un hueco para una cifra (su respuesta es la cifra real).
+          data-mal="1": el resultado mostrado está mal a propósito (para buscar el error)
+   <div class="modelo-barras" data-total="345" data-partes="176|?" data-etiquetas="Recorrido|Falta"></div> → modelo de barras (todo arriba, partes abajo; "?" = lo que se busca)
+   <div class="dinero" data-valores="20,10,5,2,1"></div>                         → billetes y monedas de euro
+   <div class="recorrido" data-hecho="2.620" data-total="5.703" data-unidad="m"></div> → carrera: lo recorrido y la meta
 */
 (function(){
 'use strict';
@@ -212,6 +218,71 @@ function dibujarBarras(div){
   div.appendChild(s);
 }
 
+// ---------- Cuenta en vertical (suma o resta) ----------
+function dibujarCuenta(div){
+  const nums=div.dataset.numeros.split('|');const filas=nums.concat([div.dataset.resultado]);
+  const most=div.dataset.mostrado.split('|');const cif=t=>String(t).replace(/\./g,'');
+  const n=Math.max(...filas.map(x=>cif(x).length),...most.map(x=>cif(x).length));
+  const cab=['UM','C','D','U'].slice(-n);while(cab.length<n)cab.unshift('DM');
+  const col={UM:'#d4a900',C:'#4caf50',D:'#e4452c',U:'#2b6cd9',DM:'#8a4fc9'};
+  const t=document.createElement('table');let h='<tr><td class="signo"></td>'+cab.map(c=>`<th style="background:${col[c]}">${c}</th>`).join('')+'</tr>';
+  most.forEach((m,i)=>{const real=cif(filas[i]).padStart(n,' '),ver=cif(m).padStart(n,' ');
+    h+=`<tr class="${i===most.length-1?'res':''}"><td class="signo">${i===nums.length-1?(div.dataset.op==='-'?'−':'+'):''}</td>`;
+    for(let k=0;k<n;k++){const c=ver[k];h+='<td>'+(c==='?'?`<input type="text" inputmode="numeric" class="cifra" data-r="${real[k]}">`:c===' '?'':c)+'</td>';}
+    h+='</tr>';});
+  t.innerHTML=h;div.appendChild(t);
+}
+
+// ---------- Modelo de barras ----------
+function dibujarModeloBarras(div){
+  const partes=div.dataset.partes.split('|');const tot=div.dataset.total;const et=(div.dataset.etiquetas||'').split('|');
+  const conocidas=partes.filter(p=>p!=='?').map(num);
+  const valT=tot==='?'?conocidas.reduce((a,b)=>a+b,0)+0:num(tot);
+  const vals=partes.map(p=>p==='?'?Math.max(valT-conocidas.reduce((a,b)=>a+b,0),valT*.15):num(p));
+  const suma=vals.reduce((a,b)=>a+b,0)||1;const W=560,X=20,AN=520,H=et.some(x=>x)?170:130;const s=svg(W,H);
+  el('rect',{x:X,y:14,width:AN,height:46,rx:6,fill:'#c8e6c9',stroke:'#2e7d32','stroke-width':2},s);
+  texto(s,X+AN/2,46,tot==='?'?'?':tot,{'font-size':26,'font-weight':'bold',fill:tot==='?'?'#e4452c':'#333'});
+  let x=X;const colores=['#fff59d','#b3e5fc','#f8bbd0','#d1c4e9'];
+  partes.forEach((p,i)=>{const w=AN*vals[i]/suma;el('rect',{x,y:72,width:w,height:46,rx:6,fill:colores[i%4],stroke:'#555','stroke-width':2},s);
+    texto(s,x+w/2,104,p,{'font-size':26,'font-weight':'bold',fill:p==='?'?'#e4452c':'#333'});
+    if(et[i])texto(s,x+w/2,152,et[i],{'font-size':27,fill:'#555'});x+=w;});
+  div.appendChild(s);
+}
+
+// ---------- Billetes y monedas ----------
+function dibujarDinero(div){
+  const v=div.dataset.valores.split(',').map(Number);const billetes=v.filter(x=>x>=5),monedas=v.filter(x=>x<5);
+  const W=600;const filasB=Math.ceil(billetes.length/4);const H=filasB*84+(monedas.length?96:0)+10;const s=svg(W,H);
+  const colB={5:'#b0bec5',10:'#ef9a9a',20:'#90caf9',50:'#ffcc80',100:'#a5d6a7'};
+  billetes.forEach((b,i)=>{const x=10+(i%4)*146,y=8+Math.floor(i/4)*84;
+    el('rect',{x,y,width:136,height:72,rx:8,fill:colB[b]||'#ddd',stroke:'#555','stroke-width':2},s);
+    el('circle',{cx:x+30,cy:y+36,r:16,fill:'#fff',opacity:.6},s);texto(s,x+88,y+46,b+' €',{'font-size':26,'font-weight':'bold'});});
+  monedas.forEach((m,i)=>{const x=44+i*90,y=filasB*84+46;const r=m===2?38:34;
+    el('circle',{cx:x,cy:y,r,fill:m===2?'#cfd8dc':'#e0c060',stroke:'#7a6a20','stroke-width':2},s);
+    el('circle',{cx:x,cy:y,r:r-9,fill:m===2?'#e0c060':'#cfd8dc',stroke:'#7a6a20','stroke-width':1},s);
+    texto(s,x,y+9,m+' €',{'font-size':27,'font-weight':'bold'});});
+  div.appendChild(s);
+}
+
+// ---------- Recorrido de una carrera ----------
+function dibujarRecorrido(div){
+  const hecho=num(div.dataset.hecho),total=num(div.dataset.total),u=div.dataset.unidad||'m';const W=650,H=170,X0=30,X1=560;const s=svg(W,H);
+  const xh=X0+(X1-X0)*hecho/total;
+  el('line',{x1:X0,y1:150,x2:X1,y2:150,stroke:'#2b6cd9','stroke-width':4},s);el('polygon',{points:`${X1+12},150 ${X1},143 ${X1},157`,fill:'#2b6cd9'},s);
+  texto(s,(X0+X1)/2,138,div.dataset.total+' '+u,{'font-size':26,'font-weight':'bold'});
+  el('line',{x1:X0,y1:100,x2:xh,y2:100,stroke:'#e4452c','stroke-width':4},s);el('polygon',{points:`${xh+12},100 ${xh},93 ${xh},107`,fill:'#e4452c'},s);
+  texto(s,(X0+xh)/2,88,div.dataset.hecho+' '+u,{'font-size':26,'font-weight':'bold'});
+  el('circle',{cx:xh,cy:50,r:13,fill:'#f2c9a0',stroke:'#333'},s);el('line',{x1:xh,y1:63,x2:xh,y2:84,stroke:'#333','stroke-width':4},s);
+  el('line',{x1:xh,y1:84,x2:xh-10,y2:96,stroke:'#333','stroke-width':3},s);el('line',{x1:xh,y1:84,x2:xh+10,y2:96,stroke:'#333','stroke-width':3},s);
+  el('line',{x1:X1+30,y1:20,x2:X1+30,y2:158,stroke:'#555','stroke-width':4},s);el('line',{x1:X1+70,y1:20,x2:X1+70,y2:158,stroke:'#555','stroke-width':4},s);
+  el('rect',{x:X1+18,y:14,width:64,height:34,fill:'#fde9a8',stroke:'#555'},s);texto(s,X1+50,38,'META',{'font-size':18,'font-weight':'bold'});
+  div.appendChild(s);
+}
+
+document.querySelectorAll('.cuenta').forEach(dibujarCuenta);
+document.querySelectorAll('.modelo-barras').forEach(dibujarModeloBarras);
+document.querySelectorAll('.dinero').forEach(dibujarDinero);
+document.querySelectorAll('.recorrido').forEach(dibujarRecorrido);
 document.querySelectorAll('.bloques').forEach(dibujarBloques);
 document.querySelectorAll('.tapones').forEach(dibujarTapones);
 document.querySelectorAll('.recta').forEach(dibujarRecta);

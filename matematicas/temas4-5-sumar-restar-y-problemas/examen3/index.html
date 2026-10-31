@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Examen 3 · Matemáticas · Exámenes de Noa</title>
+<link rel="manifest" href="../../../manifest.json">
+<meta name="theme-color" content="#f7a823">
+<link rel="stylesheet" href="../../examen.css?v=18">
+</head>
+<body>
+<header>
+  <nav class="migas"><a href="../../../">Inicio</a> › <a href="../../">Matemáticas</a> › <a href="../">Temas 4 y 5</a> › <span>Examen 3</span></nav>
+  <h1>Examen 3</h1>
+  <p>Temas 4 y 5 · Sumar, restar y problemas</p>
+  <p class="formato">Escribe los números con punto de millar, por ejemplo: 1.234. En las cuentas, una cifra en cada casilla.</p>
+</header>
+<main>
+
+<div class="pregunta" data-tipo="sumar">
+  <h2><span class="num">1</span>Calcula la suma. Escribe una cifra en cada casilla.</h2>
+  <div class="cuenta" data-op="+" data-numeros="1.348|876" data-resultado="2.224" data-mostrado="1348|876|????"></div>
+  <div class="fila">Al sumar las unidades (8 + 6) obtienes <input type="text" inputmode="decimal" data-r="14">, así que escribes un 4 y te llevas <input type="text" inputmode="decimal" data-r="1"></div>
+</div>
+
+<div class="pregunta" data-tipo="tablas">
+  <h2><span class="num">2</span>Observa los cromos que tiene cada niño y contesta.</h2>
+  <table class="datos"><tr><th>Adrián</th><th>Víctor</th><th>Daniela</th><th>Claudia</th></tr><tr><td>457</td><td>615</td><td>569</td><td>518</td></tr></table>
+  <div class="fila" data-calc="Daniela+Adrián">¿Cuántos cromos tienen Daniela y Adrián juntos? <input type="text" inputmode="decimal" data-r="1.026"></div>
+  <div class="fila" data-calc="Claudia-Adrián">¿Cuántos cromos tiene Adrián menos que Claudia? <input type="text" inputmode="decimal" data-r="61"></div>
+  <div class="fila" data-calc="Adrián+Víctor+Daniela+Claudia">¿Cuántos cromos tienen entre los cuatro? <input type="text" inputmode="decimal" data-r="2.159"></div>
+</div>
+
+<div class="pregunta" data-tipo="restar">
+  <h2><span class="num">3</span>Calcula estas restas. Escribe una cifra en cada casilla.</h2>
+  <div class="cuenta" data-op="-" data-numeros="865|659" data-resultado="206" data-mostrado="865|659|???"></div>
+  <div class="cuenta" data-op="-" data-numeros="2.214|1.076" data-resultado="1.138" data-mostrado="2214|1076|????"></div>
+</div>
+
+<div class="pregunta" data-tipo="prueba-resta">
+  <h2><span class="num">4</span>Comprueba estas restas con la prueba de la resta.</h2>
+  <div class="fila">4.321 − 3.908 = 413. Prueba: 3.908 + 413 = <input type="text" inputmode="decimal" data-r="4.321"></div>
+  <div class="fila">¿Está bien? <span class="grupo" data-r="sí"><span class="opcion">sí</span><span class="opcion">no</span></span></div>
+  <div class="fila">207 − 78 = 139. Prueba: 78 + 139 = <input type="text" inputmode="decimal" data-r="217"></div>
+  <div class="fila">¿Está bien? <span class="grupo" data-r="no"><span class="opcion">sí</span><span class="opcion">no</span></span></div>
+  <div class="fila">El resultado correcto de 207 − 78 es <input type="text" inputmode="decimal" data-r="129"></div>
+</div>
+
+<div class="pregunta" data-tipo="termino-falta">
+  <h2><span class="num">5</span>Mira los modelos de barras y averigua lo que falta.</h2>
+  <div class="fila">En un refugio hay 98 abejas: 79 están fuera. ¿Cuántas están dentro?</div>
+  <div class="modelo-barras" data-total="98" data-partes="79|?" data-etiquetas="Fuera|Dentro"></div>
+  <div class="fila">Dentro hay <input type="text" inputmode="decimal" data-r="19"> abejas.</div>
+  <div class="fila">De otra colmena se fueron 82 abejas y ahora quedan 179. ¿Cuántas había antes?</div>
+  <div class="modelo-barras" data-total="?" data-partes="179|82" data-etiquetas="Quedan|Se fueron"></div>
+  <div class="fila">Antes había <input type="text" inputmode="decimal" data-r="261"> abejas.</div>
+</div>
+
+<div class="pregunta" data-tipo="estimar">
+  <h2><span class="num">6</span>Redondea a las decenas y resta.</h2>
+  <div class="fila">526 − 342 → <input type="text" inputmode="decimal" data-r="530"><span style="white-space:nowrap"> − <input type="text" inputmode="decimal" data-r="340"></span><span style="white-space:nowrap"> = <input type="text" inputmode="decimal" data-r="190"></span></div>
+  <div class="fila">318 − 64 → <input type="text" inputmode="decimal" data-r="320"><span style="white-space:nowrap"> − <input type="text" inputmode="decimal" data-r="60"></span><span style="white-space:nowrap"> = <input type="text" inputmode="decimal" data-r="260"></span></div>
+</div>
+
+<div class="pregunta" data-tipo="propiedades">
+  <h2><span class="num">7</span>Calcula 16 + 9 + 21 de dos formas distintas.</h2>
+  <div class="fila">Primero 16 + 9 = <input type="text" inputmode="decimal" data-r="25"><span style="white-space:nowrap"> y después le sumas 21: <input type="text" inputmode="decimal" data-r="46"></span></div>
+  <div class="fila">Primero 9 + 21 = <input type="text" inputmode="decimal" data-r="30"><span style="white-space:nowrap"> y después le sumas 16: <input type="text" inputmode="decimal" data-r="46"></span></div>
+  <div class="fila">¿Has obtenido el mismo resultado? <span class="grupo" data-r="sí"><span class="opcion">sí</span><span class="opcion">no</span></span></div>
+  <div class="fila">Es la propiedad <span class="grupo" data-r="asociativa"><span class="opcion">conmutativa</span><span class="opcion">asociativa</span></span></div>
+</div>
+
+<div class="pregunta" data-tipo="problemas">
+  <h2><span class="num">8</span>Resuelve estos problemas.</h2>
+  <div class="fila">Nerea tiene 951 canicas. De ellas, 562 son lisas y el resto son de rayas. ¿Cuántas son de rayas? <input type="text" inputmode="decimal" data-r="389"></div>
+  <div class="fila">¿De qué tipo tiene más canicas? <span class="grupo" data-r="lisas"><span class="opcion">lisas</span><span class="opcion">de rayas</span></span></div>
+  <div class="fila">En una carrera de bicis había 479 niños apuntados y el último día se apuntaron 43 más. ¿Cuántos empezaron la carrera? <input type="text" inputmode="decimal" data-r="522"></div>
+  <div class="fila">Ya han llegado a la meta 316. ¿Cuántos faltan por llegar? <input type="text" inputmode="decimal" data-r="206"></div>
+</div>
+
+<div class="pregunta" data-tipo="problemas">
+  <h2><span class="num">9</span>Carla corre en la carrera solidaria del colegio. Mira el dibujo.</h2>
+  <div class="recorrido" data-hecho="2.620" data-total="5.703" data-unidad="m"></div>
+  <div class="fila">¿Qué operación tienes que hacer? <span class="grupo" data-r="5.703 − 2.620"><span class="opcion">5.703 + 2.620</span><span class="opcion">5.703 − 2.620</span></span></div>
+  <div class="fila">Le faltan <input type="text" inputmode="decimal" data-r="3.083"> metros para llegar a la meta.</div>
+</div>
+
+<div class="pregunta" data-tipo="tablas">
+  <h2><span class="num">10</span>Unos alumnos han contado los jabalíes que ha visto cada uno. ¿Qué preguntas se pueden resolver con la tabla?</h2>
+  <table class="datos"><tr><th>Javier</th><th>Ana</th><th>Lucía</th><th>Martín</th></tr><tr><td>25</td><td>18</td><td>16</td><td>22</td></tr></table>
+  <div class="fila" data-calc="Javier+Lucía">¿Cuántos jabalíes han visto Javier y Lucía en total? ¿Se puede resolver? <span class="grupo" data-r="sí"><span class="opcion">sí</span><span class="opcion">no</span></span><span style="white-space:nowrap"> Respuesta: <input type="text" inputmode="decimal" data-r="41"></span></div>
+  <div class="fila" data-calc="Martín-Ana">¿Cuántos jabalíes ha visto Martín más que Ana? ¿Se puede resolver? <span class="grupo" data-r="sí"><span class="opcion">sí</span><span class="opcion">no</span></span><span style="white-space:nowrap"> Respuesta: <input type="text" inputmode="decimal" data-r="4"></span></div>
+  <div class="fila">¿Cuántos jabalíes ha visto Cristina? ¿Se puede resolver? <span class="grupo" data-r="no"><span class="opcion">sí</span><span class="opcion">no</span></span></div>
+</div>
+
+<button class="principal" id="corregir">¡Entregar examen!</button>
+
+</main>
+<script src="../../../sync.js?v=17"></script>
+<script src="../../dibujos.js?v=18"></script>
+<script src="../../examen.js?v=17"></script>
+<script src="../../../sw-registro.js"></script>
+</body>
+</html>

@@ -10,7 +10,7 @@ const examenes=[];
 (function busca(d){for(const e of fs.readdirSync(d,{withFileTypes:true})){const p=path.join(d,e.name);if(e.isDirectory())busca(p);else if(e.name==='index.html'&&/matematicas\/.*\/examen\d+\/index\.html$/.test(p))examenes.push(p);}})(path.join(raiz,'matematicas'));
 let errores=0;const fallo=m=>{console.error('  ✗ '+m);errores++;};
 // Palabra del enunciado → dibujo que debe tener la pregunta
-const PALABRAS={bloques:'.bloques',cubo:'.bloques',cubos:'.bloques',placa:'.bloques',placas:'.bloques',barra:'.bloques',barras:'.bloques',cubitos:'.bloques',
+const PALABRAS={bloques:'.bloques',cubo:'.bloques',cubos:'.bloques',placa:'.bloques',placas:'.bloques',barra:'.bloques,.modelo-barras',barras:'.bloques,.modelo-barras',cubitos:'.bloques',
   torre:'.tapones',torres:'.tapones',caja:'.tapones',cajas:'.tapones',bolsita:'.tapones',bolsitas:'.tapones',tapones:'.tapones',
   plano:'.plano,.grid',recta:'.recta',tarjetas:'.tarjetas',cuadrícula:'.grid',dibujo:'svg,.grid',gota:'.figuras,.grid',casita:'.figuras,.grid',corazón:'.figuras,.grid',
   muro:'.tabla-posiciones,.fila',tabla:'.tabla-posiciones,table',montañas:'.barras',alturas:'.barras',distancias:'.barras'};
@@ -68,6 +68,49 @@ for(const f of examenes.sort()){
       if(dr<0||dr>5||dc<0||dc>5)fallo('pregunta '+(i+1)+': el destino se sale de la cuadrícula');}
     // tarjetas: si el enunciado cita el número formado, debe ser la suma de las tarjetas
     q.querySelectorAll('.tarjetas').forEach(t=>{const vals=t.dataset.valores.split(',');if(vals.every(v=>/^[\d.]+$/.test(v.trim()))){const suma=vals.reduce((a,v)=>a+num(v),0);const inp=[...q.querySelectorAll('input[data-r]')].find(x=>num(x.dataset.r)===suma);if(!inp&&!enunNums.includes(suma)&&![...q.querySelectorAll('.grupo')].some(gr=>num(gr.dataset.r)===suma))fallo('pregunta '+(i+1)+': las tarjetas suman '+suma+' pero ese número no aparece en ninguna respuesta');}});
+    // cuentas en vertical: la operación es correcta, lo mostrado coincide con los números y cada casilla vacía pide la cifra real
+    const cif=x=>String(x).replace(/\./g,'');
+    q.querySelectorAll('.cuenta').forEach(c=>{
+      const ns=c.dataset.numeros.split('|').map(num);const r=num(c.dataset.resultado);const op=c.dataset.op;
+      const calc=op==='+'?ns.reduce((a,b)=>a+b,0):ns.slice(1).reduce((a,b)=>a-b,ns[0]);
+      if(calc!==r)fallo('pregunta '+(i+1)+': la cuenta '+c.dataset.numeros+' ('+op+') da '+calc+' y no '+r);
+      const filas=c.dataset.numeros.split('|').concat([c.dataset.resultado]);const most=c.dataset.mostrado.split('|');
+      if(most.length!==filas.length)fallo('pregunta '+(i+1)+': cuenta con filas mostradas incorrectas');
+      most.forEach((m,k)=>{const esRes=k===filas.length-1;if(esRes&&c.dataset.mal){if(num(m)===r)fallo('pregunta '+(i+1)+': la cuenta "mal" muestra el resultado correcto');if(![...q.querySelectorAll('input[data-r]')].some(x=>num(x.dataset.r)===r))fallo('pregunta '+(i+1)+': la cuenta está mal y ningún hueco pide el resultado correcto '+r);return;}
+        const real=cif(filas[k]);const ver=cif(m);if(real.length!==ver.length)fallo('pregunta '+(i+1)+': fila '+(k+1)+' de la cuenta con distinto número de cifras');
+        [...ver].forEach((ch,j)=>{if(ch!=='?'&&ch!==real[j])fallo('pregunta '+(i+1)+': la cuenta muestra '+ch+' donde va '+real[j]);});});
+      const ins=[...c.querySelectorAll('input.cifra')];const huecos=most.join('').split('?').length-1;
+      if(ins.length!==huecos)fallo('pregunta '+(i+1)+': la cuenta tiene '+ins.length+' casillas y '+huecos+' huecos');
+      if(!c.dataset.mal&&op==='-'&&ns[0]<ns.slice(1).reduce((a,b)=>a+b,0))fallo('pregunta '+(i+1)+': resta con resultado negativo');
+    });
+    // modelo de barras: el todo es la suma de las partes y lo que falta se pregunta en algún hueco
+    q.querySelectorAll('.modelo-barras').forEach(mb=>{
+      const ps=mb.dataset.partes.split('|'),t=mb.dataset.total;const inc=[t,...ps].filter(x=>x==='?').length;
+      if(inc!==1){fallo('pregunta '+(i+1)+': el modelo de barras debe tener un solo "?"');return;}
+      const desconocido=t==='?'?ps.reduce((a,b)=>a+num(b),0):num(t)-ps.filter(x=>x!=='?').reduce((a,b)=>a+num(b),0);
+      if(desconocido<=0)fallo('pregunta '+(i+1)+': el modelo de barras no cuadra');
+      if(![...q.querySelectorAll('input[data-r]')].some(x=>num(x.dataset.r)===desconocido))fallo('pregunta '+(i+1)+': lo que falta en el modelo de barras ('+desconocido+') no se pregunta');
+      const enun=(q.textContent).toLowerCase();[t,...ps].filter(x=>x!=='?').forEach(v=>{if(!numerosDe(enun.replace(/\s+/g,' ')).includes(num(v)))fallo('pregunta '+(i+1)+': el '+v+' del modelo de barras no sale en el texto');});
+    });
+    // dinero: lo que vale el dibujo es la respuesta de la fila marcada con data-dinero
+    q.querySelectorAll('.fila[data-dinero]').forEach(f=>{const dd=[...q.querySelectorAll('.dinero')];const prev=dd.filter(x=>x.compareDocumentPosition(f)&4).pop();
+      if(!prev){fallo('pregunta '+(i+1)+': fila de dinero sin dibujo antes');return;}const tot=prev.dataset.valores.split(',').reduce((a,b)=>a+(+b),0);
+      const inp=f.querySelector('input[data-r]');if(!inp||num(inp.dataset.r)!==tot)fallo('pregunta '+(i+1)+': el dinero dibujado suma '+tot+' y la respuesta es '+(inp&&inp.dataset.r));});
+    // recorrido: lo que falta se pregunta
+    q.querySelectorAll('.recorrido').forEach(rc=>{const falta=num(rc.dataset.total)-num(rc.dataset.hecho);if(falta<=0||![...q.querySelectorAll('input[data-r]')].some(x=>num(x.dataset.r)===falta))fallo('pregunta '+(i+1)+': en el recorrido faltan '+falta+' y no se pregunta');});
+    // tablas de datos: data-calc="A+B-C" con las cabeceras de la tabla; data-busca="25-Peluche" → la opción es la columna con ese valor
+    const td=q.querySelector('table.datos');
+    if(td){const filasT=[...td.querySelectorAll('tr')];let nombres,valores;
+      if(filasT[0].querySelector('td')){fallo('pregunta '+(i+1)+': tabla sin cabecera');}
+      if(td.classList.contains('vertical')){nombres=filasT.slice(1).map(f=>f.querySelector('th').textContent.trim());valores=filasT.slice(1).map(f=>f.querySelector('td').textContent.trim());}
+      else{nombres=[...filasT[0].querySelectorAll('th')].map(x=>x.textContent.trim());valores=[...filasT[1].querySelectorAll('td,th')].map(x=>x.textContent.trim());}
+      if(valores.length>nombres.length-0&&nombres.length===valores.length){}else if(nombres.length===valores.length+0){}
+      const V={};nombres.forEach((n,k)=>{if(/^\d[\d.]*$/.test(valores[k]))V[n]=num(valores[k]);});
+      const ev=e=>{let tot=0;for(const m of e.matchAll(/([+-]?)([^+-]+)/g)){const tk=m[2].trim();const v=/^\d[\d.]*$/.test(tk)?num(tk):V[tk];if(v===undefined)throw new Error('"'+tk+'" no está en la tabla');tot+=(m[1]==='-'?-v:v);}return tot;};
+      q.querySelectorAll('[data-calc]').forEach(f=>{try{const v=ev(f.dataset.calc);const inp=f.querySelector('input[data-r]');if(!inp||num(inp.dataset.r)!==v)fallo('pregunta '+(i+1)+': '+f.dataset.calc+' = '+v+' pero la respuesta es '+(inp&&inp.dataset.r));}catch(e){fallo('pregunta '+(i+1)+': '+e.message);}});
+      q.querySelectorAll('[data-busca]').forEach(f=>{try{const v=ev(f.dataset.busca);const cols=Object.keys(V).filter(n=>V[n]===v);const gr=f.querySelector('.grupo');
+        if(cols.length!==1)fallo('pregunta '+(i+1)+': '+v+' está en '+cols.length+' columnas: la respuesta no es única');else if(!gr||gr.dataset.r.toLowerCase()!==cols[0].toLowerCase())fallo('pregunta '+(i+1)+': la respuesta debería ser '+cols[0]);}catch(e){fallo('pregunta '+(i+1)+': '+e.message);}});
+    }
     // cada hueco lleva respuesta
     q.querySelectorAll('input[data-r]').forEach(inp=>{if(!inp.dataset.r.trim())fallo('pregunta '+(i+1)+': hueco sin respuesta');});
     q.querySelectorAll('.grupo').forEach(g=>{const ok=[...g.querySelectorAll('.opcion')].some(o=>o.textContent.trim().toLowerCase()===g.dataset.r.toLowerCase());if(!ok)fallo('pregunta '+(i+1)+': la respuesta "'+g.dataset.r+'" no está entre las opciones');});

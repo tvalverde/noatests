@@ -20,6 +20,16 @@
             {"id": "examen6", "nombre": "Examen 6", "descripcion": "Tabla de posiciones, tarjetas, pistas, recta de 2.000 a 3.000, bloques de Juanita y Berta, árboles, redondear, aparcamiento, Lucía en Sala Mares, coche trasladado"},
             {"id": "examen7", "nombre": "Examen 7", "descripcion": "Escribir con cifras, bloques sin decenas, anterior y posterior de 2.999, recta de 100 a 200, dos filas de tarjetas, cinco pueblos, redondeos, visitantes del bosque, Lucía en el Aula Tierra, estrella trasladada"}
           ]
+        },
+        {
+          "id": "temas4-5-sumar-restar-y-problemas",
+          "nombre": "Temas 4 y 5 · Sumar, restar y problemas",
+          "descripcion": "Sumas y restas con llevadas, términos, propiedades, prueba de la resta, tablas de datos, problemas y dinero",
+          "examenes": [
+            {"id": "examen1", "nombre": "Examen 1", "descripcion": "Hormigas con bloques, sumas y restas en vertical, términos, propiedades, prueba de la resta, números que faltan, tabla de la pradera, modelo de barras y la hucha de Andrea"},
+            {"id": "examen2", "nombre": "Examen 2", "descripcion": "Hormigas de fuego, tres sumandos, estimar, la resta del cuidador, términos que faltan, propiedades, cifras escondidas, regalos de la tienda, visitantes de la reserva y el cambio de Juana"},
+            {"id": "examen3", "nombre": "Examen 3", "descripcion": "Suma con llevada, cromos, restas en vertical, prueba de la resta, modelos de barras de abejas, redondear y restar, propiedad asociativa, canicas y bicis, la carrera de Carla y la tabla de jabalíes"}
+          ]
         }
       ]
     },

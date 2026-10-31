@@ -67,3 +67,15 @@ button.principal:active{opacity:.85}
 
 #volver{position:fixed;right:12px;bottom:12px;background:var(--naranja);color:#fff;border:none;border-radius:30px;padding:12px 18px;font-size:1rem;box-shadow:0 4px 12px rgba(0,0,0,.25);cursor:pointer;display:none;z-index:15}
 #volver.visible{display:block}
+
+/* cuentas en vertical */
+.cuenta{display:flex;justify-content:center;margin:10px 0}
+.cuenta table{border-collapse:collapse;font-size:1.6rem;font-weight:bold;font-family:"Segoe UI",Arial,sans-serif}
+.cuenta th{width:2.3em;color:#fff;padding:4px 0;font-size:1rem;border:1px solid #fff}
+.cuenta td{text-align:center;height:1.9em;width:2.3em;padding:0}
+.cuenta td.signo{width:1.2em}
+.cuenta tr.res td{border-top:3px solid #333}
+.cuenta input.cifra{width:1.7em;margin:2px 0;padding:4px 0;text-align:center;font-size:1.4rem;font-weight:bold}
+table.datos{border-collapse:collapse;margin:10px auto;font-size:1.05rem;width:auto}
+table.datos th{background:#fde9a8;border:1px solid #c9a227;padding:6px 10px}
+table.datos td{border:1px solid #c9a227;padding:6px 10px;text-align:center;background:#fff}

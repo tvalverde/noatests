@@ -65,7 +65,7 @@ const store={
   if(ts.length!==cat.materias.length)fallo('resumen: '+ts.length+' materias en vez de '+cat.materias.length);
   const tarjetaDe=nombre=>ts.find(a=>txt(a).startsWith(nombre));
   if(!/Ciencias Sociales.*0 de 3 exámenes hechos/.test(txt(tarjetaDe('Ciencias Sociales'))))fallo('resumen: tarjeta de sociales: '+txt(tarjetaDe('Ciencias Sociales')));
-  if(!/Matemáticas.*2 de 7 exámenes hechos.*media 8,00/.test(txt(ts[0])))fallo('resumen: tarjeta de mates: '+txt(ts[0]));
+  if(!/Matemáticas.*2 de 10 exámenes hechos.*media 8,00/.test(txt(ts[0])))fallo('resumen: tarjeta de mates: '+txt(ts[0]));
   if(!/último: Examen 3, 18 oct/.test(txt(ts[0])))fallo('resumen: no indica el último examen hecho: '+txt(ts[0]));
   if(!/Arts.*1 de 1 con dibujos.*sin nota/.test(txt(tarjetaDe('Arts'))))fallo('resumen: tarjeta de Arts: '+txt(tarjetaDe('Arts')));
   if(d.getElementById('extras').style.display==='none'||!d.getElementById('btn-exportar'))fallo('resumen: faltan nube y exportar/importar');
@@ -73,7 +73,7 @@ const store={
   if(!errores)console.log('  ✓ resumen: una tarjeta por materia con media, hechos y último; nube y copia visibles');
   // materia
   await ir(d,'#/matematicas');ts=tarjetas(d);
-  if(ts.length!==1||!/Temas 1 y 2.*2 de 7 hechos.*8,00/.test(txt(ts[0])))fallo('materia: tarjeta del tema: '+txt(ts[0]));
+  if(ts.length!==2||!/Temas 1 y 2.*2 de 7 hechos.*8,00/.test(txt(ts[0]))||!/Temas 4 y 5.*0 de 3/.test(txt(ts[1])))fallo('materia: tarjeta del tema: '+txt(ts[0]));
   if(ts[0].getAttribute('href')!=='#/matematicas/temas1-2-numeros-y-planos')fallo('materia: enlace al tema: '+ts[0].getAttribute('href'));
   if(!d.querySelector('.pestanas a.activa')||txt(d.querySelector('.pestanas a.activa'))!=='Temas')fallo('materia: la pestaña activa debería ser Temas');
   if(!/Lo que mejor llevas: Planos \(100%\).*Para repasar: Redondear \(33%\)/.test(txt(d.querySelector('.resumen-tipos'))))fallo('materia: línea de resumen: '+txt(d.querySelector('.resumen-tipos')));
