@@ -62,10 +62,12 @@ const store={
   d=await abrir('notas/index.html',store);
   // resumen
   let ts=tarjetas(d);
-  if(ts.length!==2)fallo('resumen: '+ts.length+' materias en vez de 2');
+  if(ts.length!==cat.materias.length)fallo('resumen: '+ts.length+' materias en vez de '+cat.materias.length);
+  const tarjetaDe=nombre=>ts.find(a=>txt(a).startsWith(nombre));
+  if(!/Ciencias Sociales.*0 de 3 exámenes hechos/.test(txt(tarjetaDe('Ciencias Sociales'))))fallo('resumen: tarjeta de sociales: '+txt(tarjetaDe('Ciencias Sociales')));
   if(!/Matemáticas.*2 de 7 exámenes hechos.*media 8,00/.test(txt(ts[0])))fallo('resumen: tarjeta de mates: '+txt(ts[0]));
   if(!/último: Examen 3, 18 oct/.test(txt(ts[0])))fallo('resumen: no indica el último examen hecho: '+txt(ts[0]));
-  if(!/Arts.*1 de 1 con dibujos.*sin nota/.test(txt(ts[1])))fallo('resumen: tarjeta de Arts: '+txt(ts[1]));
+  if(!/Arts.*1 de 1 con dibujos.*sin nota/.test(txt(tarjetaDe('Arts'))))fallo('resumen: tarjeta de Arts: '+txt(tarjetaDe('Arts')));
   if(d.getElementById('extras').style.display==='none'||!d.getElementById('btn-exportar'))fallo('resumen: faltan nube y exportar/importar');
   if(d.getElementById('titulo').textContent!=='Mis notas'||/Mis notas<\/a>/.test(d.getElementById('migas').innerHTML))fallo('resumen: título o migas incorrectos');
   if(!errores)console.log('  ✓ resumen: una tarjeta por materia con media, hechos y último; nube y copia visibles');

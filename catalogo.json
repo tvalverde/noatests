@@ -24,6 +24,25 @@
       ]
     },
     {
+      "id": "sociales",
+      "nombre": "Ciencias Sociales",
+      "color": "#3aa655",
+      "evaluable": true,
+      "descripcion": "La Tierra, mapas, planos y orientarse",
+      "temas": [
+        {
+          "id": "tema1-como-encontrar-lugares",
+          "nombre": "Unidad 1 · Cómo encontrar lugares",
+          "descripcion": "La Tierra y sus movimientos, estaciones, globo terráqueo, planisferios, mapas, planos y orientarse",
+          "examenes": [
+            {"id": "examen1", "nombre": "Examen 1", "descripcion": "Ficha de la Tierra, Sol y Luna, día y noche, árboles en cada estación, globo terráqueo, globo o planisferio, elementos del mapa, barrio de Noa, salida del sol y brújula"},
+            {"id": "examen2", "nombre": "Examen 2", "descripcion": "Verdadero o falso, completar el texto, fechas y estaciones, dos árboles, hemisferios, continentes en el planisferio, tipos de mapa, ¿plano o mapa?, plano del hospital y estrella polar"},
+            {"id": "examen3", "nombre": "Examen 3", "descripcion": "Rotación y traslación, día y noche, estaciones y sus fechas, globo terráqueo, Nerea, Víctor, Manuela y Daniel, elementos del mapa, mapa del tiempo, colocar edificios en el plano, umbría y solana"}
+          ]
+        }
+      ]
+    },
+    {
       "id": "arts",
       "nombre": "Arts",
       "color": "#a86bd6",

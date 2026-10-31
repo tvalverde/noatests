@@ -3,7 +3,8 @@
    Todo sale de catalogo.json + lo guardado en este navegador. No modifica nada en localStorage. */
 (function(){
 'use strict';
-const NOMBRES={'leer-escribir':'Leer y escribir números','descomponer':'Descomponer números','valor-posicion':'Valor de cada cifra','recta':'Rectas numéricas','comparar':'Comparar números','ordenar':'Ordenar números','redondear':'Redondear','estimar':'Estimar sumas y restas','plano':'Planos','traslacion':'Traslaciones','otros':'Otros'};
+const NOMBRES={'leer-escribir':'Leer y escribir números','descomponer':'Descomponer números','valor-posicion':'Valor de cada cifra','recta':'Rectas numéricas','comparar':'Comparar números','ordenar':'Ordenar números','redondear':'Redondear','estimar':'Estimar sumas y restas','plano':'Planos','traslacion':'Traslaciones',
+  'tierra':'La Tierra y sus movimientos','estaciones':'Las estaciones','globo':'El globo terráqueo','planisferio':'Planisferios y continentes','mapas':'Mapas','planos':'Planos','orientacion':'Orientarse','otros':'Otros'};
 const RAIZ=location.pathname.replace(/\/index\.html$/,'/').split('/').slice(0,2).join('/')+'/';
 const PREF='noatests-mates:';
 const n=v=>(+v).toFixed(2).replace('.',',');
