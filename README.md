@@ -1,6 +1,6 @@
 # noatests
 
-Exámenes interactivos para Noa, organizados por materias y publicados con GitHub Pages.
+Ejercicios interactivos para Noa, organizados por materias y publicados con GitHub Pages. A ella se le llaman "ejercicios"; en el código y las carpetas se sigue usando "examen" (`examenN/`) para no perder los datos guardados. Las reglas de trabajo están en `CLAUDE.md`.
 
 - `catalogo.json` — materias (con su color, icono y los nombres de sus contenidos: `contenidos` traduce el `data-tipo` de cada pregunta al nombre que sale en "Mis notas"), temas y exámenes con sus nombres y descripciones. Es la única fuente de las listas (portada, materia, tema) y de "Mis notas": un examen nuevo se da de alta aquí (y los tests fallan si hay un examen en disco que no esté)
 - `listas.js` y `comun/listas.css` — pintan la portada (saludo, "Tienes a medias" para seguir un examen empezado, mosaico de materias con su avance) y las listas de materia y tema desde el catálogo, con la nota y las estrellas de cada examen y la marca "A medias"
@@ -18,14 +18,16 @@ Exámenes interactivos para Noa, organizados por materias y publicados con GitHu
 - `sw.js`, `sw-registro.js`, `manifest.json` — modo sin conexión (las páginas visitadas quedan guardadas) e instalación como app
 - `tests/run.js`, `tests/sociales.js`, `tests/catalogo.js`, `tests/sync.js` (nube simulada) y `tests/edge.js` (casos límite) — comprobaciones automáticas (`npm test`): cada examen da 10 con las respuestas correctas, cada pregunta tiene tipo, y toda pregunta que menciona un dibujo lo muestra. En sociales, además, cada respuesta que depende de un dibujo (letras, calles, puertas del hospital, tiempo de cada zona, sol y estrella polar, fechas de las estaciones) se recalcula desde los datos del dibujo y debe coincidir. Se ejecutan en GitHub antes de publicar
 - `arts/examen1/index.html` — examen de dibujo (lienzos para pintar, sin corrección)
+- `temario/<materia>/<tema>.json` — el temario de cada tema según el libro: contenidos con sus páginas y qué entra, número máximo, decimales, palabras prohibidas y qué queda fuera; estado `pendiente` o `revisado`. `tests/temario.js` comprueba cada pregunta de cada ejercicio contra él (con los dibujos pintados, como lo ve la niña). `temario/index.html` es la página para padres: el temario y cada pregunta con su contenido y páginas, para revisarlo cuando se quiera (enlace al pie de la portada)
 - `herramientas/` — `generar-*.py` generan los exámenes de sociales (unidad 1) y de matemáticas (temas 4 y 5): para cambiar uno de esos exámenes se cambia el generador y se vuelve a ejecutar (un test comprueba que el HTML publicado es exactamente lo que genera). `subir-version.js` sube la versión `?v=N` de todos los .js y .css propios en todas las páginas (un test exige que todas usen la misma, la de `version.json`)
 
 Estructura: `<materia>/<tema>/<examen>/index.html`. Cada nivel tiene un `index.html` con la lista del nivel siguiente. Para un examen nuevo de matemáticas, copiar un `examenN/index.html` existente, cambiar solo las preguntas y darlo de alta en `catalogo.json`: `<input data-r="respuesta">`, `<span class="grupo" data-r="opción">` con `.opcion`, y `<div class="grid" data-start="f,c" data-dest="f,c">` para la cuadrícula.
 
 Cada examen es una página HTML independiente con corrección automática.
 
-## Cómo añadir un examen
+## Cómo añadir un ejercicio
 
+1. Si el tema es nuevo, escribir antes su temario en `temario/` (ver `CLAUDE.md`).
 1. Escribirlo en un generador de `herramientas/` (o copiar uno existente para un tema nuevo) con las respuestas calculadas a partir de los datos, no tecleadas a mano, y ejecutarlo. Para los temas 1 y 2 de matemáticas, que se hicieron a mano, copiar un `examenN/index.html` y cambiar solo las preguntas.
 2. Cada pregunta lleva `data-tipo`; si es un contenido nuevo, darle nombre en `contenidos` de su materia en `catalogo.json`.
 3. Si menciona un dibujo, el dibujo tiene que estar y salir de los mismos datos que la respuesta (los tests lo recalculan).

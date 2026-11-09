@@ -14,13 +14,13 @@
           "nombre": "Temas 1 y 2 · Números y planos",
           "descripcion": "Números de 3 y 4 cifras, comparar, redondear, planos y traslaciones",
           "examenes": [
-            {"id": "examen1", "nombre": "Examen 1", "descripcion": "Leer y descomponer, comparar, redondear, estimar, plano y traslaciones"},
-            {"id": "examen2", "nombre": "Examen 2", "descripcion": "Escribir con cifras, anterior y posterior, pistas, rectas, verdadero o falso, plano y traslaciones"},
-            {"id": "examen3", "nombre": "Examen 3", "descripcion": "Muro de descomposición, bloques, rectas de 50 en 50, pueblos, bosque, orientarse en Expo-Tierra, traslación"},
-            {"id": "examen4", "nombre": "Examen 4", "descripcion": "Bloques, tarjetas, rectas, alturas de pueblos, rifa, redondeo de árboles, distancias, plano y gota trasladada"},
-            {"id": "examen5", "nombre": "Examen 5", "descripcion": "Tapones en torres y cajas, muro de 2.174, leer \"mil\", recta de 1.000 en 1.000, tarjetas vs 5.199, pueblos, redondear con recta, estimación, Lucía mirando hacia abajo, casita trasladada"},
-            {"id": "examen6", "nombre": "Examen 6", "descripcion": "Tabla de posiciones, tarjetas, pistas, recta de 2.000 a 3.000, bloques de Juanita y Berta, árboles, redondear, aparcamiento, Lucía en Sala Mares, coche trasladado"},
-            {"id": "examen7", "nombre": "Examen 7", "descripcion": "Escribir con cifras, bloques sin decenas, anterior y posterior de 2.999, recta de 100 a 200, dos filas de tarjetas, cinco pueblos, redondeos, visitantes del bosque, Lucía en el Aula Tierra, estrella trasladada"}
+            {"id": "examen1", "nombre": "Ejercicio 1", "descripcion": "Leer y descomponer, comparar, redondear, estimar, plano y traslaciones"},
+            {"id": "examen2", "nombre": "Ejercicio 2", "descripcion": "Escribir con cifras, anterior y posterior, pistas, rectas, verdadero o falso, plano y traslaciones"},
+            {"id": "examen3", "nombre": "Ejercicio 3", "descripcion": "Muro de descomposición, bloques, rectas de 50 en 50, pueblos, bosque, orientarse en Expo-Tierra, traslación"},
+            {"id": "examen4", "nombre": "Ejercicio 4", "descripcion": "Bloques, tarjetas, rectas, alturas de pueblos, rifa, redondeo de árboles, distancias, plano y gota trasladada"},
+            {"id": "examen5", "nombre": "Ejercicio 5", "descripcion": "Tapones en torres y cajas, muro de 2.174, leer \"mil\", recta de 1.000 en 1.000, tarjetas vs 5.199, pueblos, redondear con recta, estimación, Lucía mirando hacia abajo, casita trasladada"},
+            {"id": "examen6", "nombre": "Ejercicio 6", "descripcion": "Tabla de posiciones, tarjetas, pistas, recta de 2.000 a 3.000, bloques de Juanita y Berta, árboles, redondear, aparcamiento, Lucía en Sala Mares, coche trasladado"},
+            {"id": "examen7", "nombre": "Ejercicio 7", "descripcion": "Escribir con cifras, bloques sin decenas, anterior y posterior de 2.999, recta de 100 a 200, dos filas de tarjetas, cinco pueblos, redondeos, visitantes del bosque, Lucía en el Aula Tierra, estrella trasladada"}
           ]
         },
         {
@@ -28,9 +28,9 @@
           "nombre": "Temas 4 y 5 · Sumar, restar y problemas",
           "descripcion": "Sumas y restas con llevadas, términos, propiedades, prueba de la resta, tablas de datos, problemas y dinero",
           "examenes": [
-            {"id": "examen1", "nombre": "Examen 1", "descripcion": "Hormigas con bloques, sumas y restas en vertical, términos, propiedades, prueba de la resta, números que faltan, tabla de la pradera, modelo de barras y la hucha de Andrea"},
-            {"id": "examen2", "nombre": "Examen 2", "descripcion": "Hormigas de fuego, tres sumandos, estimar, la resta del cuidador, términos que faltan, propiedades, cifras escondidas, regalos de la tienda, visitantes de la reserva y el cambio de Juana"},
-            {"id": "examen3", "nombre": "Examen 3", "descripcion": "Suma con llevada, cromos, restas en vertical, prueba de la resta, modelos de barras de abejas, redondear y restar, propiedad asociativa, canicas y bicis, la carrera de Carla y la tabla de jabalíes"}
+            {"id": "examen1", "nombre": "Ejercicio 1", "descripcion": "Hormigas con bloques, sumas y restas en vertical, términos, propiedades, prueba de la resta, números que faltan, tabla de la pradera, modelo de barras y la hucha de Andrea"},
+            {"id": "examen2", "nombre": "Ejercicio 2", "descripcion": "Hormigas de fuego, tres sumandos, estimar, la resta del cuidador, términos que faltan, propiedades, cifras escondidas, regalos de la tienda, visitantes de la reserva y el cambio de Juana"},
+            {"id": "examen3", "nombre": "Ejercicio 3", "descripcion": "Suma con llevada, cromos, restas en vertical, prueba de la resta, modelos de barras de abejas, redondear y restar, propiedad asociativa, canicas y bicis, la carrera de Carla y la tabla de jabalíes"}
           ]
         }
       ]
@@ -49,9 +49,9 @@
           "nombre": "Unidad 1 · Cómo encontrar lugares",
           "descripcion": "La Tierra y sus movimientos, estaciones, globo terráqueo, planisferios, mapas, planos y orientarse",
           "examenes": [
-            {"id": "examen1", "nombre": "Examen 1", "descripcion": "Ficha de la Tierra, Sol y Luna, día y noche, árboles en cada estación, globo terráqueo, globo o planisferio, elementos del mapa, barrio de Noa, salida del sol y brújula"},
-            {"id": "examen2", "nombre": "Examen 2", "descripcion": "Verdadero o falso, completar el texto, fechas y estaciones, dos árboles, hemisferios, continentes en el planisferio, tipos de mapa, ¿plano o mapa?, plano del hospital y estrella polar"},
-            {"id": "examen3", "nombre": "Examen 3", "descripcion": "Rotación y traslación, día y noche, estaciones y sus fechas, globo terráqueo, Nerea, Víctor, Manuela y Daniel, elementos del mapa, mapa del tiempo, colocar edificios en el plano, umbría y solana"}
+            {"id": "examen1", "nombre": "Ejercicio 1", "descripcion": "Ficha de la Tierra, Sol y Luna, día y noche, árboles en cada estación, globo terráqueo, globo o planisferio, elementos del mapa, barrio de Noa, salida del sol y brújula"},
+            {"id": "examen2", "nombre": "Ejercicio 2", "descripcion": "Verdadero o falso, completar el texto, fechas y estaciones, dos árboles, hemisferios, continentes en el planisferio, tipos de mapa, ¿plano o mapa?, plano del hospital y estrella polar"},
+            {"id": "examen3", "nombre": "Ejercicio 3", "descripcion": "Rotación y traslación, día y noche, estaciones y sus fechas, globo terráqueo, Nerea, Víctor, Manuela y Daniel, elementos del mapa, mapa del tiempo, colocar edificios en el plano, umbría y solana"}
           ]
         }
       ]
@@ -69,7 +69,7 @@
           "id": "",
           "nombre": "",
           "examenes": [
-            {"id": "examen1", "nombre": "Examen 1", "descripcion": "Dibújate en monstruo, inventa un logo, mascota imaginaria, bandera y casa de tus sueños"}
+            {"id": "examen1", "nombre": "Ejercicio 1", "descripcion": "Dibújate en monstruo, inventa un logo, mascota imaginaria, bandera y casa de tus sueños"}
           ]
         }
       ]

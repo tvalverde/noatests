@@ -273,7 +273,7 @@ console.log('8. Interfaz pensada para niños');
   st['noatests-mates:'+BASE+'examen1/']=JSON.stringify({fecha:'2026-01-01T00:00:00.000Z',nota1:7.5,notaCorr:null,respuestas:{}});
   w=abrir('index.html',st);await wait(80);d=w.document;
   const seguir=d.querySelector('a.seguir');
-  check(!!seguir&&seguir.getAttribute('href')===BASE+'examen2/'&&/Examen 2/.test(seguir.textContent),'la portada ofrece seguir el examen que está a medias');
+  check(!!seguir&&seguir.getAttribute('href')===BASE+'examen2/'&&/Ejercicio 2/.test(seguir.textContent),'la portada ofrece seguir el examen que está a medias');
   check(/¡Hola, Noa!/.test(d.body.textContent)&&d.querySelectorAll('.mosaico a.examen').length>=4,'la portada saluda y muestra un mosaico por materia más Mis notas');
   w=abrir('matematicas/temas1-2-numeros-y-planos/index.html',st);await wait(80);d=w.document;
   const e1=d.querySelector('a[href="examen1/"]'),e2=d.querySelector('a[href="examen2/"]');
@@ -315,6 +315,19 @@ console.log('9. Mantenimiento: catálogo, versiones y generadores');
     if(x.isDirectory())recorre(p);else if(x.name.endsWith('.html')){const h=fs.readFileSync(p,'utf8');
       for(const m of h.matchAll(/(?:src|href)="([^"]+\.(?:js|css))(\?v=(\d+))?"/g)){if(/^https?:/.test(m[1])||/sw-registro\.js$/.test(m[1]))continue;if(+m[3]!==V)malos.push(path.relative(raiz,p)+' → '+m[1]+(m[2]||' (sin versión)'));}}}})(raiz);
   check(!malos.length,'todas las páginas enlazan los .js y .css propios con la misma versión (?v='+V+')'+(malos.length?': '+malos.slice(0,3).join(', '):''));
+  // a la niña se le llaman "ejercicios": la palabra examen no debe salir en ninguna pantalla (por dentro las carpetas siguen siendo examenN)
+  {
+    const st={};st['noatests-mates:'+BASE+'examen1/']=JSON.stringify({fecha:'2026-01-01T00:00:00.000Z',nota1:6,notaCorr:null,respuestas:{}});st['noatests-mates:'+BASE+'examen1/:historial']=JSON.stringify([{fecha:'2026-01-01T00:00:00.000Z',nota1:6,notaCorr:null,tipos:{recta:{bien:1,total:2}}}]);
+    const pantallas=[];const visible=d=>{const c=d.body.cloneNode(true);c.querySelectorAll('script,style').forEach(x=>x.remove());return d.title+' '+c.textContent;};
+    let w=abrir('index.html',st);await wait(80);pantallas.push(['portada',visible(w.document)]);
+    for(const pg of ['matematicas/index.html','matematicas/temas1-2-numeros-y-planos/index.html','sociales/tema1-como-encontrar-lugares/index.html','arts/index.html','temario/index.html']){w=abrir(pg,st);await wait(80);pantallas.push([pg,visible(w.document)]);}
+    w=abrir(EX1,{});let d=w.document;pantallas.push(['ejercicio',visible(d)]);d.getElementById('corregir').click();pantallas.push(['aviso',d.getElementById('dialogo').textContent]);await responder(d,'d-no');pantallas.push(['resultado',visible(d)]);
+    w=abrir('notas/index.html',st);await wait(120);for(const h of ['#/','#/matematicas','#/matematicas/progreso','#/matematicas/temas1-2-numeros-y-planos','#/matematicas/temas1-2-numeros-y-planos/examen1','#/matematicas/temas1-2-numeros-y-planos/examen2']){w.location.hash=h;w.__noatestsNotas.pintar();pantallas.push(['notas '+h,visible(w.document)]);}
+    const cat2=JSON.parse(fs.readFileSync(path.join(raiz,'catalogo.json'),'utf8'));pantallas.push(['catálogo',JSON.stringify(cat2.materias.map(m=>[m.nombre,m.descripcion,m.temas.map(t=>[t.nombre,t.descripcion,t.examenes.map(e=>[e.nombre,e.descripcion])])]))]);
+    pantallas.push(['manifest',fs.readFileSync(path.join(raiz,'manifest.json'),'utf8').replace(/"start_url[^,]*,|"scope[^,]*,/g,'')]);
+    const malas=pantallas.filter(([,t])=>/ex[aá]men/i.test(t.replace(/examen\d+\//g,''))).map(([n,t])=>n+': «'+t.match(/.{0,25}ex[aá]men.{0,15}/i)[0].trim()+'»');
+    check(!malas.length,'ninguna pantalla dice "examen" (portada, listas, ejercicio, aviso, resultado, Mis notas, temario, catálogo)'+(malas.length?': '+malas.slice(0,3).join(' | '):''));
+  }
   // los generadores reproducen exactamente los exámenes publicados (nadie los ha editado a mano por separado)
   const {execFileSync}=require('child_process');
   for(const [gen,dir] of [['generar-sociales-tema1.py','sociales/tema1-como-encontrar-lugares'],['generar-mates-temas4-5.py','matematicas/temas4-5-sumar-restar-y-problemas']]){

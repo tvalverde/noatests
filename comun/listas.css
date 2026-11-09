@@ -31,3 +31,5 @@ a.seguir{display:block;border:2px dashed #2bb3d9;border-radius:14px;padding:10px
 a.seguir span{display:block;font-weight:400;color:#666;font-size:.9rem}
 .error-lista{text-align:center;color:#777}
 @media (prefers-reduced-motion:reduce){a.examen:active{transform:none}}
+.padres{text-align:center;margin:26px 0 8px;font-size:.9rem}
+.padres a{color:#777}

@@ -38,22 +38,22 @@ def pagina(num,P):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Examen {num} · Matemáticas · Exámenes de Noa</title>
+<title>Ejercicio {num} · Matemáticas · Ejercicios de Noa</title>
 <link rel="manifest" href="../../../manifest.json">
 <meta name="theme-color" content="#f7a823">
 <link rel="stylesheet" href="../../../comun/examen.css?v={V}">
 </head>
 <body>
 <header>
-  <nav class="migas"><a href="../../../">Inicio</a> › <a href="../../">Matemáticas</a> › <a href="../">Temas 4 y 5</a> › <span>Examen {num}</span></nav>
-  <h1>Examen {num}</h1>
+  <nav class="migas"><a href="../../../">Inicio</a> › <a href="../../">Matemáticas</a> › <a href="../">Temas 4 y 5</a> › <span>Ejercicio {num}</span></nav>
+  <h1>Ejercicio {num}</h1>
   <p>Temas 4 y 5 · Sumar, restar y problemas</p>
   <p class="formato">Escribe los números con punto de millar, por ejemplo: 1.234. En las cuentas, una cifra en cada casilla.</p>
 </header>
 <main>
 
 {cuerpo}
-<button class="principal" id="corregir">¡Entregar examen!</button>
+<button class="principal" id="corregir">¡He terminado!</button>
 
 </main>
 <script src="../../../sync.js?v={V}"></script>
@@ -150,7 +150,7 @@ E2=[
 ('tablas','Precios de algunos regalos de la tienda de la reserva.',[
   tabla(['Estuche','Peluche','Taza','Llavero','Cuaderno'],[16,19,12,6,9],titulo=('Regalo','Precio (€)')),
   fila('Adolfo ha comprado un peluche y otro regalo, y ha gastado 25 €. ¿Qué otro regalo compró? '+g('Llavero',['Estuche','Taza','Llavero','Cuaderno']),'data-busca="25-Peluche"'),
-  fila('Andrea ha comprado dos regalos iguales y ha gastado 24 €. ¿Qué regalo compró dos veces? '+g('Taza',['Estuche','Taza','Llavero','Cuaderno']),'data-busca="12"'),
+  fila('Andrea ha comprado dos regalos iguales y ha gastado 24 €. ¿Qué regalo es? '+g('Taza',['Estuche','Taza','Llavero','Cuaderno']),'data-busca="12"'),
   fila('¿Cuánto cuestan el estuche y el cuaderno juntos? '+i(25)+' €','data-calc="Estuche+Cuaderno"')]),
 ('problemas','El viernes visitaron la reserva 156 personas. El sábado fueron 38 personas más que el viernes y el domingo, 27 personas menos que el sábado.',[
   fila('¿Cuántas personas fueron el sábado? '+i(156+38)),
@@ -171,7 +171,7 @@ r3b,c3b=cuenta('-',[2214,1076],{2:'todo'})
 E3=[
 ('sumar','Calcula la suma. Escribe una cifra en cada casilla.',[c1,
   fila('Al sumar las unidades (8 + 6) obtienes '+i(14)+', así que escribes un 4 y te llevas '+i(1))]),
-('tablas','Observa los cromos que tiene cada niño y contesta.',[
+('problemas','Observa los cromos que tiene cada niño y contesta.',[
   tabla(['Adrián','Víctor','Daniela','Claudia'],[457,615,569,518]),
   fila('¿Cuántos cromos tienen Daniela y Adrián juntos? '+i(569+457),'data-calc="Daniela+Adrián"'),
   fila('¿Cuántos cromos tiene Adrián menos que Claudia? '+i(518-457),'data-calc="Claudia-Adrián"'),

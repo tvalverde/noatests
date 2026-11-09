@@ -27,22 +27,22 @@ def pagina(num,preguntas):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Examen {num} · Ciencias Sociales · Exámenes de Noa</title>
+<title>Ejercicio {num} · Ciencias Sociales · Ejercicios de Noa</title>
 <link rel="manifest" href="../../../manifest.json">
 <meta name="theme-color" content="#3aa655">
 <link rel="stylesheet" href="../../../comun/examen.css?v={V}">
 </head>
 <body>
 <header>
-  <nav class="migas"><a href="../../../">Inicio</a> › <a href="../../">Ciencias Sociales</a> › <a href="../">Unidad 1</a> › <span>Examen {num}</span></nav>
-  <h1>Examen {num}</h1>
+  <nav class="migas"><a href="../../../">Inicio</a> › <a href="../../">Ciencias Sociales</a> › <a href="../">Unidad 1</a> › <span>Ejercicio {num}</span></nav>
+  <h1>Ejercicio {num}</h1>
   <p>Unidad 1 · Cómo encontrar lugares</p>
   <p class="formato">Toca la respuesta correcta o escríbela</p>
 </header>
 <main>
 
 {cuerpo}
-<button class="principal" id="corregir">¡Entregar examen!</button>
+<button class="principal" id="corregir">¡He terminado!</button>
 
 </main>
 <script src="../../../sync.js?v={V}"></script>
@@ -119,6 +119,7 @@ E2=[
 ('tierra','Completa el texto.',[
   fila('Nuestro planeta se llama '+i('Tierra')+' y gira alrededor de una estrella llamada '+i('Sol')+'.'),
   fila('Tiene un satélite: la '+i('Luna')+'.'),
+  fila('Lola y Adolfo llamaron al número de emergencias: el '+i('112',True)),
   fila('Una vuelta completa alrededor del Sol dura '+i('365',True)+' días y 6 horas, es decir, un '+i('año')+'.')]),
 ('estaciones','¿En qué estación del año cae cada fecha?',[
   fila('15 de enero: '+g('invierno',EST),'data-fecha="15-01"'),
@@ -162,8 +163,7 @@ E2=[
   fila(L('C')+' es el '+g('norte',CARD)),
   fila(L('A')+' es el '+g('oeste',CARD)),
   fila(L('B')+' es el '+g('este',CARD)),
-  fila('El GPS nos dice dónde estamos gracias a las señales de los '+g('satélites',['satélites','planetas','árboles'])),
-  fila('Lola y Adolfo llamaron al número de emergencias: el '+i('112',True))]),
+  fila('El GPS nos dice dónde estamos gracias a las señales de los '+g('satélites',['satélites','planetas','árboles']))]),
 ]
 
 E3=[

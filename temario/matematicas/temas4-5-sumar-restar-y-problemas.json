@@ -1,0 +1,83 @@
+{
+  "materia": "matematicas",
+  "tema": "temas4-5-sumar-restar-y-problemas",
+  "libro": "Matemáticas 3.º Primaria (Anaya). Tema 4 «Los más pequeños son los más importantes» y tema 5 «Las reservas naturales»",
+  "paginas": "42-60",
+  "estado": "pendiente",
+  "revisado_el": null,
+  "notas_revision": "La página 56 no estaba entre las fotos; probablemente es una página en blanco antes de la portada del tema 5.",
+  "resumen": "Sumar y restar números de hasta 4 cifras con llevadas, términos y propiedades de la suma, prueba de la resta, calcular el término que falta, estimar redondeando. Tema 5: leer tablas de datos, elegir la operación con modelos de barras, problemas con euros (billetes y monedas) e inventar la pregunta de un problema.",
+  "contenidos": {
+    "sumar": {
+      "paginas": "44-47, 52-55",
+      "que": "Sumas de 2, 3 o más números de hasta 4 cifras con llevadas, con bloques, fichas en el tablero y en vertical (UM C D U)."
+    },
+    "terminos": {
+      "paginas": "45, 48-51, 53-54",
+      "que": "Sumandos y suma (o total); minuendo, sustraendo y diferencia."
+    },
+    "propiedades": {
+      "paginas": "47, 49, 53-54",
+      "que": "Propiedad conmutativa (cambiar el orden de dos sumandos) y asociativa (agrupar de otra forma tres sumandos). La resta no es conmutativa."
+    },
+    "restar": {
+      "paginas": "48-50, 53-55",
+      "que": "Restas de hasta 4 cifras con llevadas, en vertical; encontrar y corregir errores en restas."
+    },
+    "prueba-resta": {
+      "paginas": "50, 53-54",
+      "que": "Prueba de la resta: sustraendo + diferencia = minuendo."
+    },
+    "termino-falta": {
+      "paginas": "46, 51-52, 54",
+      "que": "Calcular el sumando, minuendo o sustraendo que falta; cifras escondidas en sumas y restas; modelos de barras con el total y las partes."
+    },
+    "estimar": {
+      "paginas": "46, 50",
+      "que": "Redondear los sumandos a las centenas o los términos de una resta a las decenas y volver a calcular."
+    },
+    "tablas": {
+      "paginas": "52, 58-59",
+      "que": "Leer tablas de datos (filas y columnas); responder preguntas con sumas y restas; saber si una pregunta se puede resolver con la tabla."
+    },
+    "problemas": {
+      "paginas": "49-50, 52, 55, 58-60",
+      "que": "Problemas de una o dos operaciones (suma y resta); relacionar un problema con su modelo de barras; inventar la pregunta de un problema."
+    },
+    "dinero": {
+      "paginas": "59",
+      "que": "Euros sin céntimos: precios de una tienda, pagar justo con los menos billetes y monedas, cambio al pagar con un billete de 50 €."
+    }
+  },
+  "numeros": {
+    "maximo": 9999,
+    "decimales": false
+  },
+  "prohibido": [
+    "multiplic",
+    "divid",
+    "divisi",
+    "fracci",
+    "decimal",
+    "×",
+    "÷",
+    "%",
+    "céntimo",
+    "kilo",
+    "litro",
+    "gramo",
+    "hora",
+    "minuto",
+    "doble",
+    "triple",
+    "mitad",
+    "repart",
+    "producto",
+    "cociente",
+    "tabla de multiplicar",
+    "decena de millar",
+    "millon",
+    "veces"
+  ],
+  "fuera_de_temario": "Multiplicar, dividir, fracciones, decimales, céntimos, medidas de tiempo, peso o capacidad, números de 5 cifras."
+}

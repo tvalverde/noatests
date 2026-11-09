@@ -1,4 +1,4 @@
-/* Motor común de los exámenes evaluables (matemáticas, ciencias sociales y las que vengan).
+/* Motor común de los ejercicios evaluables (en el código y en las carpetas se siguen llamando "examen") (matemáticas, ciencias sociales y las que vengan).
    Cada examen solo define sus preguntas en el HTML:
    - <input type="text" data-r="respuesta">            → hueco. Los números deben escribirse con punto de millar (1.234).
    - <span class="grupo" data-r="opción"> con .opcion   → elegir una opción.
@@ -142,7 +142,7 @@ function corregir(){
 // ---------- barra de progreso: un punto por pregunta ----------
 // Antes de entregar: el punto se rellena cuando la pregunta tiene todos sus huecos contestados.
 // Después: verde, naranja o rojo según el resultado. Tocar un punto lleva a su pregunta.
-const progreso=document.createElement('nav');progreso.id='progreso';progreso.setAttribute('aria-label','Preguntas del examen');
+const progreso=document.createElement('nav');progreso.id='progreso';progreso.setAttribute('aria-label','Preguntas del ejercicio');
 progreso.innerHTML='<div class="puntos"></div><div class="texto" id="p-texto"></div>';
 const puntos=preguntas.map((q,k)=>{const b=document.createElement('button');b.type='button';b.className='punto';b.textContent=k+1;b.setAttribute('aria-label','Ir a la pregunta '+(k+1));b.addEventListener('click',()=>irA(q));progreso.firstChild.appendChild(b);return b;});
 if(preguntas.length)preguntas[0].parentNode.insertBefore(progreso,preguntas[0]);
@@ -255,7 +255,7 @@ function mostrarResultado(res){
 
 // ---------- entregar ----------
 const botonEntregar=document.getElementById('corregir');
-botonEntregar.textContent='¡Entregar examen!';
+botonEntregar.textContent='¡He terminado!';
 botonEntregar.addEventListener('click',()=>{
   const vacios=preguntas.flatMap(huecosSinContestar);
   if(!vacios.length)return entregar();

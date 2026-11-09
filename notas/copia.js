@@ -37,7 +37,7 @@ function importar(archivo){
     const res=fusionar(j.datos);
     // con la nube activa, lo importado se sube también (si no, la siguiente sincronización lo tomaría por borrado)
     if(window.noatestsSync&&window.noatestsSync.activo()){try{window.noatestsSync.subirLocal(Object.keys(j.datos));}catch(e){}}
-    alert('Importado: '+res.intentos+' intentos nuevos, '+res.examenes+' exámenes actualizados'+(res.dibujos?', '+res.dibujos+' dibujos':'')+'.');
+    alert('Importado: '+res.intentos+' intentos nuevos, '+res.examenes+' ejercicios actualizados'+(res.dibujos?', '+res.dibujos+' dibujos':'')+'.');
     location.reload();
   };
   r.readAsText(archivo);

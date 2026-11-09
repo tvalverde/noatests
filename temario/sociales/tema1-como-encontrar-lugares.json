@@ -1,0 +1,77 @@
+{
+  "materia": "sociales",
+  "tema": "tema1-como-encontrar-lugares",
+  "libro": "Ciencias Sociales 3.º Primaria (Anaya). Unidad 1 «Cómo encontrar lugares»",
+  "paginas": "8-25",
+  "estado": "pendiente",
+  "revisado_el": null,
+  "notas_revision": "",
+  "resumen": "La Tierra y sus movimientos, las estaciones, el globo terráqueo, los planisferios y los continentes, los mapas (elementos y tipos), los planos y cómo orientarse.",
+  "contenidos": {
+    "tierra": {
+      "paginas": "8, 10, 24",
+      "que": "Ficha técnica de la Tierra (Sistema solar, Sol, Luna, forma esférica, 12.742 km de diámetro); es el único planeta conocido con vida; movimiento de rotación (24 horas, día y noche) y de traslación (365 días y 6 horas, un año, estaciones); el 112 de la historia de Lola y Adolfo."
+    },
+    "estaciones": {
+      "paginas": "10-11, 24",
+      "que": "Las cuatro estaciones, cuándo empieza cada una (21 de diciembre, 21 de marzo, 21 de junio, 22 de septiembre), cómo son los días y el tiempo y cómo cambian los árboles."
+    },
+    "globo": {
+      "paginas": "12-13, 24",
+      "que": "El globo terráqueo y sus elementos: polos norte y sur, eje terrestre, ecuador, hemisferios norte y sur; la Tierra como «planeta azul» (el libro lo pregunta, no lo explica)."
+    },
+    "planisferio": {
+      "paginas": "14-15, 24",
+      "que": "El planisferio o mapamundi; diferencia con el globo terráqueo; paralelos y meridianos; continentes y océanos; planisferio físico y político."
+    },
+    "mapas": {
+      "paginas": "15-19, 24",
+      "que": "Para qué sirven los mapas; sus elementos (título, leyenda, toponimia, marcas de orientación, símbolos, escala); tipos: físico (relieve y aguas, colores para las alturas), político (países, comunidades autónomas, provincias, capitales) y temático (del tiempo, histórico, el planisferio de la sanidad)."
+    },
+    "planos": {
+      "paginas": "8, 20-21, 24-25",
+      "que": "Qué es un plano y en qué se diferencia de un mapa; tiene los mismos elementos que un mapa; plano de un barrio con calles, del hospital (bloques, salas y puertas) y de un dormitorio; dibujar el plano de la clase o de casa; colocar edificios en un plano con los puntos cardinales; plano o mapa según lo que se quiere representar."
+    },
+    "orientacion": {
+      "paginas": "8, 14, 17, 19, 22-25",
+      "que": "Puntos cardinales; orientarse con el sol (sale por el este, se pone por el oeste), con el musgo y la vegetación (umbría y solana), con la estrella polar, la brújula y el GPS."
+    }
+  },
+  "numeros": {
+    "maximo": 12742,
+    "decimales": false
+  },
+  "prohibido": [
+    "latitud",
+    "longitud",
+    "trópico",
+    "equinoccio",
+    "solsticio",
+    "huso horario",
+    "galaxia",
+    "marte",
+    "júpiter",
+    "venus",
+    "saturno",
+    "eclipse",
+    "atmósfera",
+    "coordenada",
+    "bisiesto",
+    "orbita",
+    "constelac",
+    "osa mayor",
+    "mercurio",
+    "urano",
+    "neptuno",
+    "pluton",
+    "clima",
+    "corteza",
+    "manto",
+    "noreste",
+    "noroeste",
+    "sureste",
+    "suroeste",
+    "greenwich"
+  ],
+  "fuera_de_temario": "Coordenadas (latitud y longitud), husos horarios, otros planetas, eclipses, capas de la Tierra, el clima y el estudio del relieve de España (el mapa físico de la página 18 nombra cordilleras, pero no se estudian)."
+}

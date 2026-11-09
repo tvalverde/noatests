@@ -91,7 +91,7 @@ function intentosDe(exs){
   return exs.flatMap(x=>x.d.historial.map(h=>({fecha:h.fecha,nota1:h.nota1,notaCorr:null,examen:x.e.nombre}))).filter(h=>h.fecha&&h.nota1!=null).sort((a,b)=>String(a.fecha).localeCompare(String(b.fecha)));
 }
 function bloqueGrafica(intentos,texto){
-  if(intentos.length<2)return `<section class="bloque"><h3>Evolución</h3><p class="vacio">La gráfica aparece cuando haya al menos 2 exámenes entregados.</p></section>`;
+  if(intentos.length<2)return `<section class="bloque"><h3>Evolución</h3><p class="vacio">La gráfica aparece cuando haya al menos 2 ejercicios entregados.</p></section>`;
   return `<section class="bloque"><h3>Evolución</h3>${grafica(intentos)}<p class="aviso">${texto}</p></section>`;
 }
 
@@ -104,10 +104,10 @@ function pantallaResumen(cat){
       h+=tarjeta('#/'+m.id,m.nombre,`${hechos} de ${total} con dibujos`,`<span class="media sin">sin nota</span>`,m.color);return;
     }
     const r=resumenMateria(m);
-    const sub=`${r.hechos} de ${r.total} exámenes hechos`+(r.ultimo?` · último: ${esc(r.ultimo.x.e.nombre)}, ${fechaCorta(r.ultimo.f)}`:'');
-    h+=tarjeta('#/'+m.id,m.nombre,sub,r.media==null?insignia(null,'sin exámenes hechos'):insignia(r.media,'media '+n(r.media)),m.color);
+    const sub=`${r.hechos} de ${r.total} ejercicios hechos`+(r.ultimo?` · último: ${esc(r.ultimo.x.e.nombre)}, ${fechaCorta(r.ultimo.f)}`:'');
+    h+=tarjeta('#/'+m.id,m.nombre,sub,r.media==null?insignia(null,'sin ejercicios hechos'):insignia(r.media,'media '+n(r.media)),m.color);
   });
-  h+='<p class="aviso">La media usa la nota del primer intento de cada examen (sin contar correcciones).</p>';
+  h+='<p class="aviso">La media usa la nota del primer intento de cada ejercicio (sin contar correcciones).</p>';
   return {titulo:'Mis notas',migas:[],html:h,extras:true};
 }
 function pantallaMateria(cat,m){
@@ -123,14 +123,14 @@ function pantallaMateria(cat,m){
   }
   const r=resumenMateria(m);const base='#/'+m.id;
   const todos=r.temas.flatMap(x=>x.r.exs);
-  let h=`<div class="cabecera">${r.media==null?insignia(null,'sin exámenes hechos'):insignia(r.media,'media '+n(r.media))}<span class="sub">${r.hechos} de ${r.total} exámenes hechos</span></div>`;
+  let h=`<div class="cabecera">${r.media==null?insignia(null,'sin ejercicios hechos'):insignia(r.media,'media '+n(r.media))}<span class="sub">${r.hechos} de ${r.total} ejercicios hechos</span></div>`;
   h+=resumenTipos(agregarTipos(todos.map(x=>x.d.historial)));
   h+=pestanas(base,pestanaActual,[['','Temas'],['progreso','Progreso']]);
   if(pestanaActual==='progreso'){
-    h+=bloqueGrafica(intentosDe(todos),'Nota del primer intento de cada examen entregado, en orden de fecha.');
+    h+=bloqueGrafica(intentosDe(todos),'Nota del primer intento de cada ejercicio entregado, en orden de fecha.');
     // por (contenido, tema): 3 peores y 3 mejores. Empates: primero los temas más recientes
     const filas=[];r.temas.forEach(({t,r:rt},ti)=>agregarTipos(rt.exs.map(x=>x.d.historial)).forEach(x=>filas.push(Object.assign(x,{t,ti}))));
-    if(!filas.length)h+='<section class="bloque"><p class="vacio">Cuando haya exámenes entregados verás aquí qué repasar.</p></section>';
+    if(!filas.length)h+='<section class="bloque"><p class="vacio">Cuando haya ejercicios entregados verás aquí qué repasar.</p></section>';
     else{
       const linea=x=>`<tr><td class="tn">${NOMBRES[x.tipo]||esc(x.tipo)}<a class="sub" href="${esc(base+'/'+x.t.id+'/progreso')}">${esc(x.t.nombre)}</a></td><td><div class="barra ${x.p<.5?'mal':x.p<.8?'medio':''}"><i style="width:${Math.round(x.p*100)}%"></i></div></td><td class="nota">${Math.round(x.p*100)}%</td></tr>`;
       const peores=filas.filter(x=>x.p<1).sort((a,b)=>a.p-b.p||b.ti-a.ti).slice(0,3);
@@ -149,12 +149,12 @@ function pantallaMateria(cat,m){
 }
 function pantallaTema(cat,m,t){
   const r=resumenTema(m,t);const base='#/'+m.id+'/'+t.id;
-  let h=`<div class="cabecera">${r.media==null?insignia(null,'sin exámenes hechos'):insignia(r.media,'media '+n(r.media))}<span class="sub">${r.hechos} de ${r.total} exámenes hechos</span></div>`;
+  let h=`<div class="cabecera">${r.media==null?insignia(null,'sin ejercicios hechos'):insignia(r.media,'media '+n(r.media))}<span class="sub">${r.hechos} de ${r.total} ejercicios hechos</span></div>`;
   h+=resumenTipos(agregarTipos(r.exs.map(x=>x.d.historial)));
-  h+=pestanas(base,pestanaActual,[['','Exámenes'],['progreso','Progreso']]);
+  h+=pestanas(base,pestanaActual,[['','Ejercicios'],['progreso','Progreso']]);
   if(pestanaActual==='progreso'){
-    h+=bloqueGrafica(intentosDe(r.exs),'Nota del primer intento de cada examen entregado de este tema, en orden de fecha.');
-    h+=tiposHtml(r.exs.map(x=>x.d.historial),'en este tema')||'<section class="bloque"><p class="vacio">Cuando haya exámenes entregados verás aquí qué se te da mejor y peor.</p></section>';
+    h+=bloqueGrafica(intentosDe(r.exs),'Nota del primer intento de cada ejercicio entregado de este tema, en orden de fecha.');
+    h+=tiposHtml(r.exs.map(x=>x.d.historial),'en este tema')||'<section class="bloque"><p class="vacio">Cuando haya ejercicios entregados verás aquí qué se te da mejor y peor.</p></section>';
   }else{
     r.exs.forEach(({e,d,nota})=>{
       const u=ultimoDe(d);
@@ -171,15 +171,15 @@ function pantallaExamen(cat,m,t,e){
   // un último intento que no esté en el historial (datos antiguos) también cuenta
   if(d.ultimo&&d.ultimo.fecha&&!hist.some(h=>h.fecha===d.ultimo.fecha))hist.push({fecha:d.ultimo.fecha,nota1:d.ultimo.nota1,notaCorr:d.ultimo.notaCorr,tipos:d.ultimo.tipos});
   hist.sort((a,b)=>String(a.fecha).localeCompare(String(b.fecha)));
-  let h=`<div class="cabecera"><span class="sub">${esc(e.descripcion||'')}</span><a class="boton" href="${esc(ruta)}">${hist.length?'Abrir el examen':'Hacer el examen'}</a></div>`;
-  if(!hist.length){h+='<p class="vacio">Todavía no has hecho este examen.</p>';return {titulo:e.nombre,migas:[[m.nombre,'#/'+m.id],[t.nombre,'#/'+m.id+'/'+t.id],[e.nombre]],html:h};}
+  let h=`<div class="cabecera"><span class="sub">${esc(e.descripcion||'')}</span><a class="boton" href="${esc(ruta)}">${hist.length?'Abrir el ejercicio':'Hacer el ejercicio'}</a></div>`;
+  if(!hist.length){h+='<p class="vacio">Todavía no has hecho este ejercicio.</p>';return {titulo:e.nombre,migas:[[m.nombre,'#/'+m.id],[t.nombre,'#/'+m.id+'/'+t.id],[e.nombre]],html:h};}
   const ult=hist[hist.length-1];const mejor=Math.max(...hist.map(x=>x.nota1));
   h+=`<div class="cifras"><div><span>Último</span><b style="color:${colorNota(ult.nota1)}">${n(ult.nota1)}</b></div><div><span>Mejor</span><b style="color:${colorNota(mejor)}">${n(mejor)}</b></div><div><span>Intentos</span><b>${hist.length}</b></div></div>`;
   if(hist.length>=2)h+=`<section class="bloque"><h3>Evolución</h3>${grafica(hist)}</section>`;
   const vioSol=d.ultimo&&d.ultimo.vioSoluciones?d.ultimo.fecha:null;
   h+='<section class="bloque"><h3>Intentos</h3><table class="intentos"><tr><th>Fecha</th><th>Nota</th><th>Tras corregir</th></tr>'+
     hist.slice().reverse().map(x=>`<tr><td class="fecha">${esc(fechaLarga(x.fecha))}${x.fecha===vioSol?' <span title="Vio las soluciones">💡</span>':''}</td><td class="nota" style="color:${colorNota(x.nota1)}">${n(x.nota1)}</td><td class="nota">${x.notaCorr!=null?n(x.notaCorr):'—'}</td></tr>`).join('')+'</table></section>';
-  h+=tiposHtml([hist],'en este examen');
+  h+=tiposHtml([hist],'en este ejercicio');
   return {titulo:e.nombre,migas:[[m.nombre,'#/'+m.id],[t.nombre,'#/'+m.id+'/'+t.id],[e.nombre]],html:h};
 }
 
@@ -204,7 +204,7 @@ function pintar(){
   const migas=[['Inicio','../'],['Mis notas',v.migas.length?'#/':null],...v.migas];
   document.getElementById('migas').innerHTML=migas.map(([t,h],i)=>h&&i<migas.length-1?`<a href="${esc(h)}">${esc(t)}</a>`:`<span>${esc(t)}</span>`).join(' › ');
   document.getElementById('titulo').textContent=v.titulo;
-  document.title=(v.titulo==='Mis notas'?'':v.titulo+' · ')+'Mis notas · Exámenes de Noa';
+  document.title=(v.titulo==='Mis notas'?'':v.titulo+' · ')+'Mis notas · Ejercicios de Noa';
   document.getElementById('contenido').innerHTML=v.html;
   const ex=document.getElementById('extras');if(ex)ex.style.display=v.extras?'':'none';
   window.scrollTo(0,0);

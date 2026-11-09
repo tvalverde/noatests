@@ -50,13 +50,13 @@ fetch(RAIZ+'catalogo.json').then(r=>r.json()).then(cat=>{
       html+=tarjeta(m.id+'/',`<em class="icono">${m.icono||'📘'}</em>${esc(m.nombre)}`,desc,m.color,'','materia');
     });
     html+=tarjeta('notas/','<em class="icono">⭐</em>Mis notas','Tus notas, tus estrellas y lo que mejor llevas','#f7a823','','materia');
-    html+='</div>';
+    html+='</div><p class="padres"><a href="temario/">👨‍👩‍👧 Para padres: temario y revisión de los ejercicios</a></p>';
   }else if(tipo==='materia'){
     const m=cat.materias.find(x=>x.id===main.dataset.materia);if(!m)return;
     m.temas.forEach(t=>{
       if(!t.id){t.examenes.forEach(e=>{html+=tarjeta(e.id+'/',esc(e.nombre),esc(e.descripcion),m.color);});return;}
       const hechos=t.examenes.filter(e=>notaDe(rutaDe(m,t,e))).length;
-      html+=tarjeta(t.id+'/',esc(t.nombre),esc(t.descripcion||'')+' · '+t.examenes.length+' exámenes'+(hechos?' · '+hechos+' hechos':'')+barra(hechos,t.examenes.length,m.color),m.color);
+      html+=tarjeta(t.id+'/',esc(t.nombre),esc(t.descripcion||'')+' · '+t.examenes.length+' ejercicios'+(hechos?' · '+hechos+' hechos':'')+barra(hechos,t.examenes.length,m.color),m.color);
     });
   }else if(tipo==='tema'){
     const m=cat.materias.find(x=>x.id===main.dataset.materia);const t=m&&m.temas.find(x=>x.id===main.dataset.tema);if(!t)return;

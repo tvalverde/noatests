@@ -45,7 +45,7 @@ const store={
   const port=[...d.querySelectorAll('a.examen')].map(a=>a.textContent.split('\n')[0].trim());
   if(port.length<3||!d.querySelector('a[href="matematicas/"]')||!d.querySelector('a[href="notas/"]'))fallo('portada: faltan tarjetas: '+port.join(' | '));else console.log('  ✓ portada: '+d.querySelectorAll('a.examen').length+' tarjetas');
   d=await abrir('matematicas/index.html',store);
-  const tm=d.querySelector('a.examen');if(!tm||!/7 exámenes · 2 hechos/.test(tm.textContent))fallo('materia: texto del tema incorrecto: '+(tm&&tm.textContent));else console.log('  ✓ materia: '+tm.textContent.replace(/\s+/g,' ').trim());
+  const tm=d.querySelector('a.examen');if(!tm||!/7 ejercicios · 2 hechos/.test(tm.textContent))fallo('materia: texto del tema incorrecto: '+(tm&&tm.textContent));else console.log('  ✓ materia: '+tm.textContent.replace(/\s+/g,' ').trim());
   d=await abrir('matematicas/temas1-2-numeros-y-planos/index.html',store);
   const ex=[...d.querySelectorAll('a.examen')];if(ex.length!==7)fallo('tema: '+ex.length+' exámenes en vez de 7');
   const n1=d.querySelector('a[href="examen1/"] .nota-lista'),n3=d.querySelector('a[href="examen3/"] .nota-lista'),n2=d.querySelector('a[href="examen2/"] .nota-lista');
@@ -64,9 +64,9 @@ const store={
   let ts=tarjetas(d);
   if(ts.length!==cat.materias.length)fallo('resumen: '+ts.length+' materias en vez de '+cat.materias.length);
   const tarjetaDe=nombre=>ts.find(a=>txt(a).startsWith(nombre));
-  if(!/Ciencias Sociales.*0 de 3 exámenes hechos/.test(txt(tarjetaDe('Ciencias Sociales'))))fallo('resumen: tarjeta de sociales: '+txt(tarjetaDe('Ciencias Sociales')));
-  if(!/Matemáticas.*2 de 10 exámenes hechos.*media 8,00/.test(txt(ts[0])))fallo('resumen: tarjeta de mates: '+txt(ts[0]));
-  if(!/último: Examen 3, 18 oct/.test(txt(ts[0])))fallo('resumen: no indica el último examen hecho: '+txt(ts[0]));
+  if(!/Ciencias Sociales.*0 de 3 ejercicios hechos/.test(txt(tarjetaDe('Ciencias Sociales'))))fallo('resumen: tarjeta de sociales: '+txt(tarjetaDe('Ciencias Sociales')));
+  if(!/Matemáticas.*2 de 10 ejercicios hechos.*media 8,00/.test(txt(ts[0])))fallo('resumen: tarjeta de mates: '+txt(ts[0]));
+  if(!/último: Ejercicio 3, 18 oct/.test(txt(ts[0])))fallo('resumen: no indica el último examen hecho: '+txt(ts[0]));
   if(!/Arts.*1 de 1 con dibujos.*sin nota/.test(txt(tarjetaDe('Arts'))))fallo('resumen: tarjeta de Arts: '+txt(tarjetaDe('Arts')));
   if(d.getElementById('extras').style.display==='none'||!d.getElementById('btn-exportar'))fallo('resumen: faltan nube y exportar/importar');
   if(d.getElementById('titulo').textContent!=='Mis notas'||/Mis notas<\/a>/.test(d.getElementById('migas').innerHTML))fallo('resumen: título o migas incorrectos');
@@ -94,7 +94,7 @@ const store={
   if(!errores)console.log('  ✓ materia/progreso: gráfica, "para repasar" y "lo mejor" con máximo 3, sin solaparse y con enlace al tema');
   // tema
   await ir(d,'#/matematicas/temas1-2-numeros-y-planos');ts=tarjetas(d);
-  const t1=ts.find(a=>/Examen 1/.test(txt(a))),t2=ts.find(a=>/Examen 2/.test(txt(a))),t3=ts.find(a=>/Examen 3/.test(txt(a)));
+  const t1=ts.find(a=>/Ejercicio 1/.test(txt(a))),t2=ts.find(a=>/Ejercicio 2/.test(txt(a))),t3=ts.find(a=>/Ejercicio 3/.test(txt(a)));
   if(ts.length!==7)fallo('tema: '+ts.length+' exámenes en vez de 7');
   if(!/9,50.*/.test(txt(t1))||!/2 intentos/.test(txt(t1)))fallo('tema: examen1: '+txt(t1));
   if(!/6,50 → 8,75/.test(txt(t3)))fallo('tema: examen3: '+txt(t3));
@@ -121,7 +121,7 @@ const store={
   if(!errores)console.log('  ✓ examen: intentos del más reciente al más antiguo, cifras, gráfica sin NaN y botón para abrirlo');
   // examen con 1 intento: sin gráfica; sin hacer: mensaje
   await ir(d,'#/matematicas/temas1-2-numeros-y-planos/examen3');if(d.querySelector('svg.grafica'))fallo('examen3: con 1 intento no debe haber gráfica');
-  await ir(d,'#/matematicas/temas1-2-numeros-y-planos/examen2');if(!/Todavía no has hecho este examen/.test(d.body.textContent)||!/Hacer el examen/.test(txt(d.querySelector('a.boton'))))fallo('examen2: estado sin hacer');
+  await ir(d,'#/matematicas/temas1-2-numeros-y-planos/examen2');if(!/Todavía no has hecho este ejercicio/.test(d.body.textContent)||!/Hacer el ejercicio/.test(txt(d.querySelector('a.boton'))))fallo('examen2: estado sin hacer');
   if(!errores)console.log('  ✓ examen: sin gráfica con 1 intento; "sin hacer" con botón para hacerlo');
   // Arts: miniaturas
   await ir(d,'#/arts');const imgs=d.querySelectorAll('.miniaturas img');if(imgs.length!==1||imgs[0].getAttribute('src')!=='data:x')fallo('arts: miniaturas '+imgs.length);
@@ -145,10 +145,10 @@ const store={
   }
   // sin datos
   d=await abrir('notas/index.html',{});
-  if(!/sin exámenes hechos/.test(d.body.textContent))fallo('notas vacías: resumen');
+  if(!/sin ejercicios hechos/.test(d.body.textContent))fallo('notas vacías: resumen');
   await ir(d,'#/matematicas/temas1-2-numeros-y-planos');if(tarjetas(d).filter(a=>/sin hacer/.test(txt(a))).length!==7)fallo('notas vacías: tema');
   if(d.querySelector('.tipos')||d.querySelector('.resumen-tipos'))fallo('notas vacías: no debería haber tabla ni resumen de tipos');
-  await ir(d,'#/matematicas/progreso');if(d.querySelector('svg.grafica')||!/al menos 2 exámenes/.test(d.body.textContent)||!/verás aquí qué repasar/.test(d.body.textContent))fallo('notas vacías: progreso de materia');
+  await ir(d,'#/matematicas/progreso');if(d.querySelector('svg.grafica')||!/al menos 2 ejercicios/.test(d.body.textContent)||!/verás aquí qué repasar/.test(d.body.textContent))fallo('notas vacías: progreso de materia');
   await ir(d,'#/matematicas/temas1-2-numeros-y-planos/progreso');if(d.querySelector('svg.grafica')||!/verás aquí qué se te da mejor/.test(d.body.textContent))fallo('notas vacías: progreso de tema');
   if(!errores)console.log('  ✓ sin datos: todo "sin hacer" y sin tablas vacías');
   console.log('exportar / importar');

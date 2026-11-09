@@ -52,7 +52,7 @@ function rellenarBien(d){d.querySelectorAll('input[data-r]').forEach(i=>i.value=
   w=abrir('notas/index.html',B);await wait(120);d=w.document;
   const nubeCaja=d.getElementById('btn-sync');if(!nubeCaja)fallo('falta la caja de nube conectada en Mis notas');
   w.location.hash='#/matematicas/temas1-2-numeros-y-planos';w.__noatestsNotas.pintar();
-  const fila=[...d.querySelectorAll('a.tarjeta')].find(tr=>/Examen 1/.test(tr.textContent));
+  const fila=[...d.querySelectorAll('a.tarjeta')].find(tr=>/Ejercicio 1/.test(tr.textContent));
   if(!fila||!/10,00/.test(fila.textContent)||!/2 intentos/.test(fila.textContent))fallo('en el dispositivo B no se ven los 2 intentos de A: '+(fila&&fila.textContent.replace(/\s+/g,' ')));else console.log('  ✓ otro dispositivo ve los intentos (10,00, 2 intentos)');
   // F) en B, abrir el examen: aparece la caja de resultado del intento de A (sin poder corregir, sin respuestas)
   w=abrir(EX,B);await wait(120);d=w.document;

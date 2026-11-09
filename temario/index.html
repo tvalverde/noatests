@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es" style="--materia:#5a6b7d">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Temario y revisión · Ejercicios de Noa</title>
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#5a6b7d">
+<link rel="stylesheet" href="../comun/listas.css?v=20">
+<style>
+  main{max-width:760px}
+  .intro{background:#fff;border-radius:16px;padding:14px 16px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-bottom:16px;line-height:1.5}
+  .intro p{margin:0 0 8px}.intro p:last-child{margin:0}
+  section.tema{background:#fff;border-radius:16px;padding:14px 16px;margin-bottom:18px;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:8px solid var(--c,#2bb3d9)}
+  section.tema h2{margin:0 0 4px;font-size:1.25rem}
+  .estado{display:inline-block;border-radius:10px;padding:1px 10px;font-size:.85rem;font-weight:800;vertical-align:middle;margin-left:6px}
+  .estado.pendiente{background:#fff3cd;color:#8a5a00}.estado.revisado{background:#e3f6e5;color:#2e7d32}
+  .libro{color:#666;font-size:.92rem;margin:2px 0 10px}
+  .resumen{margin:0 0 10px}
+  .tabla{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;font-size:.93rem}
+  th,td{border-bottom:1px solid #eee;padding:7px 6px;text-align:left;vertical-align:top}
+  th{color:#777;font-weight:700;font-size:.82rem}
+  td.pag,td.n{white-space:nowrap;font-variant-numeric:tabular-nums}
+  .limites{font-size:.9rem;color:#555;margin:10px 0 0}
+  .limites b{color:#333}
+  details{border-top:1px solid #eee;padding:8px 0}
+  details:last-child{border-bottom:1px solid #eee}
+  summary{cursor:pointer;font-weight:800;padding:4px 0}
+  summary:focus-visible{outline:3px solid #2b6cd9;outline-offset:2px}
+  ol.preguntas{margin:6px 0 4px;padding-left:24px}
+  ol.preguntas li{margin:0 0 8px;line-height:1.4}
+  ol.preguntas .meta{display:block;font-size:.82rem;color:#777}
+  .fuera{color:#e4452c;font-weight:800}
+  h3{font-size:1rem;margin:16px 0 6px;color:#555}
+</style>
+</head>
+<body>
+<header><nav class="migas"><a href="../">Inicio</a> › <span>Temario y revisión</span></nav><h1>Temario y revisión</h1></header>
+<main id="temario">
+  <div class="intro">
+    <p><b>Para padres.</b> Aquí está lo que entra en cada tema según el libro y, debajo, cada pregunta de cada ejercicio con el contenido y las páginas del libro de donde sale.</p>
+    <p>Los ejercicios se comprueban automáticamente contra este temario antes de publicarse: no pueden usar contenidos que no estén en la lista, números mayores que el máximo, decimales si no tocan, ni las palabras vigiladas.</p>
+    <p>Si algo del temario no cuadra con el libro, avisa y se corrige. Cuando un tema se da por bueno, pasa de <span class="estado pendiente">Pendiente de revisar</span> a <span class="estado revisado">Revisado</span>.</p>
+  </div>
+  <div id="temas"><p class="error-lista">Cargando…</p></div>
+</main>
+<script src="temario.js?v=20"></script>
+<script src="../sw-registro.js"></script>
+</body>
+</html>

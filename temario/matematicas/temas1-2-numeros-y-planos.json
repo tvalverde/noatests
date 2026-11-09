@@ -1,0 +1,89 @@
+{
+  "materia": "matematicas",
+  "tema": "temas1-2-numeros-y-planos",
+  "libro": "Matemáticas 3.º Primaria (Anaya). Tema 1 «¿Un planeta superpoblado o un planeta deshabitado?» y tema 2 «Bienvenidos a Expo-Tierra»",
+  "paginas": "6-35",
+  "estado": "pendiente",
+  "revisado_el": null,
+  "notas_revision": "Las páginas 23 y 35 están en blanco.",
+  "resumen": "Números de 3 y 4 cifras: leerlos, escribirlos, descomponerlos, situarlos en la recta, compararlos, ordenarlos y redondearlos; estimar sumas y restas sencillas. Planos: qué son, orientarse y moverse por una cuadrícula siguiendo indicaciones; traslaciones.",
+  "contenidos": {
+    "leer-escribir": {
+      "paginas": "6, 8-11, 19-20",
+      "que": "Leer y escribir con cifras y con letras números de 3 y 4 cifras (hasta 9.999). Bloques multibase, tapones en torres, cajas y bolsitas."
+    },
+    "descomponer": {
+      "paginas": "8-11, 19-20",
+      "que": "Descomponer según el valor (2.000 + 300 + 4) y según la posición (2 UM + 3 C + 4 U). Muro de descomposición, tarjetas de composición, 1 UM = 10 C = 100 D = 1.000 U. También descomposiciones no habituales (19 D + 3 U, 21 C + 74 U)."
+    },
+    "valor-posicion": {
+      "paginas": "9-11, 15, 20-21",
+      "que": "Valor de cada cifra según su posición; número anterior y posterior (una unidad menos o más); qué cifra cambia al sumar o quitar unidades, decenas o centenas; pistas para adivinar un número."
+    },
+    "recta": {
+      "paginas": "12-13, 19-21",
+      "que": "Representar números en rectas graduadas de 1 en 1, de 10 en 10, de 25 en 25, de 50 en 50, de 100 en 100, de 500 en 500 y de 1.000 en 1.000 (hasta 10.000); qué número representa cada letra o punto, también entre dos marcas; elegir de cuánto en cuánto graduar una recta."
+    },
+    "comparar": {
+      "paginas": "14-15, 19, 21",
+      "que": "Comparar números de hasta 4 cifras con bloques, tarjetas y la recta, mirando las cifras de izquierda a derecha; signos > y <."
+    },
+    "ordenar": {
+      "paginas": "15, 17, 21",
+      "que": "Ordenar números de mayor a menor o de menor a mayor; números ordinales hasta el 16.º, también escritos con letra (decimoquinto, decimosexto)."
+    },
+    "redondear": {
+      "paginas": "16-17, 19, 21",
+      "que": "Redondear a la decena y a la centena con ayuda de la recta; si acaba en 5 se redondea al mayor."
+    },
+    "estimar": {
+      "paginas": "22",
+      "que": "Estimar sumas y restas de números de 2 cifras redondeando cada número a la decena más cercana (con ayuda de la recta) antes de operar; problemas de calcular aproximadamente."
+    },
+    "plano": {
+      "paginas": "24-29, 32-34",
+      "que": "Qué es un plano (lugar visto desde arriba); planos de aulas y de Expo-Tierra con salas y calles; orientarse según hacia dónde mira la persona (derecha, izquierda, delante); seguir indicaciones de casillas en una cuadrícula. Ver un objeto de frente o desde arriba, dibujar el plano de un pupitre, elegir el camino con menos calles, el movimiento del caballo de ajedrez en «L» y el laberinto."
+    },
+    "traslacion": {
+      "paginas": "30-31, 33-34",
+      "que": "Traslación: mover una figura sin girarla ni cambiar su tamaño; desplazar un objeto N casillas arriba, abajo, a la derecha o a la izquierda en una cuadrícula."
+    }
+  },
+  "numeros": {
+    "maximo": 10000,
+    "decimales": false
+  },
+  "prohibido": [
+    "multiplic",
+    "fracci",
+    "decimal",
+    "×",
+    "÷",
+    "%",
+    "céntimo",
+    "kilo",
+    "litro",
+    "gramo",
+    "hora",
+    "minuto",
+    "€",
+    "dividir entre",
+    "divide entre",
+    "dividido entre",
+    "cociente",
+    "repart",
+    "mitad",
+    "doble",
+    "triple",
+    "simetr",
+    "rotacion",
+    "romano",
+    "decena de millar",
+    "millon",
+    "cien mil",
+    "euro",
+    "coordenada",
+    "angulo"
+  ],
+  "fuera_de_temario": "Sumas y restas con llevadas (tema 4), multiplicar, dividir, fracciones, decimales, dinero, medidas de tiempo, peso o capacidad, números de 5 cifras."
+}
