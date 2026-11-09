@@ -6,6 +6,8 @@
       "color": "#2bb3d9",
       "evaluable": true,
       "descripcion": "Números, planos y todo lo que venga",
+      "icono": "🔢",
+      "contenidos": {"leer-escribir": "Leer y escribir números", "descomponer": "Descomponer números", "valor-posicion": "Valor de cada cifra", "recta": "Rectas numéricas", "comparar": "Comparar números", "ordenar": "Ordenar números", "redondear": "Redondear", "estimar": "Estimar sumas y restas", "plano": "Planos", "traslacion": "Traslaciones", "sumar": "Sumar", "restar": "Restar", "terminos": "Términos de la suma y la resta", "propiedades": "Propiedades de la suma", "prueba-resta": "Prueba de la resta", "termino-falta": "Números que faltan", "tablas": "Tablas de datos", "problemas": "Problemas", "dinero": "Billetes y monedas"},
       "temas": [
         {
           "id": "temas1-2-numeros-y-planos",
@@ -39,6 +41,8 @@
       "color": "#3aa655",
       "evaluable": true,
       "descripcion": "La Tierra, mapas, planos y orientarse",
+      "icono": "🌍",
+      "contenidos": {"tierra": "La Tierra y sus movimientos", "estaciones": "Las estaciones", "globo": "El globo terráqueo", "planisferio": "Planisferios y continentes", "mapas": "Mapas", "planos": "Planos", "orientacion": "Orientarse"},
       "temas": [
         {
           "id": "tema1-como-encontrar-lugares",
@@ -58,6 +62,8 @@
       "color": "#a86bd6",
       "evaluable": false,
       "descripcion": "Dibujar y colorear",
+      "icono": "🎨",
+      "contenidos": {},
       "temas": [
         {
           "id": "",

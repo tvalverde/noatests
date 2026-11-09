@@ -1,8 +1,10 @@
-/* Estilos comunes de los exámenes de matemáticas */
+/* Estilos comunes de los exámenes evaluables (todas las materias).
+   Cada página puede fijar su color con <html style="--materia:#3aa655;--materia-borde:#3aa655">. */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap');
 :root{--naranja:#f7a823;--azul:#2bb3d9;--rojo:#e4452c;--verde:#4caf50;--texto:#333;--fondo:#fff7e6;}
 *{box-sizing:border-box}
-body{margin:0;font-family:"Segoe UI",Arial,sans-serif;background:var(--fondo);color:var(--texto);}
-header{background:var(--naranja);color:#fff;padding:20px 16px;text-align:center}
+body{margin:0;font-family:"Nunito","Segoe UI",Arial,sans-serif;background:var(--fondo);color:var(--texto);font-size:17px;line-height:1.45}
+header{background:var(--materia,var(--naranja));color:#fff;padding:20px 16px;text-align:center}
 header h1{margin:0;font-size:1.6rem}
 header p{margin:6px 0 0;opacity:.9}
 header p.formato{font-size:.9rem;background:rgba(255,255,255,.2);display:inline-block;padding:4px 10px;border-radius:12px;margin-top:8px}
@@ -11,7 +13,7 @@ nav.migas a{color:#fff;text-decoration:underline}
 nav.migas span{opacity:.8}
 main{max-width:720px;margin:0 auto;padding:16px}
 
-.pregunta{background:#fff;border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:8px solid var(--azul)}
+.pregunta{background:#fff;border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:8px solid var(--materia-borde,var(--azul));scroll-margin-top:90px}
 .pregunta h2{margin:0 0 10px;font-size:1.05rem;position:relative;padding-right:40px}
 button.leer{position:absolute;right:0;top:-4px;border:2px solid #ddd;background:#fff;border-radius:50%;width:34px;height:34px;font-size:1rem;cursor:pointer}
 button.leer:active{background:#e3f6fb}
@@ -29,7 +31,7 @@ input.ok{border-color:var(--verde);background:#eaf8ea}
 input.mal{border-color:var(--rojo);background:#fdecea}
 input:disabled{color:var(--texto)}
 
-.opcion{display:inline-block;margin:4px 6px 4px 0;padding:8px 14px;border:2px solid #ccc;border-radius:20px;cursor:pointer;background:#fff;font-size:1.05rem;user-select:none}
+.opcion{display:inline-block;margin:4px 6px 4px 0;padding:9px 16px;min-height:44px;line-height:22px;border:2px solid #ccc;border-radius:20px;cursor:pointer;background:#fff;font-size:1.05rem;user-select:none}
 .opcion.sel{border-color:var(--azul);background:#e3f6fb}
 .opcion.ok{border-color:var(--verde);background:#eaf8ea}
 .opcion.mal{border-color:var(--rojo);background:#fdecea}
@@ -79,3 +81,30 @@ button.principal:active{opacity:.85}
 table.datos{border-collapse:collapse;margin:10px auto;font-size:1.05rem;width:auto}
 table.datos th{background:#fde9a8;border:1px solid #c9a227;padding:6px 10px}
 table.datos td{border:1px solid #c9a227;padding:6px 10px;text-align:center;background:#fff}
+
+/* ---------- pensado para niños: foco visible, huecos sin contestar, progreso, diálogo y estrellas ---------- */
+.opcion:focus-visible,input:focus-visible,button:focus-visible,.celda:focus-visible{outline:3px solid var(--azul);outline-offset:2px}
+input[type=text]{min-height:44px}
+input.vacio,.grupo.vacio,.grid.vacio{animation:latido 1.2s ease-in-out 3;box-shadow:0 0 0 4px #ffd54f;border-radius:12px}
+@keyframes latido{50%{box-shadow:0 0 0 8px #ffe082}}
+#progreso{position:sticky;top:0;z-index:8;background:#fff;border-radius:0 0 16px 16px;box-shadow:0 3px 10px rgba(0,0,0,.1);padding:8px 10px 6px;margin:-16px -16px 16px}
+#progreso .puntos{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+#progreso .punto{width:32px;height:32px;border-radius:50%;border:2px solid #cfcfcf;background:#fff;color:#888;font:inherit;font-weight:800;font-size:.9rem;cursor:pointer;padding:0}
+#progreso .punto.hecha{background:var(--azul);border-color:var(--azul);color:#fff}
+#progreso .punto.ok{background:var(--verde);border-color:var(--verde);color:#fff}
+#progreso .punto.medias{background:var(--naranja);border-color:var(--naranja);color:#fff}
+#progreso .punto.mal{background:var(--rojo);border-color:var(--rojo);color:#fff}
+#progreso .texto{text-align:center;font-size:.9rem;color:#555;margin-top:5px;font-weight:700}
+#dialogo{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:40;display:flex;align-items:center;justify-content:center;padding:16px}
+#dialogo[hidden]{display:none}
+.caja-dialogo{background:#fff;border-radius:20px;padding:22px 18px 16px;max-width:380px;width:100%;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.caja-dialogo p{font-size:1.2rem;font-weight:700;margin:0 0 16px}
+.caja-dialogo button{display:block;width:100%;font:inherit;font-size:1.1rem;font-weight:700;padding:13px;border-radius:14px;border:none;margin-top:8px;cursor:pointer}
+#d-si{background:var(--azul);color:#fff}
+#d-no{background:#eee;color:#333}
+#caja .estrellas{font-size:2.6rem;letter-spacing:6px;line-height:1;margin:2px 0 6px;color:#ddd}
+#caja .estrellas .llena{color:#f7c21c;text-shadow:0 2px 0 #c99a00}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+#velo.recien #caja{pointer-events:none}
+main{padding-bottom:90px} /* que el botón flotante "Ver resultado" no tape la última pregunta */
+@media (max-width:400px){#progreso .puntos{gap:4px}#progreso .punto{width:28px;height:28px;font-size:.8rem}}

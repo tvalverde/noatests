@@ -31,8 +31,9 @@ function abrir(rel,store,opts={}){
   const html=fs.readFileSync(path.join(raiz,rel),'utf8').replace(/<script src="[^"]*sw-registro\.js"><\/script>/,'');
   const url='https://x.test/noatests/'+rel.replace(/index\.html$/,'');
   const dom=new JSDOM(html,{url,runScripts:'outside-only',pretendToBeVisual:true});const w=dom.window;
+  if(opts.lsMuerto){Object.defineProperty(w,'localStorage',{get(){throw new Error('SecurityError');}});}
   const ls={getItem:k=>store[k]??null,setItem:(k,v)=>{if(opts.lsRoto)throw new Error('QuotaExceeded');store[k]=String(v);},removeItem:k=>delete store[k],key:i=>Object.keys(store)[i],get length(){return Object.keys(store).length;}};
-  Object.defineProperty(w,'localStorage',{value:ls});
+  if(!opts.lsMuerto)Object.defineProperty(w,'localStorage',{value:ls});
   Object.defineProperty(w.navigator,'onLine',{get:()=>nube.red});
   w.fetch=(u,opt)=>{const s=String(u);if(s.includes('/rpc/')){const nombre=s.split('/rpc/')[1];try{const r=servidor(nube,nombre,JSON.parse(opt.body));if(r&&r.http)return Promise.resolve({ok:false,status:r.http,text:()=>Promise.resolve('')});return Promise.resolve({ok:true,text:()=>Promise.resolve(JSON.stringify(r))});}catch(e){return Promise.reject(e);}}
     const p=new URL(s,url).pathname.replace(/^\/noatests\//,'');return Promise.resolve({ok:true,json:()=>Promise.resolve(JSON.parse(fs.readFileSync(path.join(raiz,p),'utf8'))),text:()=>Promise.resolve('')});};
@@ -43,6 +44,9 @@ function abrir(rel,store,opts={}){
 }
 function rellenarBien(d){d.querySelectorAll('input[data-r]').forEach(i=>i.value=i.dataset.r);d.querySelectorAll('.grupo').forEach(g=>[...g.querySelectorAll('.opcion')].find(o=>o.textContent.trim().toLowerCase()===g.dataset.r.toLowerCase()).click());const g=d.querySelector('.grid');if(g){const [r,c]=g.dataset.dest.split(',');d.querySelector(`.celda[data-r="${r}"][data-c="${c}"]`).click();}}
 const nota=d=>d.getElementById('r-nota').textContent;
+// Diálogo propio del examen: "seguir/cancelar" o "aceptar"
+const dialogoVisible=d=>!d.getElementById('dialogo').hidden;
+const responder=async(d,boton)=>{d.getElementById(boton).click();await wait(0);};
 
 (async()=>{
 // =====================================================================
@@ -62,7 +66,7 @@ console.log('1. Formato de números y comparación de respuestas');
 // =====================================================================
 console.log('2. Notas: redondeo al cuarto, límites, preguntas a medias');
 {
-  let w=abrir(EX1,{}),d=w.document;d.getElementById('corregir').click();
+  let w=abrir(EX1,{}),d=w.document;d.getElementById('corregir').click();await responder(d,'d-no');
   check(nota(d)==='0,00 / 10'&&d.querySelectorAll('.pregunta.mal').length===10,'todo vacío → 0,00 y las 10 preguntas en rojo');
   check(d.getElementById('b-corregir').hidden===false&&d.getElementById('b-soluciones').hidden===false,'con 0 se puede corregir y ver soluciones');
   w=abrir(EX1,{});d=w.document;rellenarBien(d);d.getElementById('corregir').click();
@@ -77,25 +81,30 @@ console.log('2. Notas: redondeo al cuarto, límites, preguntas a medias');
   w=abrir(EX1,{});d=w.document;rellenarBien(d);
   const p2=d.querySelectorAll('.pregunta')[1];const huecos2=p2.querySelectorAll('input[data-r]');
   d.querySelectorAll('.pregunta')[0].querySelectorAll('input[data-r]').forEach(i=>i.value='');huecos2[0].value='';
-  d.getElementById('corregir').click();
+  d.getElementById('corregir').click();await responder(d,'d-no');
   check(huecos2.length===8&&nota(d)==='9,00 / 10','empate exacto (8,875 → 35,5 cuartos) redondea hacia arriba → 9,00');
 }
 // =====================================================================
 console.log('3. Huecos vacíos, borrador, corrección única, soluciones, reintentar');
 {
-  let st={};let w=abrir(EX1,st,{confirm:false}),d=w.document;rellenarBien(d);d.querySelectorAll('input[data-r]')[0].value='';
+  let st={};let w=abrir(EX1,st),d=w.document;rellenarBien(d);d.querySelectorAll('input[data-r]')[0].value='';
   d.getElementById('corregir').click();
-  check(!d.getElementById('velo').classList.contains('visible'),'con un hueco vacío y "cancelar" en el aviso, no se entrega');
-  w=abrir(EX1,st);d=w.document;rellenarBien(d);d.querySelectorAll('input[data-r]')[0].value='';d.getElementById('corregir').click();
-  check(nota(d)==='9,50 / 10','con "aceptar" se entrega contando el vacío como fallo');
+  check(dialogoVisible(d)&&/falta por terminar la pregunta 1\b/.test(d.getElementById('d-texto').textContent),'con un hueco vacío sale el aviso propio, que dice qué pregunta falta (no el confirm del navegador)');
+  await responder(d,'d-si');
+  check(!d.getElementById('velo').classList.contains('visible')&&!dialogoVisible(d),'"seguir contestando" no entrega');
+  check(d.querySelectorAll('input[data-r]')[0].classList.contains('vacio'),'"seguir contestando" resalta el hueco vacío');
+  d.querySelectorAll('input[data-r]')[0].dispatchEvent(new w.Event('input'));
+  check(!d.querySelectorAll('input[data-r]')[0].classList.contains('vacio'),'al escribir en el hueco se quita el resaltado');
+  w=abrir(EX1,st);d=w.document;rellenarBien(d);d.querySelectorAll('input[data-r]')[0].value='';d.getElementById('corregir').click();await responder(d,'d-no');
+  check(nota(d)==='9,50 / 10','con "entregar así" se entrega contando el vacío como fallo');
   // corrección única
   d.getElementById('b-corregir').click();d.querySelectorAll('input[data-r]')[0].value=d.querySelectorAll('input[data-r]')[0].dataset.r;d.getElementById('corregir').click();
   check(nota(d)==='10,00 / 10'&&d.getElementById('b-corregir').hidden,'tras corregir una vez ya no se puede corregir más');
   w=abrir(EX1,st);d=w.document;check(d.getElementById('b-corregir').hidden&&/Primer intento: 9,50/.test(d.getElementById('r-sub').textContent),'al recargar sigue sin corregir y muestra el primer intento');
   // soluciones: cancelar mantiene corregir; aceptar lo quita
-  st={};w=abrir(EX1,st,{confirm:false});d=w.document;rellenarBien(d);d.querySelectorAll('input[data-r]')[0].value='x';d.getElementById('corregir').click();
-  d.getElementById('b-soluciones').click();check(d.getElementById('velo').classList.contains('visible')&&!d.getElementById('b-corregir').hidden,'cancelar en "ver soluciones" conserva la corrección');
-  w=abrir(EX1,st);d=w.document;d.getElementById('b-soluciones').click();
+  st={};w=abrir(EX1,st);d=w.document;rellenarBien(d);d.querySelectorAll('input[data-r]')[0].value='x';d.getElementById('corregir').click();
+  d.getElementById('b-soluciones').click();check(dialogoVisible(d)&&/corrijo/.test(d.getElementById('d-si').textContent),'ver soluciones pide confirmación y la opción destacada es corregir primero');await responder(d,'d-si');check(d.getElementById('velo').classList.contains('visible')&&!d.getElementById('b-corregir').hidden,'cancelar en "ver soluciones" conserva la corrección');
+  w=abrir(EX1,st);d=w.document;d.getElementById('b-soluciones').click();await responder(d,'d-no');
   check(d.querySelectorAll('.solucion').length===1&&d.querySelector('.solucion').textContent===d.querySelectorAll('input[data-r]')[0].dataset.r,'ver soluciones muestra la respuesta solo en el hueco fallado');
   d.getElementById('volver').click();check(d.getElementById('b-corregir').hidden,'tras ver soluciones desaparece corregir');
   // reintentar conserva historial
@@ -105,7 +114,8 @@ console.log('3. Huecos vacíos, borrador, corrección única, soluciones, reinte
   st={};w=abrir(EX1,st);d=w.document;const i0=d.querySelectorAll('input[data-r]')[0];i0.value='hola';i0.dispatchEvent(new w.Event('input'));await wait(250);
   check(!!st['noatests-mates:'+BASE+'examen1/:borrador'],'el borrador se guarda al escribir');
   w=abrir(EX1,st);d=w.document;check(d.querySelectorAll('input[data-r]')[0].value==='hola','el borrador se recupera al recargar');
-  rellenarBien(d);d.getElementById('corregir').click();check(!st['noatests-mates:'+BASE+'examen1/:borrador'],'el borrador se borra al entregar');
+  rellenarBien(d);d.getElementById('corregir').click();await wait(250);check(!st['noatests-mates:'+BASE+'examen1/:borrador'],'el borrador se borra al entregar y no reaparece después (aunque se acabe de elegir una opción)');
+  d.querySelector('.opcion').click();await wait(250);check(!st['noatests-mates:'+BASE+'examen1/:borrador'],'repasar un examen entregado no crea borradores');
   // historial con tope 20
   st={};st['noatests-mates:'+BASE+'examen1/:historial']=JSON.stringify(Array.from({length:20},(_,i)=>({fecha:`2026-01-${String(i+1).padStart(2,'0')}T00:00:00.000Z`,nota1:5,notaCorr:null})));
   w=abrir(EX1,st);d=w.document;rellenarBien(d);d.getElementById('corregir').click();
@@ -236,6 +246,86 @@ console.log('7. Reglas generales de los exámenes');
     if(!/examen\.js\?v=\d+/.test(html)||!/examen\.css\?v=\d+/.test(html)||!/dibujos\.js\?v=\d+/.test(html)||!/sync\.js\?v=\d+/.test(html)){fallo(e+': enlaces sin versión');todos=false;}
   }
   if(todos)bien(ex.length+' exámenes: huecos, enunciados, puntos de millar, sin respuestas regaladas, opciones válidas, cuadrícula válida, enlaces versionados');
+}
+// =====================================================================
+console.log('8. Interfaz pensada para niños');
+{
+  let st={};let w=abrir(EX1,st),d=w.document;
+  const pts=d.querySelectorAll('#progreso .punto');
+  check(pts.length===10&&/Has contestado 0 de 10/.test(d.getElementById('p-texto').textContent),'barra de progreso: un punto por pregunta y "Has contestado 0 de 10"');
+  const q1=d.querySelectorAll('.pregunta')[0];q1.querySelectorAll('input[data-r]').forEach(i=>{i.value=i.dataset.r;i.dispatchEvent(new w.Event('input'));});
+  q1.querySelectorAll('.grupo').forEach(g=>[...g.querySelectorAll('.opcion')][0].click());
+  check(pts[0].classList.contains('hecha')&&!pts[1].classList.contains('hecha')&&/Has contestado 1 de 10/.test(d.getElementById('p-texto').textContent),'al contestar la pregunta 1 entera se rellena su punto');
+  const op=[...d.querySelectorAll('.opcion')].find(o=>!q1.contains(o));
+  check(op.getAttribute('role')==='radio'&&op.getAttribute('tabindex')==='0','las opciones se pueden elegir con el teclado (role=radio, tabindex)');
+  op.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Enter',bubbles:true}));check(op.classList.contains('sel')&&op.getAttribute('aria-checked')==='true','Enter elige la opción');
+  d.getElementById('corregir').click();check(dialogoVisible(d),'entregar con huecos vacíos abre el aviso');
+  d.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Escape'}));await wait(0);check(!dialogoVisible(d)&&!d.getElementById('velo').classList.contains('visible'),'Escape cierra el aviso sin entregar');d.getElementById('corregir').click();d.getElementById('dialogo').dispatchEvent(new w.MouseEvent('click',{bubbles:true}));await wait(0);check(!dialogoVisible(d)&&!d.getElementById('velo').classList.contains('visible'),'tocar fuera del aviso lo cierra sin entregar');
+  w=abrir(EX1,{});d=w.document;rellenarBien(d);
+  check(/Todas contestadas/.test(d.getElementById('p-texto').textContent),'con todo contestado la barra lo celebra');
+  d.getElementById('corregir').click();
+  check(d.querySelectorAll('#r-estrellas .llena').length===3&&!dialogoVisible(d),'un 10 da 3 estrellas y se entrega sin aviso');
+  check([...d.querySelectorAll('#progreso .punto')].every(p=>p.classList.contains('ok'))&&/10 bien/.test(d.getElementById('p-texto').textContent),'tras entregar los puntos se pintan en verde y la barra resume el resultado');
+  w=abrir(EX1,{});d=w.document;d.getElementById('corregir').click();await responder(d,'d-no');
+  check(d.querySelectorAll('#r-estrellas .llena').length===0&&d.getElementById('r-estrellas').getAttribute('aria-label')==='0 de 3 estrellas','un 0 da 0 estrellas');
+  // portada: lo que está a medias y estrellas en la lista del tema
+  st={};st['noatests-mates:'+BASE+'examen2/:borrador']=JSON.stringify({modo:'intento',respuestas:{inputs:['1'],grupos:[-1],grid:null}});
+  st['noatests-mates:'+BASE+'examen1/']=JSON.stringify({fecha:'2026-01-01T00:00:00.000Z',nota1:7.5,notaCorr:null,respuestas:{}});
+  w=abrir('index.html',st);await wait(80);d=w.document;
+  const seguir=d.querySelector('a.seguir');
+  check(!!seguir&&seguir.getAttribute('href')===BASE+'examen2/'&&/Examen 2/.test(seguir.textContent),'la portada ofrece seguir el examen que está a medias');
+  check(/¡Hola, Noa!/.test(d.body.textContent)&&d.querySelectorAll('.mosaico a.examen').length>=4,'la portada saluda y muestra un mosaico por materia más Mis notas');
+  w=abrir('matematicas/temas1-2-numeros-y-planos/index.html',st);await wait(80);d=w.document;
+  const e1=d.querySelector('a[href="examen1/"]'),e2=d.querySelector('a[href="examen2/"]');
+  check(e1.querySelector('.nota-lista').textContent==='7,50'&&e1.querySelector('.estrellas-lista').getAttribute('aria-label')==='2 de 3 estrellas','la lista del tema muestra nota y estrellas (7,50 → 2)');
+  check(!!e2.querySelector('.pendiente')&&!e1.querySelector('.pendiente'),'la lista del tema marca "A medias" solo en el que está empezado');
+}
+// robustez que señaló la revisión
+{
+  let w=abrir(EX1,{},{lsMuerto:true}),d=w.document;rellenarBien(d);d.getElementById('corregir').click();
+  check(nota(d)==='10,00 / 10'&&d.getElementById('velo').classList.contains('visible'),'con localStorage bloqueado del todo (el navegador lanza al acceder) el examen se entrega y enseña la nota');
+  let st={};st['noatests-mates:'+BASE+'examen1/:borrador']=JSON.stringify({modo:'intento',respuestas:{}});
+  w=abrir(EX1,st);d=w.document;check(d.querySelectorAll('#progreso .punto').length===10,'un borrador estropeado (sin respuestas) no impide abrir el examen');
+  st={};st['noatests-mates:'+BASE+'examen1/']=JSON.stringify({});st['noatests-mates:'+BASE+'examen3/']=JSON.stringify({nota1:'7'});
+  st['noatests-mates:'+BASE+'examen2/']=JSON.stringify({fecha:'2026-01-01T00:00:00.000Z',nota1:6.25,notaCorr:9,respuestas:{}});
+  w=abrir('matematicas/temas1-2-numeros-y-planos/index.html',st);await wait(80);d=w.document;
+  check(d.querySelectorAll('a.examen').length===7&&!d.querySelector('a[href="examen1/"] .nota-lista'),'notas guardadas estropeadas se ignoran y la lista del tema se pinta igual');
+  check(d.querySelector('a[href="examen2/"] .estrellas-lista').getAttribute('aria-label')==='3 de 3 estrellas','las estrellas de la lista usan la nota final tras corregir (6,25 → 9,00 = 3), como la pantalla del resultado');
+  // borrador de corrección viejo: el examen ya se corrigió en otro dispositivo
+  st={};st['noatests-mates:'+BASE+'examen1/']=JSON.stringify({fecha:'2026-01-01T00:00:00.000Z',nota1:8,notaCorr:9.5,respuestas:{inputs:[],grupos:[]}});
+  st['noatests-mates:'+BASE+'examen1/:borrador']=JSON.stringify({modo:'correccion',respuestas:{inputs:['x'],grupos:[]}});
+  w=abrir('index.html',st);await wait(80);d=w.document;check(!d.querySelector('a.seguir'),'un borrador de corrección de un examen ya corregido no sale como "a medias"');
+  w=abrir(EX1,st);d=w.document;check(!st['noatests-mates:'+BASE+'examen1/:borrador'],'al abrir ese examen el borrador viejo se borra');
+}
+// =====================================================================
+console.log('9. Mantenimiento: catálogo, versiones y generadores');
+{
+  const cat=JSON.parse(fs.readFileSync(path.join(raiz,'catalogo.json'),'utf8'));
+  let todos=true;
+  cat.materias.filter(m=>m.evaluable).forEach(m=>{
+    if(!m.icono){fallo(m.id+' sin icono');todos=false;}
+    m.temas.forEach(t=>t.examenes.forEach(e=>{
+      const html=fs.readFileSync(path.join(raiz,m.id,t.id,e.id,'index.html'),'utf8');
+      [...html.matchAll(/data-tipo="([^"]+)"/g)].map(x=>x[1]).filter(x=>!/^(distancia|cantidad)$/.test(x)).forEach(tp=>{if(!(m.contenidos||{})[tp]){fallo(m.id+'/'+t.id+'/'+e.id+': el contenido "'+tp+'" no tiene nombre en catalogo.json');todos=false;}});
+    }));
+  });
+  if(todos)bien('cada contenido (data-tipo) de cada examen tiene su nombre en catalogo.json, y cada materia su icono');
+  const V=JSON.parse(fs.readFileSync(path.join(raiz,'herramientas/version.json'),'utf8')).version;const malos=[];
+  (function recorre(d){for(const x of fs.readdirSync(d,{withFileTypes:true})){if(['node_modules','.git'].includes(x.name))continue;const p=path.join(d,x.name);
+    if(x.isDirectory())recorre(p);else if(x.name.endsWith('.html')){const h=fs.readFileSync(p,'utf8');
+      for(const m of h.matchAll(/(?:src|href)="([^"]+\.(?:js|css))(\?v=(\d+))?"/g)){if(/^https?:/.test(m[1])||/sw-registro\.js$/.test(m[1]))continue;if(+m[3]!==V)malos.push(path.relative(raiz,p)+' → '+m[1]+(m[2]||' (sin versión)'));}}}})(raiz);
+  check(!malos.length,'todas las páginas enlazan los .js y .css propios con la misma versión (?v='+V+')'+(malos.length?': '+malos.slice(0,3).join(', '):''));
+  // los generadores reproducen exactamente los exámenes publicados (nadie los ha editado a mano por separado)
+  const {execFileSync}=require('child_process');
+  for(const [gen,dir] of [['generar-sociales-tema1.py','sociales/tema1-como-encontrar-lugares'],['generar-mates-temas4-5.py','matematicas/temas4-5-sumar-restar-y-problemas']]){
+    const antes={};for(const e of fs.readdirSync(path.join(raiz,dir)).filter(f=>/^examen\d+$/.test(f)))antes[e]=fs.readFileSync(path.join(raiz,dir,e,'index.html'),'utf8');
+    let distinto=[];
+    try{execFileSync('python3',[path.join(raiz,'herramientas',gen)],{stdio:'pipe'});
+      for(const e in antes){if(fs.readFileSync(path.join(raiz,dir,e,'index.html'),'utf8')!==antes[e])distinto.push(e);}
+      check(!distinto.length,gen+' reproduce '+Object.keys(antes).length+' exámenes idénticos'+(distinto.length?' (distintos: '+distinto.join(', ')+'; cambia el generador, no el HTML)':''));
+    }catch(e){fallo(gen+' no se puede ejecutar: '+String(e.message).slice(0,120));}
+    finally{for(const e in antes)fs.writeFileSync(path.join(raiz,dir,e,'index.html'),antes[e]);} // dejar los archivos como estaban pase lo que pase
+  }
 }
 console.log('\n'+ok+' comprobaciones correctas'+(errores?', '+errores+' error(es)':'.'));
 if(errores)process.exit(1);

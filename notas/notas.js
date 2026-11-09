@@ -3,9 +3,9 @@
    Todo sale de catalogo.json + lo guardado en este navegador. No modifica nada en localStorage. */
 (function(){
 'use strict';
-const NOMBRES={'leer-escribir':'Leer y escribir números','descomponer':'Descomponer números','valor-posicion':'Valor de cada cifra','recta':'Rectas numéricas','comparar':'Comparar números','ordenar':'Ordenar números','redondear':'Redondear','estimar':'Estimar sumas y restas','plano':'Planos','traslacion':'Traslaciones',
-  'tierra':'La Tierra y sus movimientos','estaciones':'Las estaciones','globo':'El globo terráqueo','planisferio':'Planisferios y continentes','mapas':'Mapas','planos':'Planos','orientacion':'Orientarse',
-  'sumar':'Sumar','restar':'Restar','terminos':'Términos de la suma y la resta','propiedades':'Propiedades de la suma','prueba-resta':'Prueba de la resta','termino-falta':'Números que faltan','tablas':'Tablas de datos','problemas':'Problemas','dinero':'Billetes y monedas','otros':'Otros'};
+// Nombres de los contenidos (data-tipo de cada pregunta): salen de "contenidos" de cada materia en catalogo.json
+const NOMBRES={'otros':'Otros'};
+function cargarNombres(cat){(cat.materias||[]).forEach(m=>Object.assign(NOMBRES,m.contenidos||{}));}
 const RAIZ=location.pathname.replace(/\/index\.html$/,'/').split('/').slice(0,2).join('/')+'/';
 const PREF='noatests-mates:';
 const n=v=>(+v).toFixed(2).replace('.',',');
@@ -186,6 +186,7 @@ function pantallaExamen(cat,m,t,e){
 // ---------- enrutado ----------
 let CAT=null;let pestanaActual='';
 function resolver(cat,hash){
+  cargarNombres(cat);
   let p;try{p=decodeURIComponent(hash.replace(/^#\/?/,'')).split('/').filter(Boolean);}catch(e){p=[];}
   pestanaActual='';
   if(p.length&&p[p.length-1]==='progreso'){p.pop();pestanaActual='progreso';}

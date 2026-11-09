@@ -39,7 +39,7 @@ for(const f of examenes.sort()){
     const w=dom.window;const store={};
     Object.defineProperty(w,'localStorage',{value:{getItem:k=>store[k]??null,setItem:(k,v)=>store[k]=String(v),removeItem:k=>delete store[k],key:i=>Object.keys(store)[i],get length(){return Object.keys(store).length;}}});
     w.scrollTo=()=>{};w.Element.prototype.scrollIntoView=()=>{};w.confirm=()=>true;w.requestAnimationFrame=()=>0;w.HTMLCanvasElement.prototype.getContext=()=>({clearRect(){},fillRect(){},save(){},restore(){},translate(){},rotate(){}});
-    w.eval(fs.readFileSync(path.join(raiz,'sociales/dibujos.js'),'utf8'));w.eval(fs.readFileSync(path.join(raiz,'matematicas/examen.js'),'utf8'));return w;};
+    w.eval(fs.readFileSync(path.join(raiz,'sociales/dibujos.js'),'utf8'));w.eval(fs.readFileSync(path.join(raiz,'comun/examen.js'),'utf8'));return w;};
   let w;try{w=abrir();}catch(e){fallo('no carga: '+e.message);continue;}
   const d=w.document;const preguntas=[...d.querySelectorAll('.pregunta')];const S=w.noatestsSociales;
   if(preguntas.length!==10)fallo('tiene '+preguntas.length+' preguntas, no 10');

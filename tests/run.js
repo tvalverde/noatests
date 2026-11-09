@@ -25,7 +25,7 @@ for(const f of examenes.sort()){
   Object.defineProperty(w,'localStorage',{value:{getItem:k=>store[k]??null,setItem:(k,v)=>store[k]=String(v),removeItem:k=>delete store[k],key:i=>Object.keys(store)[i],get length(){return Object.keys(store).length;}}});
   w.scrollTo=()=>{};w.Element.prototype.scrollIntoView=()=>{};w.confirm=()=>true;w.requestAnimationFrame=()=>0;w.HTMLCanvasElement.prototype.getContext=()=>({clearRect(){},fillRect(){},save(){},restore(){},translate(){},rotate(){}});
   try{w.eval(fs.readFileSync(path.join(raiz,'matematicas/dibujos.js'),'utf8'));}catch(e){fallo('dibujos.js: '+e.message);}
-  try{w.eval(fs.readFileSync(path.join(raiz,'matematicas/examen.js'),'utf8'));}catch(e){fallo('examen.js: '+e.message);continue;}
+  try{w.eval(fs.readFileSync(path.join(raiz,'comun/examen.js'),'utf8'));}catch(e){fallo('examen.js: '+e.message);continue;}
   const d=w.document;const preguntas=[...d.querySelectorAll('.pregunta')];
   if(preguntas.length!==10)fallo('tiene '+preguntas.length+' preguntas, no 10');
   preguntas.forEach((q,i)=>{
