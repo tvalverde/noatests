@@ -63,16 +63,16 @@
       "evaluable": true,
       "descripcion": "Leer, escribir, verbos y cuentos",
       "icono": "📖",
-      "contenidos": {"comprension": "Comprensión lectora", "descripcion": "Describir animales", "verbo": "El verbo y el infinitivo", "persona": "Persona y número del verbo", "onomatopeya": "Onomatopeyas", "cuento": "El cuento y sus partes"},
+      "contenidos": {"descripcion": "Describir animales", "verbo": "El verbo y el infinitivo", "persona": "Persona y número del verbo", "onomatopeya": "Onomatopeyas", "cuento": "El cuento y sus partes"},
       "temas": [
         {
           "id": "tema2-animales",
           "nombre": "Tema 2 · Funciones vitales de los animales",
-          "descripcion": "Monos en peligro, describir animales, el verbo, onomatopeyas y las partes del cuento",
+          "descripcion": "Describir animales, el verbo, persona y número, onomatopeyas y las partes del cuento",
           "examenes": [
-            {"id": "examen1", "nombre": "Ejercicio 1", "descripcion": "El tití pigmeo, verdadero o falso, la ficha de un animal, el tiburón, ¿es un verbo?, infinitivos, singular o plural, onomatopeyas, Pulgarcito y las partes del cuento"},
-            {"id": "examen2", "nombre": "Ejercicio 2", "descripcion": "La deforestación, los animales se comunican, la lagartija, proteger a los animales, conjugaciones, verbos de animales, cuidar, el delfín Moko, onomatopeyas y Guille y el ciervo"},
-            {"id": "examen3", "nombre": "Ejercicio 3", "descripcion": "El tití pigmeo, las dos partes de la lectura, la ficha de un animal, el cisne y el cangrejo, el comedero, el verbo, persona y número, onomatopeyas, frases del cuento y Los tres cerditos"}
+            {"id": "examen1", "nombre": "Ejercicio 1", "descripcion": "La ficha de la ardilla, cómo es cada animal, ¿es un verbo?, infinitivos, singular o plural, conjugar saltar, onomatopeyas, sonidos de animales y el cuento del erizo Pincho"},
+            {"id": "examen2", "nombre": "Ejercicio 2", "descripcion": "La ficha de la abeja, adivina el animal, conjugaciones, el esquema del verbo, persona y número, conjugar comer, onomatopeyas, ¿cómo ladra un perro inglés?, frases del cuento y ordenar un cuento"},
+            {"id": "examen3", "nombre": "Ejercicio 3", "descripcion": "Palabras de la ficha, la ficha del búho, plantar una semilla, la palabra misteriosa, persona y número, conjugar vivir, onomatopeyas, el cuento y sus partes y el dragón sin fuego"}
           ]
         }
       ]

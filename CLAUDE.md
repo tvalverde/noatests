@@ -11,11 +11,12 @@ Web estática (GitHub Pages) con ejercicios para Noa, 8 años, 3.º de Primaria 
 2. **Temario** `temario/<materia>/<tema>.json` escrito a partir de las fotos, antes de cualquier ejercicio. Para cada contenido (`data-tipo`): páginas del libro y qué entra; número máximo; si hay decimales; palabras prohibidas (contenidos de otros temas o cursos); qué queda fuera. Estado `"pendiente"` hasta que Toni lo dé por bueno (`"revisado"` + `revisado_el`). Toni lo revisa cuando quiere en la página `temario/` de la web.
 3. Cada contenido nuevo lleva nombre en `contenidos` de su materia en `catalogo.json`.
 4. **Generador** en `herramientas/generar-*.py`: las respuestas se calculan a partir de los datos, nunca se teclean. Los dibujos salen de los mismos datos que las respuestas.
-5. Solo preguntar lo que está en las páginas del temario y como lo pregunta el libro (mismas palabras: minuendo, umbría…). Ante la duda, no preguntarlo.
-6. `npm test`: debe pasar todo. `tests/temario.js` rechaza contenidos fuera del temario, números por encima del máximo, decimales y palabras prohibidas. `tests/run.js` / `tests/sociales.js` recalculan cada respuesta desde el dibujo.
-7. **Revisión visual** a 360–400 px de ancho (Playwright) de cada pregunta.
-8. **Revisión independiente** con un subagente que compara cada pregunta con las fotos de las páginas que indica el temario (que esté en el libro, una sola respuesta válida, vocabulario del libro, legible en móvil). Aplicar lo que encuentre.
-9. Si se tocó algún `.js`/`.css` común: `node herramientas/subir-version.js`. Commit y push a `main` (GitHub ejecuta los tests y publica).
+5. **Qué se pregunta:** lo que el libro pide aprender, no los datos de las lecturas. La guía son las secciones finales de cada tema: «En resumen», «Repasamos», «Nuestro reto» (y en mates y sociales, los cuadros de teoría y los ejercicios). Las lecturas son contexto: no se pregunta cuánto mide la cola de un mono en Lengua. Para practicar una destreza se usan ejemplos nuevos (otro animal, otro cuento). El temario recoge esa guía en su campo `guia`.
+6. Solo preguntar lo que está en las páginas del temario y como lo pregunta el libro (mismas palabras: minuendo, umbría…). Ante la duda, no preguntarlo.
+7. `npm test`: debe pasar todo. `tests/temario.js` rechaza contenidos fuera del temario, números por encima del máximo, decimales y palabras prohibidas. `tests/run.js` / `tests/sociales.js` recalculan cada respuesta desde el dibujo.
+8. **Revisión visual** a 360–400 px de ancho (Playwright) de cada pregunta.
+9. **Revisión independiente** con un subagente que comprueba que se pregunta lo que pide aprender el libro (según «En resumen», «Repasamos» y «Nuestro reto») y compara cada pregunta con las fotos de las páginas que indica el temario (que esté en el libro, una sola respuesta válida, vocabulario del libro, legible en móvil). Aplicar lo que encuentre.
+10. Si se tocó algún `.js`/`.css` común: `node herramientas/subir-version.js`. Commit y push a `main` (GitHub ejecuta los tests y publica).
 
 ## Código
 - Motor común: `comun/examen.js` y `comun/examen.css`. Listas: `listas.js` y `comun/listas.css`. Mis notas: `notas/`. Nube: `sync.js` (Supabase).

@@ -10,13 +10,14 @@ let errores=0;const fallo=m=>{console.error('  ✗ '+m);errores++;};
 const norm=s=>String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,' ').trim();
 // ---- tablas del libro (páginas 44-49) ----
 const INF={'pía':'piar','subirá':'subir','comían':'comer','duerme':'dormir','ladran':'ladrar','corría':'correr',
-  'seca':'secar','haz':'hacer','introduce':'introducir','rellénala':'rellenar','mete':'meter','recibirás':'recibir'};
-const ES_VERBO={cantar:true,abridor:false,piar:true,billar:false,aburrir:true};
+  'seca':'secar','nada':'nadar','vuelan':'volar','come':'comer','viven':'vivir','salta':'saltar','llena':'llenar','riégala':'regar','pon':'poner','espera':'esperar','haz':'hacer','introduce':'introducir','rellénala':'rellenar','mete':'meter','recibirás':'recibir'};
+const ES_VERBO={cantar:true,abridor:false,piar:true,billar:false,aburrir:true,saltar:true,mesa:false,correr:true,bonito:false,escribir:true};
 const N=['singular','plural'];
 const PN={'pide':[3,0],'paseaban':[3,1],'salimos':[1,1],'entrenarás':[2,0],'sumó':[3,0],
   'sueño':[1,0],'entiendes':[2,0],'dice':[3,0],'responsabilizamos':[1,1],'estáis':[2,1],'crecen':[3,1]};
 const ANIMAL={croa:'rana',mugía:'vaca',cacarea:'gallina',rugieron:'león',balaban:'oveja','gruñirá':'cerdo'};
 const ONO={aplaudir:'plas, plas',chapotear:'chap, chap',traquetear:'traca, traca',piar:'pío, pío',mugir:'muuu',chasquear:'chas',
+  'el perro':'guau','la vaca':'muuu','la rana':'croac','el gallo':'quiquiriquí','aplaudir':'plas, plas','comer algo rico':'ñam, ñam','una pelota que bota':'boing',
   'un plato que se rompe':'crac','el teléfono':'ring, ring','el reloj':'tic-tac','un perro inglés':'woof','el gato':'miau','la vaca':'muuu'};
 const PARTE={'érase una vez…':'Inicio','en un país muy lejano…':'Inicio','hace muchos años…':'Inicio','pasó en…':'Inicio',
   'de repente…':'Nudo','de pronto…':'Nudo','entonces…':'Nudo','en un momento dado…':'Nudo',
@@ -24,10 +25,18 @@ const PARTE={'érase una vez…':'Inicio','en un país muy lejano…':'Inicio','
 const VOC={'Cómo es':['pelo','plumas','patas','pezuñas','escamas','cuernos','alas','aletas','antenas','caparazón'],'Cómo se desplaza':['camina','repta','vuela','nada','salta'],
   'Qué come':['plantas','flores','frutas','otros animales','de todo'],'Dónde vive':['bosque','ciudad','mar','río']};
 const PULGARCITO=[[/habia una vez un nino diminuto/,'1'],[/su padre los abandono en el bosque/,'2'],[/ayudo al rey/,'3']];
-const TERM={ar:{yo:'o','tú':'as',nosotros:'amos',vosotros:'áis',ellos:'an'},er:{yo:'o','tú':'es',nosotros:'emos',vosotros:'éis',ellos:'en'},ir:{yo:'o','tú':'es',nosotros:'imos',vosotros:'ís',ellos:'en'}};
+// presente de los verbos regulares (como cuidar y crecer en el libro): terminación de cada persona
+const TERM={ar:{yo:'o','tú':'as','él':'a',ella:'a',nosotros:'amos',vosotros:'áis',ellos:'an',ellas:'an'},er:{yo:'o','tú':'es','él':'e',ella:'e',nosotros:'emos',vosotros:'éis',ellos:'en',ellas:'en'},ir:{yo:'o','tú':'es','él':'e',ella:'e',nosotros:'imos',vosotros:'ís',ellos:'en',ellas:'en'}};
+const PRON={yo:[1,0],'tú':[2,0],'él':[3,0],ella:[3,0],nosotros:[1,1],vosotros:[2,1],ellos:[3,1],ellas:[3,1]};
+// persona y número de una forma regular: se busca qué pronombre da esa forma con la raíz del infinitivo
+function personaNumero(forma,inf){const t=inf.slice(-2),r=inf.slice(0,-2);const p=Object.keys(TERM[t]||{}).find(k=>norm(r+TERM[t][k])===norm(forma));return p?PRON[p]:undefined;}
+const SONIDOS=new Set(['guau','miau','muuu','pio, pio','croac','quiquiriqui','beee','tic-tac','crac','ring, ring','nam, nam','ñam, ñam','boing','plas, plas','chap, chap','traca, traca','chas','woof','cri cri']);
+const limpiaOno=x=>norm(x).replace(/[¡!]/g,'').trim();
+const FORMAS={corren:'correr',saltan:'saltar',comes:'comer'};
 // las claves se comparan sin tildes ni mayúsculas, igual que las respuestas
 const sinTildes=o=>Object.fromEntries(Object.entries(o).map(([k,v])=>[norm(k),v]));
-const INFN=sinTildes(INF),PNN=sinTildes(PN),ANIMALN=sinTildes(ANIMAL),ONON=sinTildes(ONO),PARTEN=sinTildes(PARTE);
+const ONOK=x=>norm(x).replace(/[^a-zñáéíóúü ,-]/g,'').trim();
+const INFN=sinTildes(INF),PNN=sinTildes(PN),ANIMALN=sinTildes(ANIMAL),ONON=Object.fromEntries(Object.entries(ONO).map(([k,v])=>[ONOK(k),v])),PARTEN=sinTildes(PARTE);
 const VOCN=Object.fromEntries(Object.entries(VOC).map(([k,v])=>[k,v.map(norm)]));
 const respuestaDe=f=>{const g=f.querySelector('.grupo');const i=f.querySelector('input[data-r]');return g?g.dataset.r:i?i.dataset.r:null;};
 
@@ -47,11 +56,15 @@ for(const f of examenes.sort()){
       if(ds.inf)ok(INFN[norm(ds.inf)],'infinitivo de '+ds.inf);
       if(ds.esverbo)ok(ds.esverbo in ES_VERBO?(ES_VERBO[ds.esverbo]?'Sí':'No'):undefined,'¿es verbo '+ds.esverbo+'?');
       if(ds.conj){const t=ds.conj.slice(-2);ok({ar:'1.ª conjugación',er:'2.ª conjugación',ir:'3.ª conjugación'}[t],'conjugación de '+ds.conj);}
-      if(ds.num)ok(PNN[norm(ds.num)]?N[PNN[norm(ds.num)][1]]:undefined,'número de '+ds.num);
-      if(ds.per)ok(PNN[norm(ds.per)]?PNN[norm(ds.per)][0]+'.ª persona':undefined,'persona de '+ds.per);
+      if(ds.num){const [fo,inf]=ds.num.split('|');const pn=inf?personaNumero(fo,inf):PNN[norm(fo)];ok(pn?N[pn[1]]:undefined,'número de '+fo);}
+      if(ds.per){const [fo,inf]=ds.per.split('|');const pn=inf?personaNumero(fo,inf):PNN[norm(fo)];ok(pn?pn[0]+'.ª persona':undefined,'persona de '+fo);}
+      if(ds.esono){const ops=[...fi.querySelectorAll('.opcion')].map(o=>o.textContent);const son=ops.filter(o=>SONIDOS.has(limpiaOno(o)));n++;if(son.length!==1)fallo(P+'hay '+son.length+' onomatopeyas entre las opciones: '+ops.join(' / '));else if(norm(son[0])!==norm(r))fallo(P+'la onomatopeya es '+son[0]+' y la respuesta '+r);}
+      if(ds.misteriosa){const [t,per,num]=ds.misteriosa.split('|');const ops=[...fi.querySelectorAll('.opcion')].map(o=>o.textContent);
+        const val=ops.filter(o=>{const inf=FORMAS[norm(o)];if(!inf||!inf.endsWith(t))return false;const pn=personaNumero(o,inf);return pn&&pn[0]===+per&&N[pn[1]]===num;});n++;
+        if(val.length!==1)fallo(P+'la palabra misteriosa tiene '+val.length+' soluciones');else if(norm(val[0])!==norm(r))fallo(P+'la palabra misteriosa es '+val[0]);}
       if(ds.pn)ok(PNN[norm(ds.pn)]?PNN[norm(ds.pn)][0]+'.ª persona del '+N[PNN[norm(ds.pn)][1]]:undefined,'persona de '+ds.pn);
       if(ds.animal){const a=ANIMALN[norm(ds.animal)];n++;if(!a)fallo(P+ds.animal+' no está en la tabla');else if(!norm(r).includes(norm(a)))fallo(P+ds.animal+' es de '+a+' y la respuesta es '+r);}
-      if(ds.ono){const o=ONON[norm(ds.ono)];n++;if(!o)fallo(P+ds.ono+' no está en la tabla');else if(norm(r).replace(/[¡!]/g,'').trim()!==norm(o))fallo(P+ds.ono+' hace "'+o+'" y la respuesta es '+r);}
+      if(ds.ono){const o=ONON[ONOK(ds.ono)];n++;if(!o)fallo(P+ds.ono+' no está en la tabla');else if(norm(r).replace(/[¡!]/g,'').trim()!==norm(o))fallo(P+ds.ono+' hace "'+o+'" y la respuesta es '+r);}
       if(ds.parte)ok(PARTEN[norm(ds.parte)],'parte de '+ds.parte);
       if(ds.voc){const ap=Object.keys(VOCN).find(a=>VOCN[a].includes(norm(ds.voc).replace(/ \(.*\)$/,'')));ok(ap,'apartado de '+ds.voc);}
       if(ds.pulgarcito){const t=norm(fi.textContent);const p=PULGARCITO.find(([re])=>re.test(t));ok(p&&p[1],'orden de Pulgarcito');}

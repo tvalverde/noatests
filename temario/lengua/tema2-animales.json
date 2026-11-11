@@ -2,35 +2,31 @@
   "materia": "lengua",
   "tema": "tema2-animales",
   "libro": "Lengua 3.º Primaria. Tema «Funciones vitales de los animales»: «Misión: ¡animales protegidos!», «El idioma de los animales» y «Cuentos del mundo»",
-  "paginas": "30-49, 52-59",
+  "paginas": "36-49, 52-59",
   "estado": "pendiente",
   "revisado_el": null,
   "notas_revision": "Las páginas 50 y 51 no estaban entre las fotos.",
-  "resumen": "Lectura «Monos en peligro» (el tití pigmeo y la deforestación) y la noticia «Los animales se comunican entre sí»; describir animales con su ficha (cómo es, cómo se desplaza, qué come, dónde vive, curiosidades, cómo protegerlo); el verbo, el infinitivo (-ar, -er, -ir y sus conjugaciones), el singular y el plural y las tres personas; las onomatopeyas; el cuento y sus partes (inicio, nudo y desenlace) con sus frases especiales.",
+  "resumen": "Describir animales con su ficha (cómo es, cómo se desplaza, qué come, dónde vive, curiosidades, cómo protegerlo) y su vocabulario; el verbo: palabras que indican acciones, el infinitivo (-ar, -er, -ir) y sus tres conjugaciones, las formas personales en singular y plural y en 1.ª, 2.ª y 3.ª persona; las onomatopeyas y cómo se escriben en otros idiomas; el cuento: personajes, lugar y tiempo, sus tres partes (inicio, nudo y desenlace) y sus frases especiales.",
   "contenidos": {
-    "comprension": {
-      "paginas": "30, 32-35, 42",
-      "que": "Entender «Monos en peligro»: cómo es el tití pigmeo (12 cm de cuerpo, 17 cm de cola, salta hasta 5 metros, gira la cabeza 180°, arborícola, come savia e insectos) y la deforestación (pérdida de hábitats, los monos ayudan a regenerar la selva, los árboles producen oxígeno); la finalidad del texto (dar información) y que predominan las descripciones; verdadero o falso. La noticia de la página 42: Koko, las aves, las lechuzas, los grillos y las abejas."
-    },
     "descripcion": {
-      "paginas": "31, 36-41",
-      "que": "Describir animales con vocabulario concreto: cómo es (pelo, plumas, patas, pezuñas, escamas, cuernos, alas, aletas, antenas, caparazón), cómo se desplaza (camina, repta, vuela, nada, salta), qué come (plantas, flores, frutas, otros animales, de todo), dónde vive (bosque, ciudad, mar, río), curiosidades y cómo protegerlo. La ficha del tiburón, la ficha de la lagartija, el centro de recuperación de animales, el cisne y el cangrejo."
+      "paginas": "36-41",
+      "que": "Texto descriptivo de animales (En resumen, p41): qué apartados tiene la ficha y qué va en cada uno (cómo es, cómo se desplaza, qué come, dónde vive, curiosidades, cómo puedo protegerlo); el vocabulario concreto de la página 36 (pelo, plumas, patas, pezuñas, escamas, cuernos, alas, aletas, antenas, caparazón; camina, repta, vuela, nada, salta; plantas, flores, frutas, otros animales, de todo; bosque, ciudad, mar, río); adivinar un animal por su ficha (Nuestro reto)."
     },
     "verbo": {
-      "paginas": "43-44, 47-48",
-      "que": "Los verbos indican acciones; reconocer verbos; el infinitivo se forma con -ar, -er o -ir (1.ª, 2.ª y 3.ª conjugación); sacar el infinitivo de una forma (pía → piar, comían → comer); verbos de sonidos de animales (croar, mugir, rugir…)."
+      "paginas": "44, 47-49",
+      "que": "Los verbos son palabras que indican acciones; el infinitivo es la forma que usamos para nombrar al verbo y se forma con -ar, -er o -ir (1.ª, 2.ª y 3.ª conjugación); sacar el infinitivo de una forma verbal; la palabra misteriosa (Repasamos)."
     },
     "persona": {
-      "paginas": "43, 45, 47-49",
-      "que": "Formas personales: singular (una persona o animal) y plural (varias); 1.ª, 2.ª y 3.ª persona con yo, tú, él, ella, nosotros, vosotros, ellos, ellas; conjugar cuidar o crecer; completar un texto con verbos (el delfín Moko)."
+      "paginas": "45, 47-49",
+      "que": "Formas personales: singular (una persona o animal) y plural (varias); 1.ª, 2.ª y 3.ª persona con yo, tú, él, ella, nosotros, vosotros, ellos, ellas; conjugar un verbo como cuidar o crecer; la conjugación es el conjunto de todas las formas de un verbo."
     },
     "onomatopeya": {
-      "paginas": "43, 46-47, 49",
-      "que": "Las onomatopeyas son palabras que representan sonidos de personas, animales u objetos (tic-tac, crac, ring ring, guau, miau, muuu, pío pío, plas plas, chap chap, traca traca, chas); el ladrido del perro en castellano (guau) y en inglés (woof)."
+      "paginas": "46-47, 49",
+      "que": "Las onomatopeyas son palabras que representan sonidos de personas, animales u objetos (guau, miau, muuu, pío pío, croac, quiquiriquí, beee, tic-tac, crac, ring ring, ñam ñam, boing, plas plas, chap chap, traca traca, chas); relacionarlas con un verbo; se escriben distinto en otros idiomas (guau en castellano, woof en inglés)."
     },
     "cuento": {
       "paginas": "52-59",
-      "que": "El cuento narra una historia de unos personajes en un lugar y un tiempo concretos; partes: inicio, nudo y desenlace; frases especiales (Érase una vez…, De repente…, Finalmente…, y colorín colorado…); ordenar Pulgarcito; Los tres cerditos; el cuento «Guille y el ciervo»."
+      "que": "En un cuento se narra una historia de unos personajes en un lugar y un tiempo concretos; tiene tres partes: inicio (dónde, cuándo y quién), nudo (qué ocurre y cómo se complica) y desenlace (cómo se resuelve y cómo acaba); frases especiales de cada parte (Érase una vez, Hace muchos años, En un país muy lejano / De repente, De pronto, Entonces / Finalmente, Por fin, Y así concluyó, y fueron felices y comieron perdices, y colorín colorado); ordenar un cuento."
     }
   },
   "numeros": {
@@ -63,5 +59,6 @@
     "leyenda",
     "metamorfosis"
   ],
-  "fuera_de_temario": "Los tiempos verbales (presente, pasado, futuro) y sus nombres, sustantivos, adjetivos y pronombres como categorías, la clasificación científica de los animales (mamíferos, vertebrados…), fábulas, poemas y leyendas."
+  "fuera_de_temario": "Los tiempos verbales (presente, pasado, futuro) y sus nombres, sustantivos, adjetivos y pronombres como categorías, la clasificación científica de los animales (mamíferos, vertebrados…), fábulas, poemas y leyendas.",
+  "guia": "Lo que hay que aprender sale de «Nuestro reto» (pp. 39-40, 46, 57-58), «En resumen» (pp. 41, 47, 59) y «Repasamos» (pp. 48-49). Las lecturas son el contexto: sus datos no se preguntan."
 }
