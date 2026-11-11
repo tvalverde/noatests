@@ -330,7 +330,7 @@ console.log('9. Mantenimiento: catálogo, versiones y generadores');
   }
   // los generadores reproducen exactamente los exámenes publicados (nadie los ha editado a mano por separado)
   const {execFileSync}=require('child_process');
-  for(const [gen,dir] of [['generar-sociales-tema1.py','sociales/tema1-como-encontrar-lugares'],['generar-ingles-unit2.py','ingles/unit2-eat-well'],['generar-mates-temas4-5.py','matematicas/temas4-5-sumar-restar-y-problemas']]){
+  for(const [gen,dir] of [['generar-sociales-tema1.py','sociales/tema1-como-encontrar-lugares'],['generar-ingles-unit2.py','ingles/unit2-eat-well'],['generar-lengua-tema2.py','lengua/tema2-animales'],['generar-mates-temas4-5.py','matematicas/temas4-5-sumar-restar-y-problemas']]){
     const antes={};for(const e of fs.readdirSync(path.join(raiz,dir)).filter(f=>/^examen\d+$/.test(f)))antes[e]=fs.readFileSync(path.join(raiz,dir,e,'index.html'),'utf8');
     let distinto=[];
     try{execFileSync('python3',[path.join(raiz,'herramientas',gen)],{stdio:'pipe'});

@@ -1,0 +1,67 @@
+{
+  "materia": "lengua",
+  "tema": "tema2-animales",
+  "libro": "Lengua 3.º Primaria. Tema «Funciones vitales de los animales»: «Misión: ¡animales protegidos!», «El idioma de los animales» y «Cuentos del mundo»",
+  "paginas": "30-49, 52-59",
+  "estado": "pendiente",
+  "revisado_el": null,
+  "notas_revision": "Las páginas 50 y 51 no estaban entre las fotos.",
+  "resumen": "Lectura «Monos en peligro» (el tití pigmeo y la deforestación) y la noticia «Los animales se comunican entre sí»; describir animales con su ficha (cómo es, cómo se desplaza, qué come, dónde vive, curiosidades, cómo protegerlo); el verbo, el infinitivo (-ar, -er, -ir y sus conjugaciones), el singular y el plural y las tres personas; las onomatopeyas; el cuento y sus partes (inicio, nudo y desenlace) con sus frases especiales.",
+  "contenidos": {
+    "comprension": {
+      "paginas": "30, 32-35, 42",
+      "que": "Entender «Monos en peligro»: cómo es el tití pigmeo (12 cm de cuerpo, 17 cm de cola, salta hasta 5 metros, gira la cabeza 180°, arborícola, come savia e insectos) y la deforestación (pérdida de hábitats, los monos ayudan a regenerar la selva, los árboles producen oxígeno); la finalidad del texto (dar información) y que predominan las descripciones; verdadero o falso. La noticia de la página 42: Koko, las aves, las lechuzas, los grillos y las abejas."
+    },
+    "descripcion": {
+      "paginas": "31, 36-41",
+      "que": "Describir animales con vocabulario concreto: cómo es (pelo, plumas, patas, pezuñas, escamas, cuernos, alas, aletas, antenas, caparazón), cómo se desplaza (camina, repta, vuela, nada, salta), qué come (plantas, flores, frutas, otros animales, de todo), dónde vive (bosque, ciudad, mar, río), curiosidades y cómo protegerlo. La ficha del tiburón, la ficha de la lagartija, el centro de recuperación de animales, el cisne y el cangrejo."
+    },
+    "verbo": {
+      "paginas": "43-44, 47-48",
+      "que": "Los verbos indican acciones; reconocer verbos; el infinitivo se forma con -ar, -er o -ir (1.ª, 2.ª y 3.ª conjugación); sacar el infinitivo de una forma (pía → piar, comían → comer); verbos de sonidos de animales (croar, mugir, rugir…)."
+    },
+    "persona": {
+      "paginas": "43, 45, 47-49",
+      "que": "Formas personales: singular (una persona o animal) y plural (varias); 1.ª, 2.ª y 3.ª persona con yo, tú, él, ella, nosotros, vosotros, ellos, ellas; conjugar cuidar o crecer; completar un texto con verbos (el delfín Moko)."
+    },
+    "onomatopeya": {
+      "paginas": "43, 46-47, 49",
+      "que": "Las onomatopeyas son palabras que representan sonidos de personas, animales u objetos (tic-tac, crac, ring ring, guau, miau, muuu, pío pío, plas plas, chap chap, traca traca, chas); el ladrido del perro en castellano (guau) y en inglés (woof)."
+    },
+    "cuento": {
+      "paginas": "52-59",
+      "que": "El cuento narra una historia de unos personajes en un lugar y un tiempo concretos; partes: inicio, nudo y desenlace; frases especiales (Érase una vez…, De repente…, Finalmente…, y colorín colorado…); ordenar Pulgarcito; Los tres cerditos; el cuento «Guille y el ciervo»."
+    }
+  },
+  "numeros": {
+    "maximo": 300,
+    "decimales": false
+  },
+  "prohibido": [
+    "pretérito",
+    "futuro",
+    "presente",
+    "pasado",
+    "tiempo verbal",
+    "gerundio",
+    "participio",
+    "subjuntivo",
+    "imperativo",
+    "indicativo",
+    "sustantivo",
+    "adjetivo",
+    "pronombre",
+    "sinónimo",
+    "antónimo",
+    "mamífero",
+    "vertebrado",
+    "invertebrado",
+    "ovíparo",
+    "vivíparo",
+    "fábula",
+    "poema",
+    "leyenda",
+    "metamorfosis"
+  ],
+  "fuera_de_temario": "Los tiempos verbales (presente, pasado, futuro) y sus nombres, sustantivos, adjetivos y pronombres como categorías, la clasificación científica de los animales (mamíferos, vertebrados…), fábulas, poemas y leyendas."
+}

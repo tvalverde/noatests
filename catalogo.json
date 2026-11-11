@@ -57,6 +57,27 @@
       ]
     },
     {
+      "id": "lengua",
+      "nombre": "Lengua",
+      "color": "#2a8f8f",
+      "evaluable": true,
+      "descripcion": "Leer, escribir, verbos y cuentos",
+      "icono": "📖",
+      "contenidos": {"comprension": "Comprensión lectora", "descripcion": "Describir animales", "verbo": "El verbo y el infinitivo", "persona": "Persona y número del verbo", "onomatopeya": "Onomatopeyas", "cuento": "El cuento y sus partes"},
+      "temas": [
+        {
+          "id": "tema2-animales",
+          "nombre": "Tema 2 · Funciones vitales de los animales",
+          "descripcion": "Monos en peligro, describir animales, el verbo, onomatopeyas y las partes del cuento",
+          "examenes": [
+            {"id": "examen1", "nombre": "Ejercicio 1", "descripcion": "El tití pigmeo, verdadero o falso, la ficha de un animal, el tiburón, ¿es un verbo?, infinitivos, singular o plural, onomatopeyas, Pulgarcito y las partes del cuento"},
+            {"id": "examen2", "nombre": "Ejercicio 2", "descripcion": "La deforestación, los animales se comunican, la lagartija, proteger a los animales, conjugaciones, verbos de animales, cuidar, el delfín Moko, onomatopeyas y Guille y el ciervo"},
+            {"id": "examen3", "nombre": "Ejercicio 3", "descripcion": "El tití pigmeo, las dos partes de la lectura, la ficha de un animal, el cisne y el cangrejo, el comedero, el verbo, persona y número, onomatopeyas, frases del cuento y Los tres cerditos"}
+          ]
+        }
+      ]
+    },
+    {
       "id": "ingles",
       "nombre": "Inglés",
       "color": "#c0392b",
