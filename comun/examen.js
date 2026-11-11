@@ -14,7 +14,8 @@ const CLAVE_HIST=CLAVE+':historial';
 const CLAVE_BORRADOR=CLAVE+':borrador';
 
 // ---------- utilidades ----------
-const norm=s=>String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,' ').trim();
+// sin mayúsculas, tildes ni espacios de más; los apóstrofos curvos (’) de algunos teclados cuentan como '
+const norm=s=>String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[’‘`´]/g,"'").replace(/\s+/g,' ').trim();
 const esNumero=s=>/^[0-9.,]+$/.test(String(s).trim());
 const formatoES=s=>/^\d{1,3}(\.\d{3})*(,\d+)?$/.test(String(s).trim());
 function correcta(valor,esperado){
@@ -67,7 +68,7 @@ if('speechSynthesis' in window){
       speechSynthesis.cancel();
       const partes=[h.textContent.replace(/^\d+\s*/,'')];
       q.querySelectorAll('.fila,label').forEach(e=>{const t=e.textContent.replace(/\s+/g,' ').trim();if(t)partes.push(t.replace(/[<>]/g,m=>m==='>'?' mayor que ':' menor que '));});
-      const u=new SpeechSynthesisUtterance(partes.join('. '));u.lang='es-ES';u.rate=0.9;speechSynthesis.speak(u);
+      const u=new SpeechSynthesisUtterance(partes.join('. '));u.lang=document.documentElement.dataset.voz||'es-ES'/* las páginas de inglés ponen <html data-voz="en-GB"> */;u.rate=0.9;speechSynthesis.speak(u);
     });
     h.appendChild(b);
   });

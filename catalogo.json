@@ -57,6 +57,27 @@
       ]
     },
     {
+      "id": "ingles",
+      "nombre": "Inglés",
+      "color": "#c0392b",
+      "evaluable": true,
+      "descripcion": "English: words, sentences and stories",
+      "icono": "🇬🇧",
+      "contenidos": {"vocabulario": "Vocabulario", "some-any": "Some y any", "is-there-any": "Is there any…? / Are there any…?", "lectura": "Leer y entender", "pedir-comida": "Pedir y ofrecer comida", "orden": "First, next, finally", "deletreo": "Deletrear"},
+      "temas": [
+        {
+          "id": "unit2-eat-well",
+          "nombre": "Unit 2 · Eat well",
+          "descripcion": "Food, some and any, Is there any…?, asking for food, first, next, finally",
+          "examenes": [
+            {"id": "examen1", "nombre": "Ejercicio 1", "descripcion": "Food words, Rick's lunch, can you count it?, the shopping bag, Is or Are, at the café, Leo's picnic, first, next, finally, c or s"},
+            {"id": "examen2", "nombre": "Ejercicio 2", "descripcion": "Food words, colours, Ana's lunch, some or any, the shop, Is or Are, The wrong sandwich, at the café, first, next, finally, Tom's lunch"},
+            {"id": "examen3", "nombre": "Ejercicio 3", "descripcion": "Write the food, more food words, the picnic basket, can you count it?, the fridge, Is or Are, at the café, Sally's Super Sandwiches, put in order, c or s"}
+          ]
+        }
+      ]
+    },
+    {
       "id": "arts",
       "nombre": "Arts",
       "color": "#a86bd6",

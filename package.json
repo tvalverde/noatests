@@ -2,7 +2,7 @@
   "name": "noatests",
   "private": true,
   "scripts": {
-    "test": "node tests/run.js && node tests/sociales.js && node tests/temario.js && node tests/catalogo.js && node tests/sync.js && node tests/edge.js"
+    "test": "node tests/run.js && node tests/sociales.js && node tests/ingles.js && node tests/temario.js && node tests/catalogo.js && node tests/sync.js && node tests/edge.js"
   },
   "devDependencies": {
     "jsdom": "^24.0.0"

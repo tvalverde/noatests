@@ -1,0 +1,73 @@
+{
+  "materia": "ingles",
+  "tema": "unit2-eat-well",
+  "libro": "Inglés 3.º Primaria. Unit 2 «Eat well» (lessons 1 a 8)",
+  "paginas": "22-31",
+  "estado": "pendiente",
+  "revisado_el": null,
+  "notas_revision": "Fotos de la pantalla del libro digital, a doble página.",
+  "resumen": "Vocabulario de comida; There's some / There are some / There isn't any / There aren't any; preguntas Is there any…? / Are there any…? con sus respuestas cortas; la historia «The wrong sandwich»; los blogs de Sally y de Camila; pedir y ofrecer comida (What would you like? I'd like… Could I have…, please? Here you are); ordenar con first, next y finally; deletrear juice, nice, sandwich y salad.",
+  "contenidos": {
+    "vocabulario": {
+      "paginas": "22, 26",
+      "que": "Comida de la lección 1 (pancakes, tuna, strawberries, pasta, rice, mushrooms, tomato sauce, chocolate, salad, cheese, sandwiches, bread) y de la lección 5 (fruit, vegetables, biscuits, chicken, crisps, ice cream); decir una comida de cada color (brown, white, green, red, yellow)."
+    },
+    "some-any": {
+      "paginas": "23-24",
+      "que": "There's some / There isn't any con comida que no se cuenta (pasta, tomato sauce, chocolate…) y There are some / There aren't any con comida que se cuenta (pancakes, mushrooms, strawberries…); ¿se puede contar esta comida?; decir qué hay en la comida de Rick."
+    },
+    "is-there-any": {
+      "paginas": "27",
+      "que": "Is there any…? (ice cream, fruit, chicken) y Are there any…? (biscuits, crisps, vegetables) con sus respuestas Yes, there is / No, there isn't / Yes, there are / No, there aren't; preguntar qué hay en una tienda o en la bolsa de la compra."
+    },
+    "lectura": {
+      "paginas": "24-25, 28-29, 31",
+      "que": "Entender la historia «The wrong sandwich» (verdadero o falso, quién y qué) y textos tipo blog sobre sandwiches y comidas: de dónde son los niños, qué comen y qué beben, quién hace qué."
+    },
+    "pedir-comida": {
+      "paginas": "22, 30",
+      "que": "Ofrecer y pedir comida: What would you like? / What would you like to drink? / Would you like some…? / I'd like…, please / Could I have…, please? / Here you are / Yes, please / Thank you very much."
+    },
+    "orden": {
+      "paginas": "28, 31",
+      "que": "Ordenar una lista de cosas que se hacen o se comen con first, next y finally."
+    },
+    "deletreo": {
+      "paginas": "25",
+      "que": "Say and spell: el sonido /s/ que se escribe con c (juice, nice) o con s (sandwich, salad)."
+    }
+  },
+  "numeros": {
+    "maximo": 12,
+    "decimales": false
+  },
+  "prohibido": [
+    "how much",
+    "many",
+    "pizza",
+    "hamburger",
+    "burger",
+    "spaghetti",
+    "cereal",
+    "yoghurt",
+    "yogurt",
+    "soup",
+    "honey",
+    "milk",
+    "coffee",
+    "cake",
+    "sweets",
+    "beans",
+    "was",
+    "were",
+    "did",
+    "yesterday",
+    "tomorrow",
+    "countable",
+    "uncountable",
+    "contable",
+    "incontable",
+    "plural"
+  ],
+  "fuera_de_temario": "How much / how many, a / an con comida, el pasado (was, were, did), el futuro, comida que no sale en la unidad (pizza, hamburger, milk, cake…), los nombres gramaticales (countable, uncountable)."
+}
