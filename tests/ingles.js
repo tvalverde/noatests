@@ -40,7 +40,7 @@ for(const f of examenes.sort()){
       if(!c.querySelectorAll('.emoji').length)fallo(P+'las tarjetas de comida no se han pintado');});
     const ban=q.querySelector('.bandeja');const hay=ban?ban.dataset.hay.split(',').map(s=>s.trim()):null;
     if(ban&&!ban.querySelector('.dentro span'))fallo(P+'la bandeja no se ha pintado');
-    if(ban&&ban.querySelectorAll('.dentro span').length!==hay.length)fallo(P+'la bandeja pinta '+ban.querySelectorAll('.dentro span').length+' cosas y hay '+hay.length);
+    if(ban&&ban.querySelectorAll('.dentro .item').length!==hay.length)fallo(P+'la bandeja pinta '+ban.querySelectorAll('.dentro .item').length+' cosas y hay '+hay.length);
     q.querySelectorAll('.fila').forEach(fi=>{
       const r=respuestaDe(fi);const t=fi.textContent;
       const ok=(esperado,que)=>{comprobadas++;if(r==null)return fallo(P+que+': sin hueco');if(norm(r)!==norm(esperado))fallo(P+que+': la respuesta es "'+r+'" y debería ser "'+esperado+'"');};
@@ -63,6 +63,22 @@ for(const f of examenes.sort()){
   const rellenar=(d,fallar)=>{d.querySelectorAll('input[data-r]').forEach(i=>i.value=i.dataset.r);
     d.querySelectorAll('.grupo').forEach((g,k)=>{const ops=[...g.querySelectorAll('.opcion')];(k===fallar?ops.find(o=>norm(o.textContent)!==norm(g.dataset.r)):ops.find(o=>norm(o.textContent)===norm(g.dataset.r))).click();});
     d.getElementById('corregir').click();return d.getElementById('r-nota').textContent;};
+  // pistas en castellano: cada dibujo de comida tiene la suya, escondida hasta tocar 💡
+  const CAST=w.noatestsIngles.CASTELLANO;
+  d.querySelectorAll('.tarjeta-comida,.bandeja,.comida-pista').forEach(c=>{const ts=[...c.querySelectorAll('.pista-txt')];
+    if(!c.querySelector('.pista')||!ts.length)fallo('un dibujo no tiene pista en castellano');
+    if(ts.some(t=>!t.hidden))fallo('una pista se ve sin tocar 💡');
+    c.querySelector('.pista').click();if(ts.some(t=>t.hidden))fallo('tocar 💡 no enseña la pista');c.querySelector('.pista').click();});
+  d.querySelectorAll('.tarjeta-comida').forEach(c=>{const L=c.querySelector('.letra-ing').textContent;const q=c.closest('.pregunta');const v=(q.querySelector('.comidas').dataset.letras.split(';').map(x=>x.split('=')).find(([l])=>l===L)||[])[1];
+    if(c.querySelector('.pista-txt').textContent!==CAST[v])fallo('la pista de '+v+' no es '+CAST[v]);});
+  // la voz no lee dibujos, pistas ni lo que hay que escribir
+  qs.forEach((q,k)=>{const t=w.__noatestsLeer(q);const P='pregunta '+(k+1)+': la voz ';
+    if(/[\p{Extended_Pictographic}]/u.test(t))fallo(P+'lee un dibujo: '+t.slice(0,80));
+    {const ps=[...q.querySelectorAll('.pista-txt')];const antes=ps.map(x=>x.textContent);ps.forEach(x=>x.textContent='zzpistazz');if(w.__noatestsLeer(q).includes('zzpistazz'))fallo(P+'lee las pistas en castellano');ps.forEach((x,k)=>x.textContent=antes[k]);}
+    q.querySelectorAll('input[data-r]').forEach(x=>{if(new RegExp('\\b'+x.dataset.r+'\\b','i').test(t))fallo(P+'dice la respuesta "'+x.dataset.r+'"');});
+    if(/_____/.test(t))fallo(P+'lee las rayas de los huecos');});
+  // usar pistas no cambia la nota
+  {const w4=abrir();w4.document.querySelectorAll('.pista').forEach(b=>b.click());if(!rellenar(w4.document,-1).startsWith('10,00'))fallo('usar las pistas cambia la nota');}
   const n1=rellenar(d,-1);if(!n1.startsWith('10,00'))fallo('con todo bien da '+n1);
   const w2=abrir();if(rellenar(w2.document,0).startsWith('10,00'))fallo('con una mal sigue dando 10');
   if(!errores)console.log('  ✓ 10,00 · '+comprobadas+' respuestas recalculadas desde el dibujo o la regla');

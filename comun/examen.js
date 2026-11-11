@@ -59,6 +59,21 @@ function marcar(r,c){
   const d=grid.querySelector(`.celda[data-r="${r}"][data-c="${c}"]`);if(!d){marcada=null;return;}d.classList.add('x');d.textContent='X';marcada={r,c};
 }
 
+// Texto que lee la voz: nunca dibujos (emoji, que dirían la respuesta), ni pistas, ni huecos ni el botón 🔊
+const EMOJI=/[\p{Extended_Pictographic}\u{1F1E6}-\u{1F1FF}\u{1F3FB}-\u{1F3FF}\uFE0F\u200D\u20E3]/gu;
+function textoParaLeer(el){
+  const c=el.cloneNode(true);
+  c.querySelectorAll('input,button,.pista-txt,[role=img],.comida,svg,[data-no-leer]').forEach(x=>x.remove());
+  c.querySelectorAll('.raya').forEach(x=>x.replaceWith(' … '));
+  return c.textContent.replace(EMOJI,'').replace(/\s+/g,' ').trim();
+}
+function leerPregunta(q){
+  const h=q.querySelector('h2');const partes=[];
+  if(h)partes.push(textoParaLeer(h).replace(/^\d+\s*/,''));
+  q.querySelectorAll('.fila,label').forEach(e=>{const t=textoParaLeer(e);if(t)partes.push(t.replace(/[<>]/g,m=>m==='>'?' mayor que ':' menor que '));});
+  return partes.filter(Boolean).join('. ');
+}
+window.__noatestsLeer=leerPregunta;
 // Botón de leer en voz alta en cada pregunta
 if('speechSynthesis' in window){
   preguntas.forEach(q=>{
@@ -66,9 +81,7 @@ if('speechSynthesis' in window){
     const b=document.createElement('button');b.type='button';b.className='leer';b.title='Leer en voz alta';b.textContent='🔊';
     b.addEventListener('click',()=>{
       speechSynthesis.cancel();
-      const partes=[h.textContent.replace(/^\d+\s*/,'')];
-      q.querySelectorAll('.fila,label').forEach(e=>{const t=e.textContent.replace(/\s+/g,' ').trim();if(t)partes.push(t.replace(/[<>]/g,m=>m==='>'?' mayor que ':' menor que '));});
-      const u=new SpeechSynthesisUtterance(partes.join('. '));u.lang=document.documentElement.dataset.voz||'es-ES'/* las páginas de inglés ponen <html data-voz="en-GB"> */;u.rate=0.9;speechSynthesis.speak(u);
+      const u=new SpeechSynthesisUtterance(leerPregunta(q));u.lang=document.documentElement.dataset.voz||'es-ES'/* las páginas de inglés ponen <html data-voz="en-GB"> */;u.rate=0.9;speechSynthesis.speak(u);
     });
     h.appendChild(b);
   });
